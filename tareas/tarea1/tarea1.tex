@@ -1,0 +1,100 @@
+\documentclass[letterpaper,11pt]{article}
+
+% Soporte para los acentos.
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}    
+% Idioma español.
+\usepackage[spanish,mexico, es-tabla]{babel}
+% Soporte de símbolos adicionales (matemáticas)
+\usepackage{multirow}
+\usepackage{amsmath}		
+\usepackage{amssymb}		
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{latexsym}
+\usepackage{enumerate}
+\usepackage{ragged2e}
+\usepackage{hyperref}
+% Modificamos los márgenes del documento.
+\usepackage[lmargin=2cm,rmargin=2cm,top=2cm,bottom=2cm]{geometry}
+
+\title{Facultad de Ciencias, UNAM \\ 
+       Lenguajes de Programación \\ 
+       Tarea 1}
+\author{ \\ 
+        Rubí Rojas Tania Michelle }
+\date{09 de octubre de 2020}
+
+\begin{document}
+\maketitle
+
+\begin{enumerate}
+    % Ejercicio 1.
+    \item Explica brevemente qué tipos de problemas puedes resolver con cada uno
+    de los siguientes paradigmas y nombre un lenguaje perteneciente a cada uno.
+    \begin{enumerate}
+        % Ejercicio 1.a
+        \item Paradigma Estructurado.
+        % Ejercicio 1.b
+        \item Paradigma Orientado a Objetos.
+        % Ejercicio 1.c
+        \item Paradigma Funcional.
+        % Ejercicio 1.d
+        \item Paradigma Lógico.
+    \end{enumerate}
+
+    % Ejercicio 2.
+    \item Usando el lenguaje de programación \textsc{Prolog}, dar un ejemplo de 
+    cada uno de los siguientes conceptos y justificar. No es necesario que sean 
+    ejemplos demasiado elaborados. 
+    \begin{enumerate}
+        % Ejercicio 2.a
+        \item Sintaxis
+        % Ejercicio 2.b
+        \item Semántica
+        % Ejercicio 2.c
+        \item Convenciones de programación (Idioms)
+        % Ejercicio 2.d
+        \item Bibliotecas
+    \end{enumerate}
+
+    % Ejercicio 3.
+    \item Dada la siguiente función, da una forma para la misma indicando el 
+    tipo de entrada de los parámetros, el tipo de la salida y asígnale un nombre 
+    mnemotécnico. Justifica tu respuesta. 
+    \begin{verbatim}
+        (define (foo n 1)
+           (cond 
+              [(zero? n) empty]
+              [else (cons (car l) (foo (sub1 n) (cdr 1)))]))
+    \end{verbatim}
+
+    % Ejercicio 4.
+    \item Para los siguientes incisos, calcular el resultado de aplicar la 
+    función al parámetro recibido. Mostrar cada paso realizado hasta obtener el 
+    resultado final. Da tu propia implementación para ambas funciones.
+    \begin{enumerate}
+        % Ejercicio 4.a
+        \item \texttt{(reverse '(1 7 2 9))}
+        % Ejercicio 4.b
+        \item \texttt{(append '(m a n) (z a n a))}
+        % Ejercicio 4.c
+        \item \texttt{(reverse (append '(m a n) (z a n a)))}
+    \end{enumerate} 
+
+    % Ejercicio 5.
+    \item Da una tabla donde expliques las principales diferencias entre un 
+    compilador y un intérprete.
+
+    % Ejercicio 6.
+    \item Dibuja un mapa mental que muestre las fases de generación de código
+    ejecutable, sus principales características y elementos involucrados.
+
+    % Ejercicio 7.
+    \item Dadas las siguientes expresiones de AE en sintaxis concreta, da su 
+    respectiva representación en sintaxis abstracta por medio de los Árboles 
+    de Sintaxos Abstracta correspondientes. En caso de no poder generar el
+    árbol, justificar. 
+\end{enumerate}
+
+\end{document}
