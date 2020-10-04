@@ -16,7 +16,7 @@
 \usepackage{ragged2e}
 \usepackage{hyperref}
 % Modificamos los márgenes del documento.
-\usepackage[lmargin=2cm,rmargin=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage[lmargin=1cm,rmargin=1cm,top=1.5cm,bottom=1.5cm]{geometry}
 
 \title{Facultad de Ciencias, UNAM \\ 
        Lenguajes de Programación \\ 
@@ -81,6 +81,289 @@
         % Ejercicio 4.c
         \item \texttt{(reverse (append '(m a n) (z a n a)))}
     \end{enumerate} 
+
+    \textsc{Solución:} Las implementaciones propuestas para las funciones 
+    \texttt{reverse} y \texttt{append} son las siguientes 
+    \begin{verbatim}
+        (define (append xs ys)
+          (if (empty? xs)
+              ys
+              (cons (car xs) (append (cdr xs) ys))))
+    \end{verbatim}
+    \begin{verbatim}
+        (define (reverse xs)
+          (if (empty? xs)
+              '()
+              (append (reverse (cdr xs)) (list (car xs)))))
+    \end{verbatim}
+
+    Por lo tanto, 
+    \begin{enumerate}
+        % Ejercicio 4.a
+        \item \texttt{(reverse '(1 7 2 9))}
+        \begin{align*}
+            &= \texttt{(append (reverse (cdr '(1 7 2 9))) 
+                               (list (car '(1 7 2 9))))} \\
+            &= \texttt{(append (reverse '(7 2 9)) (list 1))} \\
+            &= \texttt{(append (append (reverse (cdr '(7 2 9))) 
+                                       (list (car '(7 2 9)))) '(1))} \\
+            &= \texttt{(append (append (reverse '(2 9)) (list 7)) '(1))} \\
+            &= \texttt{(append (append (append (reverse (cdr '(2 9)))} \\
+            & \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;  
+              \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+              \; \; \; \; \; \;                
+                                               \texttt{(list (car '(2 9)))) '(7)) '(1))} \\
+            &= \texttt{(append (append (append (reverse '(9)) (list 2)) '(7)) '(1))} \\ 
+            &= \texttt{(append (append (append (append (reverse (cdr '(9)))} \\ 
+            & \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+              \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+              \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+                                                       \texttt{(list (car '(9)))) '(2)) '(7)) '(1))} \\
+            &= \texttt{(append (append (append (append (reverse '()) (list 9)) '(2)) '(7)) '(1))} \\
+            &= \texttt{(append (append (append (append '() '(9)) '(2)) '(7)) '(1))} \\
+            &= \texttt{(append (append (append '(9) '(2)) '(7)) '(1))} \\
+            &= \texttt{(append (append (cons (car '(9)) (append (cdr '(9)) '(2))) '(7)) '(1))} \\
+            &= \texttt{(append (append (cons 9 (append '() '(2))) '(7)) '(1))} \\
+            &= \texttt{(append (append (cons 9 '(2)) '(7)) '(1))} \\
+            &= \texttt{(append (append '(9 2) '(7)) '(1))} \\
+            &= \texttt{(append (cons (car '(9 2)) (append (cdr '(9 2)) '(7))) '(1))} \\
+            &= \texttt{(append (cons 9 (append '(2) '(7))) '(1))} \\
+            &= \texttt{(append (cons 9 (cons (car '(2)) (append (cdr '(2)) '(7)))) '(1))} \\ 
+            &= \texttt{(append (cons 9 (cons 2 (append '() '(7)))) '(1))} \\
+            &= \texttt{(append (cons 9 (cons 2 '(7))) '(1))} \\
+            &= \texttt{(append (cons 9 '(2 7)) '(1))} \\
+            &= \texttt{(append '(9 2 7) '(1))} \\
+            &= \texttt{(cons (car '(9 2 7)) (append (cdr '(9 2 7)) '(1)))} \\
+            &= \texttt{(cons 9 (append '(2 7) '(1)))} \\
+            &= \texttt{(cons 9 (cons (car '(2 7)) (append (cdr '(2 7)) '(1))))} \\
+            &= \texttt{(cons 9 (cons 2 (append '(7) '(1))))} \\
+            &= \texttt{(cons 9 (cons 2 (cons (car '(7)) (append (cdr '(7)) '(1)))))} \\
+            &= \texttt{(cons 9 (cons 2 (cons 7 (append '() '(1)))))} \\
+            &= \texttt{(cons 9 (cons 2 (cons 7 '(1))))} \\
+            &= \texttt{(cons 9 (cons 2 '(7 1)))} \\
+            &= \texttt{(cons 9 '(2 7 1))} \\
+            &= \texttt{'(9 2 7 1)}
+        \end{align*}
+
+        % Ejercicio 4.b
+        \item \texttt{(append '(m a n) (z a n a))}
+        \begin{align*}
+            &= \texttt{(cons (car '(m a n)) (append (cdr '(m a n)) '(z a n a)))} \\
+            &= \texttt{(cons m (append '(a n) '(z a n a)))} \\
+            &= \texttt{(cons m (cons (car '(a n)) (append (cdr '(a n)) '(z a n a))))} \\
+            &= \texttt{(cons m (cons a (append '(n) '(z a n a))))} \\
+            &= \texttt{(cons m (cons a (cons (car '(n)) (append (cdr '(n)) '(z a n a)))))} \\
+            &= \texttt{(cons m (cons a (cons n (append '() '(z a n a)))))} \\
+            &= \texttt{(cons m (cons a (cons n '(z a n a))))} \\
+            &= \texttt{(cons m (cons a '(n z a n a)))} \\
+            &= \texttt{(cons m '(a n z a n a))} \\
+            &= \texttt{'(m a n z a n a)}
+        \end{align*}
+
+        % Ejercicio 4.c
+        \item \texttt{(reverse (append '(m a n) (z a n a)))}
+        \begin{align*}
+            &= \texttt{(reverse (cons (car '(m a n)) (append (cdr '(m a n)) '(z a n a))))} \\
+            &= \texttt{(reverse (cons m (append '(a n) '(z a n a))))} \\
+            &= \texttt{(reverse (cons m (cons (car '(a n)) (append (cdr '(a n)) '(z a n a)))))} \\
+            &= \texttt{(reverse (cons m (cons a (append '(n) '(z a n a)))))} \\
+            &= \texttt{(reverse (cons m (cons a (cons (car '(n)) (append (cdr '(n)) '(z a n a))))))} \\
+            &= \texttt{(reverse (cons m (cons a (cons n (append '() '(z a n a))))))} \\
+            &= \texttt{(reverse (cons m (cons a (cons n '(z a n a)))))} \\
+            &= \texttt{(reverse (cons m (cons a '(n z a n a))))} \\
+            &= \texttt{(reverse (cons m '(a n z a n a)))} \\
+            &= \texttt{(reverse '(m a n z a n a))} \\
+            &= \texttt{(append (reverse (cdr '(m a n z a n a))) (list (car '(m a n z a n a))))} \\
+            &= \texttt{(append (reverse '(a n z a n a)) (list m))} \\
+            &= \texttt{(append (append (reverse (cdr '(a n z a n a))) (list (car '(a n z a n a)))) '(m))} \\
+            &= \texttt{(append (append (reverse '(n z a n a)) (list a)) '(m))} \\
+            &= \texttt{(append (append (append (reverse (cdr '(n z a n a))) (list (car '(n z a n a))))} \\
+            & \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; 
+              \; \; \; \; \; \; \; \; \; \; \; \; 
+                                       \texttt{'(a)) '(m))} \\
+            &= \texttt{(append (append (append (reverse '(z a n a)) (list n)) '(a)) '(m))} \\
+            &= \texttt{(append (append (append (append (reverse (cdr '(z a n a))) (list (car '(z a n a))))} \\
+            & \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+              \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+              \; \; \; \;  
+                                               \texttt{'(n)) '(a)) '(m))} \\
+            &= \texttt{(append (append (append (append (reverse '(a n a)) (list z)) '(n)) '(a)) '(m))} \\
+            &= \texttt{(append (append (append (append (append (reverse (cdr '(a n a))) (list (car '(a n a))))} \\
+            & \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+              \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+              \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; 
+                                                       \texttt{'(z)) '(n)) '(a)) '(m))} \\
+            &= \texttt{(append (append (append (append (append (reverse '(n a)) (list a)) '(z)) '(n))} \\ 
+            & \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; 
+              \; \; \; \; \; \; \; \; \; \; \; \; 
+                                       \texttt{'(a)) '(m))} \\ 
+            &= \texttt{(append (append (append (append (append (append (reverse (cdr '(n a)))} \\ 
+            & \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+              \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+              \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+              \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+              \; \;
+                                                                       \texttt{(list (car '(n a))))} \\
+            & \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+              \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+              \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+              \; \; \; \; \; \; \; \; \; \; \;
+                                                               \texttt{'(a)) '(z)) '(n)) '(a)) '(m))} \\
+            &= \texttt{(append (append (append (append (append (append (reverse '(a)) (list n))} \\
+            & \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+              \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+              \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+              \; \; \; \; \; \; \; \; \; \; \; \texttt{'(a)) '(z)) '(n)) '(a)) '(m))} \\
+            &= \texttt{(append (append (append (append (append (append (append (reverse (cdr '(a)))} \\ 
+            & \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+              \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+              \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+              \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+              \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; 
+                                                                               \texttt{(list (car '(a))))} \\ 
+            & \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+              \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+              \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+              \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+              \; \; 
+                                                                       \texttt{'(n)) '(a)) '(z)) '(n)) '(a)) '(m))} \\
+            &= \texttt{(append (append (append (append (append (append (append (reverse '()) (list a))} \\
+            & \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+              \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+              \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+              \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+              \; \; 
+                                                                       \texttt{'(n)) '(a)) '(z)) '(n)) '(a)) '(m))} \\
+            &= \texttt{(append (append (append (append (append (append (append '() '(a))} \\
+            & \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+              \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+              \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+              \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+              \; \; 
+                                                                       \texttt{'(n)) '(a)) '(z)) '(n)) '(a)) '(m))} \\
+            &= \texttt{(append (append (append (append (append (append '(a) '(n)) '(a)) '(z)) '(n)) '(a)) '(m))} \\
+        \end{align*}
+        \begin{align*}
+            &= \texttt{(append (append (append (append (append (cons (car '(a)) (append (cdr '(a)) '(n)))} \\ 
+            & \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+              \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+              \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; 
+              \; \; \; \; \; \; \; \; \; \; 
+                                                       \texttt{'(a)) '(z)) '(n)) '(a)) '(m))} \\
+            &= \texttt{(append (append (append (append (append (cons a (append '() '(n)))} \\ 
+            & \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+              \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+              \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; 
+              \; \; \; \; \; \; \; \; \; \; 
+                                                       \texttt{'(a)) '(z)) '(n)) '(a)) '(m))} \\
+            &= \texttt{(append (append (append (append (append (cons a '(n)) '(a)) '(z)) '(n)) '(a)) '(m))} \\
+            &= \texttt{(append (append (append (append (append '(a n) '(a)) '(z)) '(n)) '(a)) '(m))} \\ 
+            &= \texttt{(append (append (append (append (cons (car '(a n)) (append (cdr '(a n)) '(a)))} \\
+            & \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+              \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+              \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+                                                       \texttt{'(z)) '(n)) '(a)) '(m))} \\
+            &= \texttt{(append (append (append (append (cons a (append '(n) '(a))) '(z)) '(n)) '(a)) '(m))} \\
+            &= \texttt{(append (append (append (append (cons a (cons (car '(n)) (append (cdr '(n)) '(a))))} \\
+            & \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+            \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+            \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+                                                       \texttt{'(z)) '(n)) '(a)) '(m))} \\
+            &= \texttt{(append (append (append (append (cons a (cons n (append '() '(a))))} \\ 
+            & \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+            \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+            \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+                                                       \texttt{'(z)) '(n)) '(a)) '(m))} \\
+            &= \texttt{(append (append (append (append (cons a (cons n '(a))) '(z)) '(n)) '(a)) '(m))} \\
+            &= \texttt{(append (append (append (append (cons a '(n a)) '(z)) '(n)) '(a)) '(m))} \\
+            &= \texttt{(append (append (append (append '(a n a) '(z)) '(n)) '(a)) '(m))} \\
+            &= \texttt{(append (append (append (cons (car '(a n a)) (append (cdr '(a n a)) '(z)))} \\
+            & \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+            \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+            \; \; \; 
+                                               \texttt{'(n)) '(a)) '(m))} \\
+            &= \texttt{(append (append (append (cons a (append '(n a) '(z))) '(n)) '(a)) '(m))} \\
+            &= \texttt{(append (append (append (cons a (cons (car '(n a)) (append (cdr '(n a)) '(z))))} \\
+            & \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+            \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+            \; \; \; 
+                                               \texttt{'(n)) '(a)) '(m))} \\
+            &= \texttt{(append (append (append (cons a (cons n (append '(a) '(z)))) '(n)) '(a)) '(m))} \\
+            &= \texttt{(append (append (append (cons a (cons n (cons (car '(a)) (append (cdr '(a)) '(z)))))} \\
+            & \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+            \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+            \; \; \; 
+                                               \texttt{'(n)) '(a)) '(m))} \\
+            &= \texttt{(append (append (append (cons a (cons n (cons a (append '() '(z)))))} \\
+            & \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+            \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+            \; \; \; 
+                                               \texttt{'(n)) '(a)) '(m))} \\
+            &= \texttt{(append (append (append (cons a (cons n (cons a '(z)))) '(n)) '(a)) '(m))} \\
+            &= \texttt{(append (append (append (cons a (cons n '(a z))) '(n)) '(a)) '(m))} \\
+            &= \texttt{(append (append (append (cons a '(n a z)) '(n)) '(a)) '(m))} \\
+            &= \texttt{(append (append (append '(a n a z) '(n)) '(a)) '(m))} \\
+            &= \texttt{(append (append (cons (car '(a n a z)) (append (cdr '(a n a z)) '(n))) '(a)) '(m))} \\
+            &= \texttt{(append (append (cons a (append '(n a z) '(n))) '(a)) '(m))} \\
+            &= \texttt{(append (append (cons a (cons (car '(n a z)) (append (cdr '(n a z)) '(n))))} \\
+            & \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+            \; \; \; \; \; \; \; \; \; \; \; 
+                                       \texttt{'(a)) '(m))} \\
+            &= \texttt{(append (append (cons a (cons n (append '(a z) '(n)))) '(a)) '(m))} \\
+            &= \texttt{(append (append (cons a (cons n (cons (car '(a z)) (append (cdr '(a z)) '(n)))))} \\
+            & \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+            \; \; \; \; \; \; \; \; \; \; \; 
+                                       \texttt{'(a)) '(m))} \\
+            &= \texttt{(append (append (cons a (cons n (cons a (append '(z) '(n))))) '(a)) '(m))} \\
+            &= \texttt{(append (append (cons a (cons n (cons a (cons (car '(z)) (append (cdr '(z)) '(n))))))} \\
+            & \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
+            \; \; \; \; \; \; \; \; \; \; \; 
+                                       \texttt{'(a)) '(m))} \\
+            &= \texttt{(append (append (cons a (cons n (cons a (cons z (append '() '(n)))))) '(a)) '(m))} \\
+            &= \texttt{(append (append (cons a (cons n (cons a (cons z '(n))))) '(a)) '(m))} \\
+            &= \texttt{(append (append (cons a (cons n (cons a '(z n)))) '(a)) '(m))} \\
+            &= \texttt{(append (append (cons a (cons n '(a z n))) '(a)) '(m))} \\
+        \end{align*}
+        \begin{align*}
+            &= \texttt{(append (append (cons a '(n a z n)) '(a)) '(m))} \\
+            &= \texttt{(append (append '(a n a z n) '(a)) '(m))} \\
+            &= \texttt{(append (cons (car '(a n a z n)) (append (cdr '(a n a z n)) '(a))) '(m))} \\
+            &= \texttt{(append (cons a (append '(n a z n) '(a))) '(m))} \\
+            &= \texttt{(append (cons a (cons (car '(n a z n)) (append (cdr '(n a z n)) '(a)))) '(m))} \\
+            &= \texttt{(append (cons a (cons n (append '(a z n) '(a)))) '(m))} \\
+            &= \texttt{(append (cons a (cons n (cons (car '(a z n)) (append (cdr '(a z n)) '(a))))) '(m))} \\
+            &= \texttt{(append (cons a (cons n (cons a (append '(z n) '(a))))) '(m))} \\
+            &= \texttt{(append (cons a (cons n (cons a (cons (car '(z n)) (append (cdr '(z n)) '(a)))))) '(m))} \\
+            &= \texttt{(append (cons a (cons n (cons a (cons z (append '(n) '(a)))))) '(m))} \\
+            &= \texttt{(append (cons a (cons n (cons a (cons z (cons (car '(n)) (append (cdr '(n)) '(a))))))) (m))} \\
+            &= \texttt{(append (cons a (cons n (cons a (cons z (cons n (append '() '(a))))))) '(m))} \\
+            &= \texttt{(append (cons a (cons n (cons a (cons z (cons n '(a)))))) '(m))} \\
+            &= \texttt{(append (cons a (cons n (cons a (cons z '(n a))))) '(m))} \\
+            &= \texttt{(append (cons a (cons n (cons a '(z n a)))) '(m))} \\
+            &= \texttt{(append (cons a (cons n '(a z n a))) '(m))} \\
+            &= \texttt{(append (cons a '(n a z n a)) '(m))} \\
+            &= \texttt{(append '(a n a z n a) '(m))} \\
+            &= \texttt{(cons (car '(a n a z n a)) (append (cdr '(a n a z n a)) '(m)))} \\
+            &= \texttt{(cons a (append '(n a z n a) '(m)))} \\
+            &= \texttt{(cons a (cons (car '(n a z n a)) (append (cdr '(n a z n a)) '(m))))} \\
+            &= \texttt{(cons a (cons n (append '(a z n a) '(m))))} \\
+            &= \texttt{(cons a (cons n (cons (car '(a z n a)) (append (cdr '(a z n a)) '(m)))))} \\
+            &= \texttt{(cons a (cons n (cons a (append '(z n a) '(m)))))} \\
+            &= \texttt{(cons a (cons n (cons a (cons (car '(z n a)) (append (cdr '(z n a)) '(m))))))} \\
+            &= \texttt{(cons a (cons n (cons a (cons z (append '(n a) '(m))))))} \\
+            &= \texttt{(cons a (cons n (cons a (cons z (cons (car '(n a)) (append (cdr '(n a)) '(m)))))))} \\
+            &= \texttt{(cons a (cons n (cons a (cons z (cons n (append '(a) '(m)))))))} \\
+            &= \texttt{(cons a (cons n (cons a (cons z (cons n (cons (car '(a)) (append (cdr '(a)) '(m))))))))} \\
+            &= \texttt{(cons a (cons n (cons a (cons z (cons n (cons a (append '() '(m))))))))} \\
+            &= \texttt{(cons a (cons n (cons a (cons z (cons n (cons a '(m)))))))} \\
+            &= \texttt{(cons a (cons n (cons a (cons z (cons n '(a m))))))} \\
+            &= \texttt{(cons a (cons n (cons a (cons z '(n a m)))))} \\
+            &= \texttt{(cons a (cons n (cons a '(z n a m))))} \\
+            &= \texttt{(cons a (cons n '(a z n a m)))} \\
+            &= \texttt{(cons a '(n a z n a m))} \\
+            &= \texttt{'(a n a z n a m)}
+        \end{align*}
+    \end{enumerate}
 
     % Ejercicio 5.
     \item Da una tabla donde expliques las principales diferencias entre un 
