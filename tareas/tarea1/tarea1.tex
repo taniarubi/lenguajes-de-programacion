@@ -7,16 +7,18 @@
 \usepackage[spanish,mexico, es-tabla]{babel}
 % Soporte de símbolos adicionales (matemáticas)
 \usepackage{multirow}
-\usepackage{amsmath}		
-\usepackage{amssymb}		
+\usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage{amsthm}
 \usepackage{amsfonts}
+\usepackage{mathtools}
 \usepackage{latexsym}
 \usepackage{enumerate}
 \usepackage{ragged2e}
-\usepackage{hyperref}
-\usepackage{xcolor}
 \usepackage{listings}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{hyperref}
 % Modificamos los márgenes del documento.
 \usepackage[lmargin=1cm,rmargin=1cm,top=1.5cm,bottom=1.5cm]{geometry}
 
@@ -484,7 +486,13 @@
     \item Dibuja un mapa mental que muestre las fases de generación de código
     ejecutable, sus principales características y elementos involucrados.
 
-    \textsc{Solución:}
+    \textsc{Solución:} Las fases de generación de código ejecutable son aquellas 
+    que analzan, modifican y optimizan el código para que la computadora lo 
+    pueda entender. El siguiente mapa mental describe el órden de estas fases.
+    \begin{figure}[ht]
+        \centering
+        \includegraphics[width=0.9\textwidth]{./imagenes/Fases de generación de código.png}
+    \end{figure}
 
     % Ejercicio 7.
     \item Dadas las siguientes expresiones de AE en sintaxis concreta, da su 
