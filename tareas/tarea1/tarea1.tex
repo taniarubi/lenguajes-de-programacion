@@ -176,6 +176,8 @@
               [else (cons (car l) (foo (sub1 n) (cdr 1)))]))
     \end{verbatim}
 
+    \textsc{Solución:}
+
     % Ejercicio 4.
     \item Para los siguientes incisos, calcular el resultado de aplicar la 
     función al parámetro recibido. Mostrar cada paso realizado hasta obtener el 
@@ -476,9 +478,13 @@
     \item Da una tabla donde expliques las principales diferencias entre un 
     compilador y un intérprete.
 
+    \textsc{Solución:}
+
     % Ejercicio 6.
     \item Dibuja un mapa mental que muestre las fases de generación de código
     ejecutable, sus principales características y elementos involucrados.
+
+    \textsc{Solución:}
 
     % Ejercicio 7.
     \item Dadas las siguientes expresiones de AE en sintaxis concreta, da su 
@@ -487,7 +493,28 @@
     árbol, justificar. 
     \begin{enumerate}
         \item \texttt{\{+ 18 \{- 15 \{+ 40 5\}\}\}}
+        
+        \textsc{Solución:} Tenemos que 
+        \begin{align*}
+            \texttt{(parse '\{+ 18 \{- 15 \{+ 40 5\}\}\})}
+            &= \texttt{(add (parse '18) (parse '\{- 15 \{+ 40 5\}\}))} \\
+            &= \texttt{(add (num 18) (sub (parse '15) (parse '\{+ 40 5\})))} \\
+            &= \texttt{(add (num 18) (sub (num 15) (add (parse '40) (parse '5))))} \\
+            &= \texttt{(add (num 18) (sub (num 15) (add (num 40) (num 5))))}
+        \end{align*}
+
+        Por lo tanto, su representación en sintaxis abstracta es 
+        \begin{center}
+            \texttt{(add (num 18) (sub (num 15) (add (num 40) (num 5))))}
+        \end{center}
+
         \item \texttt{\{+ \{- 15 \{+ 40\}\}\}}
+
+        \textsc{Solución:} No es posible generar el árbol ya que el operador 
+        \texttt{+} es binario, y en las dos ocasiones en que es utiliza, falta 
+        alguna expresión de AE en el lado izquierdo. Así, al momento de
+        querer aplicar el \texttt{parser}, este hecho hará que falle nuestra 
+        función y no podamos generar el árbol. 
     \end{enumerate}
 \end{enumerate}
 
