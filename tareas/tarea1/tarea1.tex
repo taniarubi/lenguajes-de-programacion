@@ -15,8 +15,36 @@
 \usepackage{enumerate}
 \usepackage{ragged2e}
 \usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{listings}
 % Modificamos los márgenes del documento.
 \usepackage[lmargin=1cm,rmargin=1cm,top=1.5cm,bottom=1.5cm]{geometry}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
 
 \title{Facultad de Ciencias, UNAM \\ 
        Lenguajes de Programación \\ 
@@ -35,27 +63,106 @@
     \begin{enumerate}
         % Ejercicio 1.a
         \item Paradigma Estructurado.
+        
+        \textsc{Solución:}
+
         % Ejercicio 1.b
         \item Paradigma Orientado a Objetos.
+
+        \textsc{Solución:}
+
         % Ejercicio 1.c
         \item Paradigma Funcional.
+
+        \textsc{Solución:}
+
         % Ejercicio 1.d
         \item Paradigma Lógico.
+
+        \textsc{Solución:}
     \end{enumerate}
 
     % Ejercicio 2.
     \item Usando el lenguaje de programación \textsc{Prolog}, dar un ejemplo de 
     cada uno de los siguientes conceptos y justificar. No es necesario que sean 
-    ejemplos demasiado elaborados. 
+    ejemplos demasiado elaborados.
     \begin{enumerate}
         % Ejercicio 2.a
         \item Sintaxis
+
+        \textsc{Solución:} La sintaxis es el conjunto de reglas que debemos 
+        seguir para que el compilador sea capaz de reconocer nuestro programa 
+        como válido. En Prolog, todas las cláusulas de Horn (hechos y reglas) 
+        deben terminar con un punto \textbf{.} 
+
+        Por ejemplo, si queremos definir como \texttt{gatos} (hechos) a 
+        \texttt{cuchis, kike} y \texttt{melisa}; y tener una regla que 
+        determine las posibles parejas de gatos, entonces tendríamos un código 
+        como el siguiente:
+        \begin{lstlisting}[language=Prolog]
+            % Hechos
+            gato(cuchis).
+            gato(kike).
+            gato(melisa).
+
+            % Regla
+            pareja(X, Y) :- gato(X), gato(Y).
+        \end{lstlisting}
+        
+        Donde cada una de nuestras cláusulas termina con un punto. Si llegáramos
+        a omitir este último, entonces el programa no compilará porque el 
+        compilador no entenderá el código y mandará un mensaje de errror al 
+        programador.
+
         % Ejercicio 2.b
         \item Semántica
+
+        \textsc{Solución:} La semántica es el significado que se le otorga a 
+        cada una de las sentencias escritas, de acuerdo a la sintaxis definida 
+        previamente en el lenguaje. En Prolog, dado el ejemplo del inciso 
+        anterior, la regla \texttt{pareja} obtendrá sus valores de acuerdo a su 
+        universo del discurso, el cual corresponde a los hechos sobre 
+        \texttt{gatos} que hemos definido anteriormente. 
+
         % Ejercicio 2.c
         \item Convenciones de programación (Idioms)
+
+        \textsc{Solución:} Son expresiones idiomáticas que son frecuentes en un 
+        lenguaje. En Prolog, se tiene la convención de poner cada subobjetivo de 
+        las reglas en una nueva línea. Esto mejora enormemente la legibilidad 
+        del código. 
+        
+        Por ejemplo, 
+        \begin{lstlisting}[language=Prolog]
+            ord_union_all(N, Sets0, Union, Sets) :-
+                A is N / 2,
+                Z is N - A, 
+                ord_union_all(A, Sets0, X, Sets1),
+                ord_union_all(Z, Sets1, Y, Sets),
+                ord_union(X, Y, Union).
+        \end{lstlisting}
+
+        Así pues, no importa qué tan cortos sean algunos subobjetivos, es mejor 
+        usar una línea distinta para cada uno de ellos. 
+
         % Ejercicio 2.d
         \item Bibliotecas
+
+        \textsc{Solución:} Es el conjunto de funciones previamente definidas 
+        en un lenguaje, las cuales está disponibles para utilizarse por los 
+        programadores. En Prolog, tenemos la biblioteca \texttt{lists}, la 
+        cual nos proporciona predicados (reglas) básicos para la manipulación 
+        de listas. Por ejemplo, posee la regla
+        \begin{center}
+            \texttt{append(?List1, ?List2, ?List1AndList2)}
+        \end{center}  
+        
+        cuyo significado es que \texttt{List1AndList2} es la concadenación de 
+        \texttt{List1} con \texttt{List2}. 
+
+        En particular, Prolog tiene una buena documentación, aunque en la mayoría
+        de los casos carece de ejemplos para mostrar cómo funciona cada una de 
+        las reglas que contienen las bibliotecas.
     \end{enumerate}
 
     % Ejercicio 3.
@@ -383,5 +490,23 @@
         \item \texttt{\{+ \{- 15 \{+ 40\}\}\}}
     \end{enumerate}
 \end{enumerate}
+
+\begin{thebibliography}{10}
+    \bibitem{1}
+    Coding Guidelines for Prolog \\ 
+    \url{https://www.cs.unipr.it/~bagnara/Papers/PDF/TPLP12.pdf}
+
+    \bibitem{2} 
+    A.21 library(lists): List Manipulation \\
+    \url{https://www.swi-prolog.org/pldoc/man?section=lists}
+
+    \bibitem{3}
+    Sintaxis de Prolog \\
+    \url{http://gpd.sip.ucm.es/jaime/pl/prolog.pdf}
+
+    \bibitem{4}
+    Sintáxis y semántica de Prolog \\
+    \url{https://es.qaz.wiki/wiki/Prolog_syntax_and_semantics#Semantics}
+\end{thebibliography}
 
 \end{document}
