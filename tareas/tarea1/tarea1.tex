@@ -192,11 +192,18 @@
               [else (cons (car l) (foo (sub1 n) (cdr 1)))]))
     \end{verbatim}
 
-    \textsc{Solución:} 
+    \textsc{Solución:} Por las operaciones que se manejan en el cond podemos notar que n es un numero y l una 
+    lista, ademas que este numero nos sirve como contador para cada llamada recursiva del metodo dentro de este 
+    mismo en las cuales mientras n sea distinto de 0 se aplicara car a la lista lo que nos dara el primer 
+    elemento y volveremos a aplicar esta funcion pero ahora restandole 1 a n pasando al cdr de la lista original 
+    como parametro lo que nos seguira regresando elementos hasra que n sea igual a cero y nos regrese la lista 
+    vacia. Este algoritmo nos regresa los primeros n elementos de la lista que pasamos como parametro.
+    
+    Y la firma de esta funcion quedaria de la siguiente forma:
     
     \begin{verbatim}
-    ;;Función que recibe un numero n y una lista l y devuelve una lista con los primeros n elementos 
-    de la lista pasada como parametro.
+    ;;Función que recibe un numero n y una lista l y devuelve una lista con los primeros n 
+    elementos de la lista pasada como parametro.
     ;;primeros-lista: number (listof a) -> (listof a)
     \end{verbatim}
 	
