@@ -51,7 +51,7 @@
 \title{Facultad de Ciencias, UNAM \\ 
        Lenguajes de Programación \\ 
        Tarea 1}
-\author{ \\ 
+\author{Hernández Salinas Oscar \\ 
         Rubí Rojas Tania Michelle }
 \date{09 de octubre de 2020}
 
@@ -66,22 +66,36 @@
         % Ejercicio 1.a
         \item Paradigma Estructurado.
         
-        \textsc{Solución:}
+        \textsc{Solución:} Con este paradigma se pueden abarcar diferentes problemas tales como aplicaciones de 
+        escritorio, aplicaciones cientificas, en particular simulaciones  
+        
+        Y uno de los leguajes mas conocidos el cual ocupa este paradigma seria \textit{C}
 
         % Ejercicio 1.b
         \item Paradigma Orientado a Objetos.
 
-        \textsc{Solución:}
+        \textsc{Solución:} Con este paradigma se pueden abarcar diferentes problemas tales como simulacion de 
+        eventos simultaneos, aplicaciones de escritorio, moviles y wep.
+        
+        Y uno de los leguajes mas conocidos el cual ocupa este paradigma seria \textit{Java}
 
         % Ejercicio 1.c
         \item Paradigma Funcional.
 
-        \textsc{Solución:}
+        \textsc{Solución:} Con este paradigma se pueden abarcar diferentes problemas tales como representacion
+        de expresiones simbolicas, ademas que tiene aplicaciones en la industria aeroespacial, de finanzas y 
+        algunas empresas de diseño de hardware.
+        
+        Y uno de los leguajes mas conocidos el cual ocupa este paradigma seria \textit{LISP}
 
         % Ejercicio 1.d
         \item Paradigma Lógico.
 
-        \textsc{Solución:}
+        \textsc{Solución:} Con este paradigma se pueden abarcar diferentes problemas tales como desarrollo de 
+        aplicaciones de inteligencia artificial, prueba de teoremas de forma automática, construccion de sistemas 
+        expertos, procesamiento dl lenguaje natural 
+        
+        Y uno de los leguajes mas conocidos el cual ocupa este paradigma seria \textit{Prolog}
     \end{enumerate}
 
     % Ejercicio 2.
@@ -168,7 +182,7 @@
     \end{enumerate}
 
     % Ejercicio 3.
-    \item Dada la siguiente función, da una forma para la misma indicando el 
+    \item Dada la siguiente función, da una firma para la misma indicando el 
     tipo de entrada de los parámetros, el tipo de la salida y asígnale un nombre 
     mnemotécnico. Justifica tu respuesta. 
     \begin{verbatim}
@@ -178,8 +192,14 @@
               [else (cons (car l) (foo (sub1 n) (cdr 1)))]))
     \end{verbatim}
 
-    \textsc{Solución:}
-
+    \textsc{Solución:} 
+    
+    \begin{verbatim}
+    ;;Función que recibe un numero n y una lista l y devuelve una lista con los primeros n elementos 
+    de la lista pasada como parametro.
+    ;;primeros-lista: number (listof a) -> (listof a)
+    \end{verbatim}
+	
     % Ejercicio 4.
     \item Para los siguientes incisos, calcular el resultado de aplicar la 
     función al parámetro recibido. Mostrar cada paso realizado hasta obtener el 
@@ -481,6 +501,20 @@
     compilador y un intérprete.
 
     \textsc{Solución:}
+    
+    \begin{tabular}{| p{9cm} | p{9cm} |}
+        \hline
+        Interprete & Compilador  \\ \hline \hline
+        Ejecuta directamente las instrucciones escritas en un lenguaje de programación & Transforma el código 
+        fuente de un programa a su equivalente en otro lenguaje de mas bajo nivel\\  \hline
+        El código se traduce durante el tiempo de ejecución & El código se traduce antes de ejecutar  \\ \hline
+        Se traduce linea por linea  & Se traduce siempre todo el código \\ \hline
+        Manda errores después de cada linea  & Manda los errores en conjunto, después de la compilación \\ \hline
+        Velocidad de traducción alta & Velocidad de traducción baja\\ \hline
+        Eficiencia de traducción baja & Eficiencia de traducción alta\\ \hline
+        Coste de desarrollo bajo & Coste de desarrollo alto\\ \hline
+    \end{tabular}
+
 
     % Ejercicio 6.
     \item Dibuja un mapa mental que muestre las fases de generación de código
@@ -542,6 +576,18 @@
     \bibitem{4}
     Sintáxis y semántica de Prolog \\
     \url{https://es.qaz.wiki/wiki/Prolog_syntax_and_semantics#Semantics}
+    
+    \bibitem{5}
+    Nota de clase 1: Conceptos generales\\
+    \url{https://drive.google.com/file/d/12JEvZQh8F8UGC7Jep3IUZSchagBBa-Yd/view}
+
+    \bibitem{6}
+    The Difference Between a Compiler and an Interpreter \\
+    \url{https://tomassetti.me/difference-between-compiler-interpreter/}
+
+    \bibitem{7}
+    Compilador e intérprete: definición y diferencias \\
+    \url{https://www.ionos.mx/digitalguide/paginas-web/desarrollo-web/compilador-e-interprete/}
 \end{thebibliography}
 
 \end{document}
