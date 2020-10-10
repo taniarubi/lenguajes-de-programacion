@@ -66,36 +66,57 @@
         % Ejercicio 1.a
         \item Paradigma Estructurado.
         
-        \textsc{Solución:} Con este paradigma se pueden abarcar diferentes problemas tales como aplicaciones de 
-        escritorio, aplicaciones cientificas, en particular simulaciones  
+        \textsc{Solución:} 
         
-        Y uno de los leguajes mas conocidos el cual ocupa este paradigma seria \textit{C}
+        Con este paradigma se pueden abarcar diferentes problemas tales como 
+        aplicaciones de escritorio, aplicaciones científicas, en particular 
+        simulaciones. También se pueden abarcar problemas donde sólo hay que 
+        dar las instrucciones de cómo hacer las cosas en forma de algoritmo.
+        
+        Así, podríamos utilizar el lenguaje \textit{C} para resolver éstos 
+        problemas.
 
         % Ejercicio 1.b
         \item Paradigma Orientado a Objetos.
 
-        \textsc{Solución:} Con este paradigma se pueden abarcar diferentes problemas tales como simulacion de 
-        eventos simultaneos, aplicaciones de escritorio, moviles y wep.
+        \textsc{Solución:} 
         
-        Y uno de los leguajes mas conocidos el cual ocupa este paradigma seria \textit{Java}
+        Con este paradigma se pueden abarcar diferentes problemas tales como 
+        simulación de eventos simultáneos, aplicaciones de escritorio, 
+        móviles y web. También se pueden abarcar problemas donde querramos ver 
+        algo como un objeto (con compartamiento y atributos), como podría ser
+        el caso de un robot. 
+
+        Así, podríamos utilizar el lenguaje \textit{Java} para resolver éstos 
+        problemas. 
 
         % Ejercicio 1.c
         \item Paradigma Funcional.
 
-        \textsc{Solución:} Con este paradigma se pueden abarcar diferentes problemas tales como representacion
-        de expresiones simbolicas, ademas que tiene aplicaciones en la industria aeroespacial, de finanzas y 
-        algunas empresas de diseño de hardware.
+        \textsc{Solución:} 
         
-        Y uno de los leguajes mas conocidos el cual ocupa este paradigma seria \textit{LISP}
+        Con este paradigma se pueden abarcar diferentes problemas tales como 
+        representación de expresiones simbólicas, además que tiene aplicaciones 
+        en la industria aeroespacial, de finanzas y algunas empresas de diseño 
+        de hardware. También es muy bueno cuando se intentan resolver problemas 
+        de corte más matemáticos, ya que con saber implementar las definiciones 
+        que nos brindan podríamos resolver nuestro problema. 
+        
+        Así, podríamos utilizar el lenguaje \textit{LISP} para resolver éstos 
+        problemas. 
 
         % Ejercicio 1.d
         \item Paradigma Lógico.
 
-        \textsc{Solución:} Con este paradigma se pueden abarcar diferentes problemas tales como desarrollo de 
-        aplicaciones de inteligencia artificial, prueba de teoremas de forma automática, construccion de sistemas 
-        expertos, procesamiento dl lenguaje natural 
+        \textsc{Solución:} 
         
-        Y uno de los leguajes mas conocidos el cual ocupa este paradigma seria \textit{Prolog}
+        Con este paradigma se pueden abarcar diferentes problemas tales como 
+        desarrollo de aplicaciones de inteligencia artificial, prueba de teoremas 
+        de forma automática, construcción de sistemas expertos, procesamiento del 
+        lenguaje natural, resolución de laberintos o puzzles, etc.
+        
+        Así, podríamos utilizar el lenguaje \textit{Prolog} para resolver éstos 
+        problemas. 
     \end{enumerate}
 
     % Ejercicio 2.
@@ -186,25 +207,30 @@
     tipo de entrada de los parámetros, el tipo de la salida y asígnale un nombre 
     mnemotécnico. Justifica tu respuesta. 
     \begin{verbatim}
-        (define (foo n 1)
+        (define (foo n l)
            (cond 
               [(zero? n) empty]
-              [else (cons (car l) (foo (sub1 n) (cdr 1)))]))
+              [else (cons (car l) (foo (sub1 n) (cdr l)))]))
     \end{verbatim}
 
-    \textsc{Solución:} Por las operaciones que se manejan en el cond podemos notar que n es un numero y l una 
-    lista, ademas que este numero nos sirve como contador para cada llamada recursiva del metodo dentro de este 
-    mismo en las cuales mientras n sea distinto de 0 se aplicara car a la lista lo que nos dara el primer 
-    elemento y volveremos a aplicar esta funcion pero ahora restandole 1 a n pasando al cdr de la lista original 
-    como parametro lo que nos seguira regresando elementos hasra que n sea igual a cero y nos regrese la lista 
-    vacia. Este algoritmo nos regresa los primeros n elementos de la lista que pasamos como parametro.
+    \textsc{Solución:} 
     
-    Y la firma de esta funcion quedaria de la siguiente forma:
+    Por las operaciones que se manejan en el \texttt{cond} podemos notar que $n$ 
+    es un número y $l$ una lista, además que este número nos sirve como contador 
+    para cada llamada recursiva del método dentro de este mismo, en las cuales 
+    mientras $n$ sea distinto de $0$ se aplicara \texttt{car} a la lista, lo que 
+    nos dará el primer elemento y volveremos a aplicar esta función pero ahora 
+    restándole 1 a $n$ y pasando al \texttt{cdr} de la lista original como 
+    parámetro, lo que nos seguirá regresando elementos hasta que $n$ sea igual a 
+    cero y nos regrese la lista vacía. Este algoritmo nos regresa los primeros 
+    $n$ elementos de la lista que pasamos como parámetro.
+    
+    Y la firma de esta funcion quedaría de la siguiente forma:
     
     \begin{verbatim}
-    ;;Función que recibe un numero n y una lista l y devuelve una lista con los primeros n 
-    elementos de la lista pasada como parametro.
-    ;;primeros-lista: number (listof a) -> (listof a)
+    ;;Función que recibe un numero n y una lista l y devuelve una lista con los 
+    primeros n elementos de la lista pasada como parametro.
+    ;;primeros-n-elementos: number (listof a) -> (listof a)
     \end{verbatim}
 	
     % Ejercicio 4.
@@ -258,7 +284,9 @@
               \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
                                                        \texttt{(list (car '(9)))) '(2)) '(7)) '(1))} \\
             &= \texttt{(append (append (append (append (reverse '()) (list 9)) '(2)) '(7)) '(1))} \\
-            &= \texttt{(append (append (append (append '() '(9)) '(2)) '(7)) '(1))} \\
+            &= \texttt{(append (append (append (append '() '(9)) '(2)) '(7)) '(1))}
+        \end{align*}
+        \begin{align*}
             &= \texttt{(append (append (append '(9) '(2)) '(7)) '(1))} \\
             &= \texttt{(append (append (cons (car '(9)) (append (cdr '(9)) '(2))) '(7)) '(1))} \\
             &= \texttt{(append (append (cons 9 (append '() '(2))) '(7)) '(1))} \\
@@ -307,7 +335,9 @@
             &= \texttt{(reverse (cons m (cons a (append '(n) '(z a n a)))))} \\
             &= \texttt{(reverse (cons m (cons a (cons (car '(n)) (append (cdr '(n)) '(z a n a))))))} \\
             &= \texttt{(reverse (cons m (cons a (cons n (append '() '(z a n a))))))} \\
-            &= \texttt{(reverse (cons m (cons a (cons n '(z a n a)))))} \\
+            &= \texttt{(reverse (cons m (cons a (cons n '(z a n a)))))} 
+        \end{align*}
+        \begin{align*}
             &= \texttt{(reverse (cons m (cons a '(n z a n a))))} \\
             &= \texttt{(reverse (cons m '(a n z a n a)))} \\
             &= \texttt{(reverse '(m a n z a n a))} \\
@@ -380,8 +410,6 @@
               \; \; 
                                                                        \texttt{'(n)) '(a)) '(z)) '(n)) '(a)) '(m))} \\
             &= \texttt{(append (append (append (append (append (append '(a) '(n)) '(a)) '(z)) '(n)) '(a)) '(m))} \\
-        \end{align*}
-        \begin{align*}
             &= \texttt{(append (append (append (append (append (cons (car '(a)) (append (cdr '(a)) '(n)))} \\ 
             & \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
               \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
@@ -411,7 +439,9 @@
             & \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
             \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
             \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \;
-                                                       \texttt{'(z)) '(n)) '(a)) '(m))} \\
+                                                       \texttt{'(z)) '(n)) '(a)) '(m))}
+        \end{align*}
+        \begin{align*}
             &= \texttt{(append (append (append (append (cons a (cons n '(a))) '(z)) '(n)) '(a)) '(m))} \\
             &= \texttt{(append (append (append (append (cons a '(n a)) '(z)) '(n)) '(a)) '(m))} \\
             &= \texttt{(append (append (append (append '(a n a) '(z)) '(n)) '(a)) '(m))} \\
@@ -460,9 +490,7 @@
             &= \texttt{(append (append (cons a (cons n (cons a (cons z (append '() '(n)))))) '(a)) '(m))} \\
             &= \texttt{(append (append (cons a (cons n (cons a (cons z '(n))))) '(a)) '(m))} \\
             &= \texttt{(append (append (cons a (cons n (cons a '(z n)))) '(a)) '(m))} \\
-            &= \texttt{(append (append (cons a (cons n '(a z n))) '(a)) '(m))} \\
-        \end{align*}
-        \begin{align*}
+            &= \texttt{(append (append (cons a (cons n '(a z n))) '(a)) '(m))} 
             &= \texttt{(append (append (cons a '(n a z n)) '(a)) '(m))} \\
             &= \texttt{(append (append '(a n a z n) '(a)) '(m))} \\
             &= \texttt{(append (cons (car '(a n a z n)) (append (cdr '(a n a z n)) '(a))) '(m))} \\
@@ -474,7 +502,9 @@
             &= \texttt{(append (cons a (cons n (cons a (cons (car '(z n)) (append (cdr '(z n)) '(a)))))) '(m))} \\
             &= \texttt{(append (cons a (cons n (cons a (cons z (append '(n) '(a)))))) '(m))} \\
             &= \texttt{(append (cons a (cons n (cons a (cons z (cons (car '(n)) (append (cdr '(n)) '(a))))))) (m))} \\
-            &= \texttt{(append (cons a (cons n (cons a (cons z (cons n (append '() '(a))))))) '(m))} \\
+            &= \texttt{(append (cons a (cons n (cons a (cons z (cons n (append '() '(a))))))) '(m))} 
+        \end{align*}
+        \begin{align*}
             &= \texttt{(append (cons a (cons n (cons a (cons z (cons n '(a)))))) '(m))} \\
             &= \texttt{(append (cons a (cons n (cons a (cons z '(n a))))) '(m))} \\
             &= \texttt{(append (cons a (cons n (cons a '(z n a)))) '(m))} \\
@@ -511,18 +541,21 @@
     
     \begin{tabular}{| p{9cm} | p{9cm} |}
         \hline
-        Interprete & Compilador  \\ \hline \hline
-        Ejecuta directamente las instrucciones escritas en un lenguaje de programación & Transforma el código 
-        fuente de un programa a su equivalente en otro lenguaje de mas bajo nivel\\  \hline
-        El código se traduce durante el tiempo de ejecución & El código se traduce antes de ejecutar  \\ \hline
+        Interprete & Compilador  \\ \hline
+        Ejecuta directamente las instrucciones escritas en un lenguaje de 
+        programación & Transforma el código fuente de un programa a su 
+        equivalente en otro lenguaje de mas bajo nivel\\  \hline
+        El código se traduce durante el tiempo de ejecución & El código se 
+        traduce antes de ejecutar  \\ \hline
         Se traduce linea por linea  & Se traduce siempre todo el código \\ \hline
-        Manda errores después de cada linea  & Manda los errores en conjunto, después de la compilación \\ \hline
+        Manda errores después de cada linea  & Manda los errores en conjunto, 
+        después de la compilación \\ \hline
         Velocidad de traducción alta & Velocidad de traducción baja\\ \hline
         Eficiencia de traducción baja & Eficiencia de traducción alta\\ \hline
         Coste de desarrollo bajo & Coste de desarrollo alto\\ \hline
     \end{tabular}
 
-
+    \newpage
     % Ejercicio 6.
     \item Dibuja un mapa mental que muestre las fases de generación de código
     ejecutable, sus principales características y elementos involucrados.
