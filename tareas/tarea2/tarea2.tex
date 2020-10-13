@@ -1,0 +1,174 @@
+\documentclass[letterpaper,11pt]{article}
+
+% Soporte para los acentos.
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}    
+% Idioma español.
+\usepackage[spanish,mexico, es-tabla]{babel}
+% Soporte de símbolos adicionales (matemáticas)
+\usepackage{multirow}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{latexsym}
+\usepackage{enumerate}
+\usepackage{ragged2e}
+\usepackage{graphicx}
+\usepackage{hyperref}
+% Modificamos los márgenes del documento.
+\usepackage[lmargin=1cm,rmargin=1cm,top=1.5cm,bottom=1.5cm]{geometry}
+
+\title{Facultad de Ciencias, UNAM \\ 
+       Lenguajes de Programación \\ 
+       Tarea 2}
+\author{Hernández Salinas Oscar \\ 
+        Rubí Rojas Tania Michelle }
+\date{19 de octubre de 2020}
+
+\begin{document}
+\maketitle
+
+\begin{enumerate}
+    % Ejercicio 1.
+    \item Define las siguientes funciones sobre expresiones del lenguaje WAE:
+    \begin{enumerate}
+        % Ejercicio 1.a
+        \item La función \texttt{libres}: \texttt{WAE} $\rightarrow$ 
+        \texttt{(listof symbol)} que dada una expresión de tipo
+        \texttt{WAE} devuelve una lista con los identificadores libres (sin 
+        repeticiones) contenidos en ésta.
+
+        \textsc{Solución:}
+
+        % Ejercicio 1.b
+        \item La función \texttt{ligadas}: \texttt{WAE} $\rightarrow$
+        \texttt{(listof symbol)} que dada una expresión de tipo
+        \texttt{WAE} devuelve una lista con identificadores ligados (sin
+        repeticiones) contenidos en ésta.
+
+        \textsc{Solución:}
+
+        % Ejercicio 1.c
+        \item La función \texttt{de-ligado}: \texttt{WAE} $\rightarrow$ 
+        \texttt{(listof symbol)} que dada una expresión de tipo \texttt{WAE} 
+        devuelve una lista con identificadores de ligado (sin repeticiones) 
+        contenidos en ésta.
+
+        \textsc{Solución:}
+    \end{enumerate} 
+
+    % Ejercicio 2.
+    \item Sea $e$ una expresión del lenguaje \texttt{WAE}. Suponiéndo que 
+    \texttt{(libres e) = '()}, demostrar o dar un contraejemplo de la siguiente 
+    desigualdad.
+    \begin{center}
+        \texttt{(length (ligada e)) $\leq$ (length (de-ligado e))}
+    \end{center}
+
+    \begin{proof}
+        
+    \end{proof}
+
+    % Ejercicio 3.
+    \item Realiza las siguientes sustituciones cuidando el alcance de las 
+    variables correspondientes. Indica para cada expresión los identificadores 
+    libres, de ligado y ligados. 
+    \begin{enumerate}
+        % Ejercicio 3.a
+        \item \texttt{\textbf{\{with \{w \{- u 8\}\} \{with \{v 5\} 
+        \{+ w \{+ y x\}\}\}\} {[}x := \{+ u v\}{]}}}
+
+        \textsc{Solución:}
+
+        % Ejercicio 3.b
+        \item \texttt{\textbf{\{with \{y \{+ x v\}\} \{with \{z x\} 
+        \{- x \{- y z\}\}\}\} [x := \{- y z\}]}}
+
+        \textsc{Solución:}
+        
+        % Ejercicio 3.c
+        \item \texttt{\textbf{\{with \{y \{- z 3\}\} \{+ x \{+ y 11\}\}\} 
+        [x := \{- y \{z 23\}\}]}}
+
+        \textsc{Solución:}
+    \end{enumerate}
+
+    % Ejercicio 4.
+    \item Convierte las siguientes expresiones a su respectiva versión usando
+    índices de \textit{De Brujin}.
+    \begin{enumerate}
+        % Ejercicio 4.a
+        \item 
+        \begin{verbatim}
+        {with {a 2} 
+           {with {b 3} 
+              {with {c 4} 
+                 {with {d {+ a {- b c}}} 
+                    {with {f {with {a {+ b c}} a}} 
+                       {+ d {with {b {- d f}} {- b c}}}}}}}}
+        \end{verbatim}
+
+        \textsc{Solución:}
+
+        % Ejercicio 4.b
+        \item 
+        \begin{verbatim}
+        {with {{a 2} {b 3} {c {with {{a 2}} {+ 2 3}}}} 
+           {with {{d 8}} 
+              {with {{a c} {b {- 8 d}} {c {+ b b}}} {
+                 {with {{g {with {{z a} {y b} {z d}} 1}}} 
+                    {+ g {- d c}}}}}}}
+        \end{verbatim}
+
+        \textsc{Solución:}
+    \end{enumerate}
+
+    % Ejercicio 5.
+    \item Dadas las siguientes expresiones representadas mediante índices de 
+    \textit{De Brujín}, ontén su respectiva versión usando identificadores de 
+    variables.
+    \begin{enumerate}
+        % Ejercicio 5.a
+        \item 
+        \begin{verbatim}
+        {with {+ 2 3} 
+           {with 17 
+             {with {+ <:0> <:0>} 
+                {with {- <:0> {+ <:1> <:2>}} 
+                   {with {with 2 {+ <:0> 3}} 
+                      {- <:3> {+ <:2> {+ <:0> <:1>}}}}}}}}
+        \end{verbatim}
+
+        \textsc{Solución:}
+
+        % Ejercicio 5.b
+        \item 
+        \begin{verbatim}
+        {with {1 2 3} 
+           {with {4 5 6} 
+              {with {{with {{+ <:0 1> <:1 2>} {- <:1 1> <:0 0>}} 3}} 
+                 {+ <:3 2> {+ <:2 1> {+ <:1 0> <:0 0>}}}}}}
+        \end{verbatim}
+
+        \textsc{Solución:}
+    \end{enumerate}
+
+    % Ejercicio 6.
+    \item Determina el valor de la siguiente expresión y responde las siguientes 
+    preguntas: ¿puede haber otro resultado correcto? ¿por qué? ¿cuál es el 
+    correcto? 
+    \begin{verbatim}
+    {with {a 2} 
+       {with {b 3} 
+          {with {c {+ a b}} 
+             {with {a -2} 
+                {with {b -3} 
+                   {+ c c}}}}}}
+    \end{verbatim}
+
+    \textsc{Solución:}
+\end{enumerate}
+
+\end{document}
