@@ -8,6 +8,7 @@ Profesora: Karla Ramírez Pulido
 Ayudante: Manuel Soto Romero
 
 Ayudante Lab: Alejandro Hernández Mora
+
 Ayudante Lab: Silvia Díaz Gómez
 
 #### Entorno 
