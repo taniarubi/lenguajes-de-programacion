@@ -111,6 +111,14 @@
         \end{verbatim}
 
         \textsc{Solución:}
+        \begin{verbatim}
+        {with 2 
+           {with 3 
+              {with 4
+                 {with {+ <:2> {- <:1> <:0>}} 
+                    {with {with {+ <:2> <:1>} <:0>} 
+                       {+ <:1> {with {- <:1> <:0>} {- <:0> <:2>}}}}}}}}
+        \end{verbatim}
 
         % Ejercicio 4.b
         \item 
@@ -123,6 +131,13 @@
         \end{verbatim}
 
         \textsc{Solución:}
+        \begin{verbatim}
+        {with {2 3 {with {2} {+ 2 3}}} 
+           {with {8} 
+              {with {{<:1, 2>} {{- 8 <:0, 0>}} {{+ <:1, 1> <:1, 1>}}} 
+                 {with {{with {{<:0, 0>} {<:0, 1>} {<:1, 0>}} 1}} 
+                    {+ <:0, 0> {- <:2, 0> <:1, 2>}}}}}}
+        \end{verbatim}
     \end{enumerate}
 
     % Ejercicio 5.
