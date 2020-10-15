@@ -17,6 +17,7 @@
 \usepackage{ragged2e}
 \usepackage{graphicx}
 \usepackage{hyperref}
+\usepackage{xcolor}
 % Modificamos los márgenes del documento.
 \usepackage[lmargin=1cm,rmargin=1cm,top=1.5cm,bottom=1.5cm]{geometry}
 
@@ -41,6 +42,16 @@
         repeticiones) contenidos en ésta.
 
         \textsc{Solución:}
+        \begin{verbatim}
+        (define (libres expr) 
+           (type-case WAE expr
+              [id (i) ]
+              [num (n) '()]
+              [add (lhs rhs) (union (libres lhs) (libres rhs))]
+              [sub (lhs rhs) (union (libres lhs) (libres rhs))]
+              [with (id value body)
+                 ()]))
+        \end{verbatim}
 
         % Ejercicio 1.b
         \item La función \texttt{ligadas}: \texttt{WAE} $\rightarrow$
@@ -49,6 +60,16 @@
         repeticiones) contenidos en ésta.
 
         \textsc{Solución:}
+        \begin{verbatim}
+        (define (ligadas expr) 
+           (type-case WAE expr
+              [id (i) ]
+              [num (n) '()]
+              [add (lhs rhs) (union (ligadas lhs) (ligadas rhs))]
+              [sub (lhs rhs) (union (ligadas lhs) (ligadas rhs))]
+              [with (id value body)
+                 ()]))
+        \end{verbatim}
 
         % Ejercicio 1.c
         \item La función \texttt{de-ligado}: \texttt{WAE} $\rightarrow$ 
@@ -57,6 +78,16 @@
         contenidos en ésta.
 
         \textsc{Solución:}
+        \begin{verbatim}
+        (define (de-ligado expr) 
+           (type-case WAE expr
+              [id (i) '()]
+              [num (n) '()]
+              [add (lhs rhs) (union (de-ligado lhs) (de-ligado rhs))]
+              [sub (lhs rhs) (union (de-ligado lhs) (de-ligado rhs))]
+              [with (id value body)
+                 (union (list id) (de-ligado value) (de-ligado body))]))
+        \end{verbatim}
     \end{enumerate} 
 
     % Ejercicio 2.
@@ -68,6 +99,25 @@
     \end{center}
 
     \begin{proof}
+        Sea $e$ la siguiente expresión del lenguaje \texttt{WAE}
+        \begin{center}
+            \texttt{\textbf{\{with \{\textcolor{blue}{a} 17\} 
+            \{+ \textcolor{red}{a} \{+ \textcolor{red}{a} \{+ \textcolor{red}{a} 
+            \{+ \textcolor{red}{a} \textcolor{red}{a}\}\}\}\}\}}}
+        \end{center}
+
+        donde el símbolo de color \textcolor{blue}{azul} es una variable de 
+        \textbf{de-ligado} y los símbolos de color \textcolor{red}{rojo} son 
+        variables \textbf{ligadas}. Notemos, además, que no tenemos variables 
+        \textbf{libres}. 
+
+        Así, 
+        \begin{center}
+            \texttt{(length (ligada e)) $= 5 \not \leq 1$ (length (de-ligado e))}
+        \end{center}
+
+        Por lo tanto, la desigualdad \texttt{(length (ligada e)) $\leq$ 
+        (length (de-ligado e))} es falsa.
         
     \end{proof}
 
