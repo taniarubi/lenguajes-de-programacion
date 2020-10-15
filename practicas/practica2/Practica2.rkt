@@ -5,7 +5,8 @@
 ;; los primeros r múltiplos de n (empezando por n). 
 ;; multiplos: number number -> (listof number)
 (define (multiplos n r)
-  (map (λ (x) (* x n)) (list-tail (range (add1 r)) 1)))
+  (map (λ (x) (* x n))
+       (cdr (range (add1 r)))))
 
 ;; Ejercicio 2.
 ;; El predicado divisor? que reciba un número n y un número m y devuelva
@@ -22,14 +23,16 @@
 ;; divisores de n.
 ;; divisores: number -> (listof number)
 (define (divisores n)
-  (filter (λ (x) (divisor? x n)) (list-tail (range (add1 n)) 1)))
+  (filter (λ (x) (divisor? x n))
+          (cdr (range (add1 n)))))
 
 ;; Ejercicio 4.
 ;; Un predicado que reciba un elemento e y una lista l y decida si e pertenece
 ;; a l.
 ;; pertenece?: a (listof a) -> boolean
 (define (pertenece? e l)
-  (ormap (λ (x) (equal? x e)) l))
+  (ormap (λ (x) (equal? x e))
+         l))
 
 ;; Ejercicio 5.
 ;; Una función que reciba una lista l con elementos y devuelva una lista de
