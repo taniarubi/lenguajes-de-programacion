@@ -1,7 +1,7 @@
 #lang plai
                                                                                 
 ;; Ejercicio 1.
-;; Una función que reciba un número n, un número r, y devuelva el conjunto de
+;; Función que reciba un número n, un número r, y devuelva el conjunto de
 ;; los primeros r múltiplos de n (empezando por n). 
 ;; multiplos: number number -> (listof number)
 (define (multiplos n r)
@@ -9,9 +9,8 @@
        (cdr (range (add1 r)))))
 
 ;; Ejercicio 2.
-;; El predicado divisor? que reciba un número n y un número m y devuelva
-;; verdadero si m divide n, falso en otro caso. Si m es cero, lanza un
-;; error.
+;; Predicado que nos dice si un número m es divisor de otro número n.
+;; Si el parámetro recibido es cero, se devuelve un error.
 ;; divisor?: number number -> boolean
 (define (divisor? m n)
   (if (zero? m)
@@ -27,8 +26,7 @@
           (cdr (range (add1 n)))))
 
 ;; Ejercicio 4.
-;; Un predicado que reciba un elemento e y una lista l y decida si e pertenece
-;; a l.
+;; Predicado que reciba un elemento e y una lista l y decida si e pertenece a l.
 ;; pertenece?: a (listof a) -> boolean
 (define (pertenece? e l)
   (ormap (λ (x) (equal? x e))
@@ -43,9 +41,9 @@
          '()
          l))
 
-;; --- Definimos el tipo de dato Punto ---
-;;(define-type Punto
-;;  [Punto (x number?) (y number?)])
+;; Estructura que nos permite modelar puntos en el plano.
+;; Sirve para modelar figuras geométricas.
+(struct Punto (x y) #:inspector #f)
 
 ;; Ejercicio 6.
 ;; Una función que reciba dos puntos p = (x1, y1) y q = (x2, y2); y calcule el
@@ -87,4 +85,7 @@
 ;; de izquierda a derecha en la lista original. Si la lista es vacía, lanza un
 ;; error.
 ;; masRepetido (listof a) -> a
-;; (define (masRepetido l)...)
+
+;(masRepetido (list 1 2 3 3 6 6 7 7))
+;(masRepetido (list 1 2 3 4))
+;(masRepetido (list 1 2 3 4 5 6 3))

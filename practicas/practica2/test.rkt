@@ -29,9 +29,22 @@
 ;; Test para la función eliminaRepetidos.
 (test (eliminaRepetidos (list 1 2 3 5 6 7 8 4 4 1 6 7 8)) (list 1 2 3 5 6 7 8 4))
 (test (eliminaRepetidos (list 4 3 5 6 4 4 8 9 6 3 5)) (list 4 3 5 6 8 9))
+(test (eliminaRepetidos (list 5 5 5 5 5 5 5 5)) (list 5))
+(test (eliminaRepetidos (list 7 6 3 4 7 8 9 7 7 5 2 3)) (list 7 6 3 4 8 9 5 2))
 
+;; Test para la función punto-medio.
+;;(test (punto-medio (Punto 2 2) (Punto 2 8)) (Punto 2 5))
+;;(test (punto-medio (Punto 1 3) (3 1)) (Punto 2 2))
+;;(test (punto-medio (Punto 8 9) (Punto 4 5)) (Punto 6 7))
+;;(test (punto-medio (Punto 14 1) (Punto 3 6)) (Punto 17/2 7/2))
 
-;; Test para la función area.
+;; Test para la función distancia.
+;;(test () )
+;;(test () )
+;;(test () )
+;;(test () )
+
+;; Test para la función área.
 ;; (test (area (Triangulo (Punto 2 2) (Punto 3 6) (Punto 1 9)))
 
 ;; ---- Punto extra ----
