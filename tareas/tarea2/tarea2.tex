@@ -24,7 +24,7 @@
 \title{Facultad de Ciencias, UNAM \\ 
        Lenguajes de Programación \\ 
        Tarea 2}
-\author{Hernández Salinas Oscar \\ 
+\author{Hernández Salinas Óscar \\ 
         Rubí Rojas Tania Michelle }
 \date{19 de octubre de 2020}
 
@@ -43,16 +43,30 @@
 
         \textsc{Solución:}
         \begin{verbatim}
-        (define (libres expr) 
-           (type-case WAE expr
-              [id (i) ]
-              [num (n) '()]
-              [add (lhs rhs) (union (libres lhs) (libres rhs))]
-              [sub (lhs rhs) (union (libres lhs) (libres rhs))]
-              [with (id value body)
-                 ()]))
+        (define (libres expr)
+          (type-case WAE expr
+            [id (i) (list i)]
+            [num (n) '()]
+            [add (lhs rhs) (union (libres lhs) (libres rhs))]
+            [sub (lhs rhs) (union (libres lhs) (libres rhs))]
+            [with (id value body)
+                  (union (libres-aux value (list id)) 
+                         (libres-aux body (list id)))]))
+
+        (define (libres-aux expr lst)
+          (type-case WAE expr
+            [id (i) (if (not (member? i lst))
+                        (list i)
+                        '())]
+            [num (n) '()]
+            [add (lhs rhs) (union (libres-aux lhs lst) (libres-aux rhs lst))]
+            [sub (lhs rhs) (union (libres-aux lhs lst) (libres-aux rhs lst))]
+            [with (id value body)
+                  (union (libres-aux value (union lst (list id)))
+                         (libres-aux body (union lst (list id))))]))
         \end{verbatim}
 
+        \newpage
         % Ejercicio 1.b
         \item La función \texttt{ligadas}: \texttt{WAE} $\rightarrow$
         \texttt{(listof symbol)} que dada una expresión de tipo
@@ -61,14 +75,27 @@
 
         \textsc{Solución:}
         \begin{verbatim}
-        (define (ligadas expr) 
-           (type-case WAE expr
-              [id (i) ]
-              [num (n) '()]
-              [add (lhs rhs) (union (ligadas lhs) (ligadas rhs))]
-              [sub (lhs rhs) (union (ligadas lhs) (ligadas rhs))]
-              [with (id value body)
-                 ()]))
+        (define (ligadas expr)
+          (type-case WAE expr
+            [id (i) '()]
+            [num (n) '()]
+            [add (lhs rhs) (union (ligadas lhs) (ligadas rhs))]
+            [sub (lhs rhs) (union (ligadas lhs) (ligadas rhs))]
+            [with (id value body)
+                  (union (ligadas-aux value (list id)) 
+                         (ligadas-aux body (list id)))]))
+        
+        (define (ligadas-aux expr lst)
+          (type-case WAE expr
+            [id (i) (if (member? i lst)
+                        (list i)
+                        '())]
+            [num (n) '()]
+            [add (lhs rhs) (union (ligadas-aux lhs lst) (ligadas-aux rhs lst))]
+            [sub (lhs rhs) (union (ligadas-aux lhs lst) (ligadas-aux rhs lst))]
+            [with (id value body)
+                  (union (ligadas-aux value (union lst (list id))) 
+                         (ligadas-aux body (union lst (list id))))]))
         \end{verbatim}
 
         % Ejercicio 1.c
@@ -80,13 +107,13 @@
         \textsc{Solución:}
         \begin{verbatim}
         (define (de-ligado expr) 
-           (type-case WAE expr
-              [id (i) '()]
-              [num (n) '()]
-              [add (lhs rhs) (union (de-ligado lhs) (de-ligado rhs))]
-              [sub (lhs rhs) (union (de-ligado lhs) (de-ligado rhs))]
-              [with (id value body)
-                 (union (list id) (de-ligado value) (de-ligado body))]))
+          (type-case WAE expr
+            [id (i) '()]
+            [num (n) '()]
+            [add (lhs rhs) (union (de-ligado lhs) (de-ligado rhs))]
+            [sub (lhs rhs) (union (de-ligado lhs) (de-ligado rhs))]
+            [with (id value body)
+                  (union (list id) (de-ligado value) (de-ligado body))]))
         \end{verbatim}
     \end{enumerate} 
 
@@ -111,6 +138,7 @@
         variables \textbf{ligadas}. Notemos, además, que no tenemos variables 
         \textbf{libres}. 
 
+        \newpage
         Así, 
         \begin{center}
             \texttt{(length (ligada e)) $= 5 \not \leq 1$ (length (de-ligado e))}
@@ -118,7 +146,7 @@
 
         Por lo tanto, la desigualdad \texttt{(length (ligada e)) $\leq$ 
         (length (de-ligado e))} es falsa.
-        
+
     \end{proof}
 
     % Ejercicio 3.
