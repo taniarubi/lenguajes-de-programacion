@@ -270,9 +270,9 @@
         \begin{verbatim}
         {with {{a 1} {b 2} {c 3}} 
            {with {{d 4} {e 5} {f 6}} 
-              {with {{g {with {j {{h {+ e c}} {i {- b d}}}} 3}}}
-              	 {with {g}
-                 	{+ c {+ e {+ g g}}}}}}}
+              {with {{g {with {{h {+ e c}} {i {- b d}}} 3}}}
+              	 {with {j g}
+                 	{+ c {+ e {+ g j}}}}}}}
         \end{verbatim}
     \end{enumerate}
 
