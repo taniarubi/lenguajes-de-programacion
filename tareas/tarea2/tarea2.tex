@@ -353,19 +353,26 @@
 
     \textsc{Solución:} 
     \begin{verbatim}
-    {with {a 2} {with {b 3} {with {c {+ a b}} {with {a -2} {with {b -3} {+ c c}}}}}}
-    ={with {c {+ 2 3}} {with {a -2} {with {b -3} {+ c c}}}}
-    ={with {c 5} {with {a -2} {with {b -3} {+ c c}}}}
-    ={+ 5 5}
-    =10
+    = {with {c {+ 2 3}} 
+         {with {a -2} 
+           {with {b -3} 
+             {+ c c}}}}
+
+    = {with {c 5} 
+         {with {a -2} 
+            {+ c c}}}
+
+    = {+ 5 5}
+    = 10
     \end{verbatim}
-    La expresion nos puede dar dos diferentes valores dependiendo si se ocupa alcance dinamico 	
-    o estatico y los dos valores son correctos dependiendo de como este implementado el leguaje 
-    en el que estemos trabajando.
-    
-    Usando alcance estatico nos da:  10
-    
-    Usando alcance dinamico nos da: -10
+
+    La expresión nos puede dar dos diferentes valores dependiéndo si se ocupa 
+    alcance dinámico o estático y los dos valores son correctos dependiendo de 
+    cómo esté implementado el leguaje en el que estemos trabajando.
+    \begin{enumerate}
+        \item Usando alcance estático obtenemos que el resultado es $10$.
+        \item Usando alcance dinámico obtenemos que el resultado es $-10$.
+    \end{enumerate}
 \end{enumerate}
 
 \end{document}
