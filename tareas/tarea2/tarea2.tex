@@ -154,67 +154,98 @@
     variables correspondientes. Indica para cada expresión los identificadores 
     libres, de ligado y ligados. 
     
-    De color \textcolor{blue}{azul} tenemos los identificadores \textbf{de-ligado} , de 
-    color \textcolor{red}{rojo} los identificadores \textbf{ligados} y de \textcolor{green}{verde}
-    los identificadores \textbf{libres}
     \begin{enumerate}
         % Ejercicio 3.a
         \item \texttt{\textbf{\{with \{w \{- u 8\}\} \{with \{v 5\} 
         \{+ w \{+ y x\}\}\}\} {[}x := \{+ u v\}{]}}}
 
         \textsc{Solución:}
-        
-        \begin{verbatim}
-        {with {w {- u 8}} {with {v 5} {+ w {+ y x}}}}[x := {+ u v}]
-        ={with {w {- u 8}[x := {+ u v}]} {with {v 5} {+ w {+ y x}}}[x := {+ u v}]}
-        ={with {w {- u[x := {+ u v}] 8[x := {+ u v}]}} {with {v 5[x := {+ u v}]} {+ w {+ y x}}[x := {+ u v}]}}
-        ={with {w {- u 8}} {with {v 5} {+ w[x := {+ u v}] {+ y x}[x := {+ u v}]}}}
-        ={with {w {- u 8}} {with {v 5} {+ w {+ y[x := {+ u v}] x[x := {+ u v}]}}}}
-        ={with {w {- u 8}} {with {v 5} {+ w {+ y {+ u v}}}}}
-        \end{verbatim}
-        \texttt{\textbf{\{with \{\textcolor{blue}{w} \{- \textcolor{green}{u} 8\}\} \{with 
-        \{\textcolor{blue}{v} 5\} \{+ \textcolor{red}{w} \{+ \textcolor{green}{y} 
-        \{+ \textcolor{green}{u} \textcolor{red}{v}\}\}\}\}\}}}
-
+        \begin{align*}
+            &= \texttt{\textbf{\{with \{w \{- u 8\}[x := \{+ u v\}]\} 
+               \{with \{v 5\} \{+ w \{+ y x\}\}\}[x := \{+ u v\}]\}}} \\
+            &= \texttt{\textbf{\{with \{w \{- u[x := \{+ u v\}] 
+                                              8[x := \{+ u v\}]\}\}}} \\ 
+            &\; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; 
+            \texttt{\textbf{\{with \{v 5[x := \{+ u v\}]\} 
+                                   \{+ w \{+ y x\}\}[x := \{+ u v\}]\}\}}} \\
+            &= \texttt{\textbf{\{with \{w \{- u 8\}\} 
+                                      \{with \{v 5\} \{+ w[x := \{+ u v\}] 
+                                             \{+ y x\}[x := \{+ u v\}]\}\}\}}} \\
+            &= \texttt{\textbf{\{with \{w \{- u 8\}\} 
+                                      \{with \{v 5\} \{+ w \{+ y[x := \{+ u v\}] 
+                                                         x[x := \{+ u v\}]\}\}\}\}}} \\
+            &= \texttt{\textbf{\{with \{\textcolor{blue}{w} 
+                                      \{- \textcolor{green}{u} 8\}\} 
+                                      \{with \{\textcolor{blue}{v} 5\} 
+                                             \{+ \textcolor{red}{w} 
+                                             \{+ \textcolor{green}{y} 
+                                             \{+ \textcolor{green}{u} 
+                                             \textcolor{red}{v}\}\}\}\}\}}}
+        \end{align*}
+    
+        Donde las variables de color \textcolor{blue}{azul} son \textbf{de-ligado},
+        las de color \textcolor{red}{rojo} son \textbf{ligadas} y las de color 
+        \textcolor{green}{verde} son \textbf{libres}.
 
         % Ejercicio 3.b
         \item \texttt{\textbf{\{with \{y \{+ x v\}\} \{with \{z x\} 
         \{- x \{- y z\}\}\}\} [x := \{- y z\}]}}
 
         \textsc{Solución:}
-        
-        \begin{verbatim}
-        {with {y {+ x v}} {with {z x} {- x {- y z}}}}[x := {- y z}]
-        ={with {y {+ x v}[x := {- y z}]} {with {z x} {- x {- y z}}}[x := {- y z}]}
-        ={with {y {+ x[x := {- y z}] v[x := {- y z}]}} {with {z x[x := {- y z}]} {- x {- y z}}[x := {- y z}]}}
-        ={with {y {+ {- y z} v}} {with {z {- y z}} {- x[x := {- y z}] {- y z}[x := {- y z}]}}}
-        ={with {y {+ {- y z} v}} {with {z {- y z}} {- {- y z} {- y[x := {- y z}] z[x := {- y z}]}}}}
-        ={with {y {+ {- y z} v}} {with {z {- y z}} {- {- y z} {- y z}}}}
-        \end{verbatim}
-        \texttt{\textbf{\{with \{\textcolor{blue}{y} \{+ \{- \textcolor{green}{y} \textcolor{green}{z}\} 					\textcolor{green}{v}\}\} \{with \{\textcolor{blue}{z} \{- \textcolor{red}{y} \textcolor{green}{z}\}\} 
-        \{- \{- \textcolor{red}{y} \textcolor{red}{z}\} \{- \textcolor{red}{y} \textcolor{red}{z}\}\}\}\}}}
-        
+        \begin{align*}
+            &= \texttt{\textbf{\{with \{y \{+ x v\}[x := \{- y z\}]\} 
+                                      \{with \{z x\} \{- x \{- y z\}\}\}
+                                      [x := \{- y z\}]\}}} \\
+            &= \texttt{\textbf{\{with \{y \{+ x[x := \{- y z\}] v[x := \{- y z\}]\}\}}} \\
+            &\; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; 
+            \texttt{\textbf{\{with \{z x[x := \{- y z\}]\} 
+                                   \{- x \{- y z\}\}[x := \{- y z\}]\}\}}} \\
+            &= \texttt{\textbf{\{with \{y \{+ \{- y z\} v\}\} 
+                                      \{with \{z \{- y z\}\} 
+                                             \{- x[x := \{- y z\}] 
+                                             \{- y z\}[x := \{- y z\}]\}\}\}}} \\
+            &= \texttt{\textbf{\{with \{y \{+ \{- y z\} v\}\}}} \\
+            &\; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; 
+            \texttt{\textbf{\{with \{z \{- y z\}\} 
+                                             \{- \{- y z\}
+                                             \{- y[x := \{- y z\}] z[x := \{- y z\}]\}\}\}\}}} \\
+            &= \texttt{\textbf{\{with \{\textcolor{blue}{y} 
+            \{+ \{- \textcolor{green}{y} \textcolor{green}{z}\} \textcolor{green}{v}\}\} 
+            \{with \{\textcolor{blue}{z} \{- \textcolor{red}{y} \textcolor{green}{z}\}\} 
+            \{- \{- \textcolor{red}{y} \textcolor{red}{z}\} \{- \textcolor{red}{y} 
+            \textcolor{red}{z}\}\}\}\}}}
+        \end{align*}
+
+        Donde las variables de color \textcolor{blue}{azul} son \textbf{de-ligado},
+        las de color \textcolor{red}{rojo} son \textbf{ligadas} y las de color 
+        \textcolor{green}{verde} son \textbf{libres}.
         
         % Ejercicio 3.c
         \item \texttt{\textbf{\{with \{y \{- z 3\}\} \{+ x \{+ y 11\}\}\} 
         [x := \{- y \{z 23\}\}]}}
 
         \textsc{Solución:}
-        
-        \begin{verbatim}
-        {with {y {- z 3}} {+ x {+ y 11}}}[x := {- y {- z 23}}]
-        ={with {y {- z 3}[x := {- y {- z 23}}]} {+ x {+ y 11}}[x := {- y {- z 23}}]}
-        ={with {y {- z[x := {- y {- z 23}}] 3[x := {- y {- z 23}}]}} {+ x[x := {- y {- z 23}}] 
-        {+ y 11}[x := {- y 		{- z 23}}]}}
-        ={with {y {- z 3}} {+ {- y {- z 23}} {+ y[x := {- y {- z 23}}] 11[x := {- y {- z 23}}]}}}
-        ={with {y {- z 3}} {+ {- y {- z 23}} {+ y 11}}}
-        \end{verbatim}
-        \texttt{\textbf{\{with \{\textcolor{blue}{y} \{- \textcolor{green}{z} 3\}\} \{+ \{- \textcolor{red}{y} 
-        \{\textcolor{green}{z} 23\}\} \{+ \textcolor{red}{y} 11\}\}\}}}
-        
-        
+        \begin{align*}
+            &= \texttt{\textbf{\{with \{y \{- z 3\}[x := \{- y \{- z 23\}\}]\} 
+                                       \{+ x \{+ y 11\}\}[x := \{- y \{- z 23\}\}]\}}} \\
+            &= \texttt{\textbf{\{with \{y \{- z[x := \{- y \{- z 23\}\}] 3[x := \{- y \{- z 23\}\}]\}\}}} \\
+            &\; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; 
+            \texttt{\textbf{\{+ x[x := \{- y \{- z 23\}\}] \{+ y 11\}[x := \{- y \{- z 23\}\}]\}\}}} \\
+            &= \texttt{\textbf{\{with \{y \{- z 3\}\}}} \\ 
+            & \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; 
+            \texttt{\textbf{\{+ \{- y \{- z 23\}\} 
+                            \{+ y[x := \{- y \{- z 23\}\}] 11[x := \{- y \{- z 23\}\}]\}\}\}}} \\
+            &= \texttt{\textbf{\{with \{\textcolor{blue}{y} 
+            \{- \textcolor{green}{z} 3\}\} \{+ \{- \textcolor{red}{y} 
+            \{\textcolor{green}{z} 23\}\} \{+ \textcolor{red}{y} 11\}\}\}}}
+        \end{align*}
+
+        Donde las variables de color \textcolor{blue}{azul} son \textbf{de-ligado},
+        las de color \textcolor{red}{rojo} son \textbf{ligadas} y las de color 
+        \textcolor{green}{verde} son \textbf{libres}.
     \end{enumerate}
 
+    \newpage
     % Ejercicio 4.
     \item Convierte las siguientes expresiones a su respectiva versión usando
     índices de \textit{De Brujin}.
@@ -286,6 +317,7 @@
                       {- y {+ z {+ v w}}}}}}}}
         \end{verbatim}
 
+        \newpage
         % Ejercicio 5.b
         \item 
         \begin{verbatim}
