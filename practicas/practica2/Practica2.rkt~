@@ -50,67 +50,32 @@
 ;; punto medio entre p y q. Si alguno de los dos argumentos no es un punto,
 ;; regresa un error.
 ;; punto-medio: Punto Punto -> number
-(define (punto-medio p q)
-  (if (or (not (Punto? p) ) (not (Punto? q) ))
-      (error "Necesitas meter dos puntos")
-      (let ([x1 (Punto-x p)]
-            [y1 (Punto-y p)]
-            [x2 (Punto-x q)]
-            [y2 (Punto-y q)])
-       (Punto (/ (+ x1 x2) 2) (/ (+ y1 y2) 2)))
-      ))
+;; (define (punto-medio p q) ...)
 
 ;; Ejercicio 7.
 ;; Una función que reciba dos puntos p = (x1, y1) y q = (x2, y2); y calcule la
 ;; distancia entre p y q. Si alguno de los dos argumentos no es un punto, arroja
 ;; error.
 ;; distancia: Punto Punto -> number
-(define (distancia p q)
-  (if (or (not (Punto? p) ) (not (Punto? q) ))
-      (error "Necesitas meter dos puntos")
-      (let ([x1 (Punto-x p)]
-            [y1 (Punto-y p)]
-            [x2 (Punto-x q)]
-            [y2 (Punto-y q)])
-       (sqrt (+ (expt (- x2 x1) 2) (expt (- y2 y1) 2))))
-      ))
+;; (define (distancia p q)...)
 
 ;; Ejercicio 8.
 ;; Define un tipo de dato abstracto para crear figuras geométricas.
-(define-type Figura
-  [Circulo (centro : Punto?)
-           (radio : number?)]
-  [Triangulo (a : Punto?)
-             (b : Punto?)
-             (c : Punto?)]
-  [Cuadrado (Esi : Punto?)
-            (Ll : number?)]
-  [Rectangulo (EsI : Punto?)
-              (base : number?)
-              (altura : number?)])
+;;(define-type Figura
+;;  [Circulo ]
+;;  [Triangulo]
+;;  [Cuadrado]
+;;  [Rectangulo])
 
 ;; Ejercicio 9.
 ;; Una función que reciba una figura y calcule el perímetro de la misma.
 ;; perimetro: Figura -> number
-(define (perimetro fig)
-  (type-case Figura fig
-    [(Circulo? fig) (* (Circulo-radio) pi 2)]
-    [(Triangulo? fig) (+ (distancia a b) (distancia b c) (distancia a c))]
-    [(Cuadrado? fig) (* (Cuadrado-Ll) 4)]
-    [(Rectangulo? fig) (+ (* (Rectangulo-base) 2) (* (Rectangulo-altura) 2))]))
+;; (define (perimetro fig) ...)
 
 ;; Ejercicio 10.
 ;; Una función que reciba una figura y calcule el área de la misma.
 ;; area: Figura -> number
-(define (area fig)
-  (type-case Figura fig
-    [(Circulo? fig) (* pi (* (Circulo-radio) (Circulo-radio)))]
-    [(Triangulo? fig) (sqrt (* (/ (+ a b c) 2)
-                               (- (/ (+ a b c) 2) a)
-                               (- (/ (+ a b c) 2) b)
-                               (- (/ (+ a b c) 2) c)))]
-    [(Cuadrado? fig) (* (Cuadrado-Ll) (Cuadrado-Ll))]
-    [(Rectangulo? fig) (* (Rectangulo-base) (Rectangulo-altura))]))
+;; (define (area fig) ... )
 
 ;; ---------- Punto Extra ------------
 ;; Ejercicio 11
