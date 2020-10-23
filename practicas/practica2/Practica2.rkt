@@ -78,39 +78,36 @@
 ;; Ejercicio 8.
 ;; Define un tipo de dato abstracto para crear figuras geométricas.
 (define-type Figura
-  [Circulo (centro : Punto?)
-           (radio : number?)]
-  [Triangulo (a : Punto?)
-             (b : Punto?)
-             (c : Punto?)]
-  [Cuadrado (Esi : Punto?)
-            (Ll : number?)]
-  [Rectangulo (EsI : Punto?)
-              (base : number?)
-              (altura : number?)])
+  [Circulo (centro  Punto?) (radio  number?)]
+  [Triangulo (a  Punto?) (b  Punto?) (c  Punto?)]
+  [Cuadrado (EsI  Punto?) (Ll  number?)]
+  [Rectangulo (EsI  Punto?) (base  number?) (altura  number?)])
 
 ;; Ejercicio 9.
 ;; Una función que reciba una figura y calcule el perímetro de la misma.
 ;; perimetro: Figura -> number
 (define (perimetro fig)
   (type-case Figura fig
-    [(Circulo? fig) (* (Circulo-radio) pi 2)]
-    [(Triangulo? fig) (+ (distancia a b) (distancia b c) (distancia a c))]
-    [(Cuadrado? fig) (* (Cuadrado-Ll) 4)]
-    [(Rectangulo? fig) (+ (* (Rectangulo-base) 2) (* (Rectangulo-altura) 2))]))
+    [Circulo (centro radio) (* (radio) (pi) 2)]
+    [Triangulo (a b c) (+ (distancia a b) (distancia b c) (distancia a c))]
+    [Cuadrado (EsI Ll) (* (Ll) 4)]
+    [Rectangulo (EsI base altura) (+ (* (base) 2) (* (altura) 2))]))
 
 ;; Ejercicio 10.
 ;; Una función que reciba una figura y calcule el área de la misma.
 ;; area: Figura -> number
 (define (area fig)
   (type-case Figura fig
-    [(Circulo? fig) (* pi (* (Circulo-radio) (Circulo-radio)))]
-    [(Triangulo? fig) (sqrt (* (/ (+ a b c) 2)
-                               (- (/ (+ a b c) 2) a)
-                               (- (/ (+ a b c) 2) b)
-                               (- (/ (+ a b c) 2) c)))]
-    [(Cuadrado? fig) (* (Cuadrado-Ll) (Cuadrado-Ll))]
-    [(Rectangulo? fig) (* (Rectangulo-base) (Rectangulo-altura))]))
+    [Circulo (centro radio) (* pi (expt (radio) 2))]
+    [Triangulo (a b c) (let ([d (distancia a b)]
+                             [e (distancia b c)]
+                             [f (distancia a c)])
+                       (sqrt (* (/ (+ d e f) 2)
+                           (- (/ (+ d e f) 2) d)
+                           (- (/ (+ d e f) 2) e)
+                           (- (/ (+ d e f) 2) f))))]
+    [Cuadrado (EsI Ll) (* (Ll) (Ll))]
+    [Rectangulo (EsI base altura) (* (base) (altura))]))
 
 ;; ---------- Punto Extra ------------
 ;; Ejercicio 11
