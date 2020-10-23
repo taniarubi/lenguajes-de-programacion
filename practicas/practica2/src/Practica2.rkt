@@ -50,42 +50,59 @@
 ;; punto medio entre p y q. Si alguno de los dos argumentos no es un punto,
 ;; regresa un error.
 ;; punto-medio: Punto Punto -> number
-;; (define (punto-medio p q) ...)
+(define (punto-medio p q)
+  (if (or (not (Punto? p)) (not (Punto? q)))
+      (error "Necesitas meter dos puntos")
+      (let ([x1 (Punto-x p)]
+            [y1 (Punto-y p)]
+            [x2 (Punto-x q)]
+            [y2 (Punto-y q)])
+        (Punto (/ (+ x1 x2) 2) (/ (+ y1 y2) 2)))))
 
 ;; Ejercicio 7.
 ;; Una función que reciba dos puntos p = (x1, y1) y q = (x2, y2); y calcule la
 ;; distancia entre p y q. Si alguno de los dos argumentos no es un punto, arroja
 ;; error.
 ;; distancia: Punto Punto -> number
-;; (define (distancia p q)...)
+(define (distancia p q)
+  (if (or (not (Punto? p)) (not (Punto? q)))
+      (error "Necesitas meter dos puntos")
+      (let ([x1 (Punto-x p)]
+            [y1 (Punto-y p)]
+            [x2 (Punto-x q)]
+            [y2 (Punto-y q)])
+       (sqrt (+ (expt (- x2 x1) 2) (expt (- y2 y1) 2))))))
 
 ;; Ejercicio 8.
 ;; Define un tipo de dato abstracto para crear figuras geométricas.
-;;(define-type Figura
-;;  [Circulo ]
-;;  [Triangulo]
-;;  [Cuadrado]
-;;  [Rectangulo])
+(define-type Figura
+  [Circulo (centro Punto?) (radio number?)]
+  [Triangulo (a Punto?) (b  Punto?) (c  Punto?)]
+  [Cuadrado (EsI Punto?) (Ll  number?)]
+  [Rectangulo (EsI Punto?) (base number?) (altura number?)])
 
 ;; Ejercicio 9.
 ;; Una función que reciba una figura y calcule el perímetro de la misma.
 ;; perimetro: Figura -> number
-;; (define (perimetro fig) ...)
+(define (perimetro fig)
+  (type-case Figura fig
+    [Circulo (centro radio) (* pi 2 radio)]
+    [Triangulo (a b c) (+ (distancia a b) (distancia b c) (distancia a c))]
+    [Cuadrado (EsI Ll) (* (Ll) 4)]
+    [Rectangulo (EsI base altura) (+ (* (base) 2) (* (altura) 2))]))
 
 ;; Ejercicio 10.
 ;; Una función que reciba una figura y calcule el área de la misma.
 ;; area: Figura -> number
-;; (define (area fig) ... )
-
-;; ---------- Punto Extra ------------
-;; Ejercicio 11
-;; Una función que reciba una lista l como parámetro y devuelva el elemento con
-;; mayor número de repeticiones en la lista l. Si hay dos o más elementos
-;; repetidos el mismo número de veces, regresa el primero de éstos en aparecer
-;; de izquierda a derecha en la lista original. Si la lista es vacía, lanza un
-;; error.
-;; masRepetido (listof a) -> a
-
-;(masRepetido (list 1 2 3 3 6 6 7 7))
-;(masRepetido (list 1 2 3 4))
-;(masRepetido (list 1 2 3 4 5 6 3))
+(define (area fig)
+  (type-case Figura fig
+    [Circulo (centro radio) (* pi (expt radio 2))]
+    [Triangulo (a b c) (let ([d (distancia a b)]
+                             [e (distancia b c)]
+                             [f (distancia a c)])
+                       (sqrt (* (/ (+ d e f) 2)
+                           (- (/ (+ d e f) 2) d)
+                           (- (/ (+ d e f) 2) e)
+                           (- (/ (+ d e f) 2) f))))]
+    [Cuadrado (EsI Ll) (* (Ll) (Ll))]
+    [Rectangulo (EsI base altura) (* (base) (altura))]))
