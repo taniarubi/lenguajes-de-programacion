@@ -1,0 +1,286 @@
+
+\documentclass[letterpaper,11pt]{article}
+
+% Soporte para los acentos.
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}    
+% Idioma español.
+\usepackage[spanish,mexico, es-tabla]{babel}
+% Soporte de símbolos adicionales (matemáticas)
+\usepackage{multirow}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{latexsym}
+\usepackage{enumerate}
+\usepackage{ragged2e}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{drawstack}
+% Modificamos los márgenes del documento.
+\usepackage[lmargin=1cm,rmargin=1cm,top=1.5cm,bottom=1.5cm]{geometry}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\tikzstyle{freecell}=[fill=blue!10,draw=blue!30!black]
+\tikzstyle{occupiedcell}=[fill=blue!10!orange!10,draw=blue!30!black]
+\tikzstyle{padding}=[fill=yellow!20,draw=blue!30!black]
+\tikzstyle{highlight}=[draw=orange!50!black,text=orange!50!black]
+
+\title{Facultad de Ciencias, UNAM \\ 
+       Lenguajes de Programación \\ 
+       Examen Parcial I}
+\author{Rubí Rojas Tania Michelle }
+\date{30 de octubre de 2020}
+
+\begin{document}
+\maketitle
+
+\begin{enumerate}
+    % Ejercicio 1.
+    \item ¿Cuál es la complejidad del algoritmo de sustitución? Elabora tu 
+    respuesta usando algún ejemplo.
+
+    \textsc{Solución:} Sabemos que un programa tiene $n$ variables. El
+    algoritmo hace la sustitución de las variables una por una, y por cada
+    variable \textbf{de-ligado} hace el recorrido sobre las $m$ posibles
+    variables más que haya sobre el resto del programa. Notemos también que 
+    el algoritmo hace el recorrido por cada variable \textbf{de-ligado} (exista 
+    o no dentro del programa). Entonces, en el peor caso, si tenemos $n$ 
+    variables \textbf{de-ligado}, el algoritmo de sustitución se realizará en 
+    cada una de las $n$ variables del programa; por lo que la complejidad del 
+    algoritmo es de $O(n^2)$ (pues el recorrido que hace una variable 
+    \textbf{de-ligado} en el programa nos toma $O(n)$, pero esto se realiza $n$
+    veces).
+
+    Un ejemplo que muestra esto es:
+    \begin{verbatim}
+    {with {x_1 4} 
+     {with {x_2 4} 
+       {with {x_3 4} 
+         ...
+         {with {x_n 4} 
+           {+ x_1 {+ x_2 {+ x_3 ... {+ x_n-1 x_n}}}}}}}}
+    \end{verbatim}
+
+    donde tenemos $n$ variables \textbf{de-ligado} y $n$ variables 
+    \textbf{ligadas}. En este ejemplo, a cada variable \textbf{de-ligado} le 
+    corresponde una única variable \textbf{ligada}; pero el algoritmo no puede 
+    saber ésto, así que por cada variable \textbf{de-ligado} realizará el 
+    recorrido sobre las $n$ variables \textbf{ligadas} que contiene nuestro 
+    programa para intentar sustituir el valor. Por lo que la complejidad será 
+    de $O(n^2)$. 
+
+    % Ejercicio 2.
+    \item Da una expresión usando la gramática FWAE tal que una misma variable
+    (supongamos $x$) aparezca en la misma expresión como instancia de ligado una 
+    vez (con el mismo nombre de identificador), aparezca ligada al menos una 
+    vez y aparezca exactamente una única vez como identificador libre.
+
+    \textsc{Solución:} La expresión propuesta es
+    \begin{equation*}
+        \texttt{\textbf{\{with \{\textcolor{red}{x} \textcolor{blue}{x}\} 
+                               \{+ \textcolor{green}{x} 
+                                   \textcolor{green}{x}\}\}}}
+    \end{equation*}
+
+    Donde tenemos que la variable de color \textcolor{red}{rojo} es una variable 
+    \textbf{de-ligado}, la variable de color \textcolor{blue}{azul} es una
+    variable \textbf{libre} (pues tiene que salir a buscar su valor fuera de 
+    esta expresión, y fuera de ésta no está ligada a nadie) y las variables de 
+    color \textcolor{green}{verde} son  
+    variables \textbf{ligadas}. 
+
+    Otra expresión podría ser 
+    \begin{equation*}
+        \texttt{\textbf{\{+ \textcolor{blue}{x} 
+                            \{with \{\textcolor{red}{x} 2\} 
+                                   \{\textcolor{green}{x} 
+                                     \textcolor{green}{x}\}\}\}}}
+    \end{equation*}
+
+    donde la variable de color \textcolor{blue}{azul} es una variable 
+    \textbf{libre} (pues no está ligada a nadie), la variable de color 
+    \textcolor{red}{rojo} es una variable \textbf{de-ligado} y las 
+    variables de color \textcolor{green}{verde} son \textbf{ligadas}.
+
+    \newpage
+    % Ejercicio 3.
+    \item Convierte el siguiente código usando índices de Bruijn o direcciones
+    léxicas. 
+    \begin{verbatim}
+    {with {a -1} 
+      {with {b 1} 
+        {with {c 2} 
+          {with {d {+ 2 1}} 
+            {* d {/ c {+ {* b a} {+ a a}}}}}}}}
+    \end{verbatim}
+
+    \textsc{Solución:}
+    \begin{verbatim}
+    {with -1 
+      {with 1 
+        {with 2 
+          {with {+ 2 1} 
+            {* <:0> {/ <:1> {+ {* <:2> <:3>} {+ <:3> <:3>}}}}}}}}
+    \end{verbatim}
+
+    % Ejercicio 4.
+    \item Convierte el siguiente código con índices de Bruijn a código dentro 
+    de la gramática WAE. Las instancias de ligado se llaman $x, y, z, a, b$ con 
+    respecto al órden de aparición de las mismas. 
+    \begin{verbatim}
+    {with 1 
+      {with 2
+        {with 3
+          {with {* <:0 0> <:1 0>} 
+            {with 5
+              {+ <:0 0> {+ <:1 0> {+ <:2 0> {+ <:3 0> <:4 0>}}}}}}}}}
+    \end{verbatim}
+
+    \textsc{Solución:}
+    \begin{verbatim}
+    {with {x 1} 
+      {with {y 2} 
+        {with {z 3} 
+          {with {a {* z y}} 
+            {with {b 5} 
+              {+ b {+ a {+ z {+ y x}}}}}}}}}
+    \end{verbatim}
+
+    % Ejercicio 5.
+    \item ¿A qué se le conoce como azúcar sintáctica en un lenguaje de 
+    programación?
+
+    \textsc{Solución:} La azúcar sintáctica es una especie de \textit{sintáxis 
+    especial} que hace más fácil la escritura de algunas expresiones en un  
+    lenguaje de programación, haciéndo que éstas sean más \textit{dulces} para 
+    el usuario. Por ejemplo, \texttt{with} es azúcar sintáctica de una 
+    aplicación de función.
+
+    % Ejercicio 6.
+    \item Ponga el ambiente en forma de pila (stack) para la siguiente 
+    expresión, y evalúe la siguiente expresión usando 
+    \begin{enumerate}
+        \item Alcance estático
+        \item Alcance dinámico
+    \end{enumerate}
+
+    es necesario especificar cada una de las expresiones a evaluar con los 
+    respectivos valores. 
+    \begin{verbatim}
+    {with {a 1} 
+      {with {b 1} 
+        {with {a 0} 
+          {with {foo1 {fun {x} {* x {+ b a}}}} 
+             {with {b 0} 
+                {with {a 1} 
+                   {foo1 2}}}}}}}
+    \end{verbatim}
+
+    \textsc{Solución:}
+    \begin{enumerate}
+        \item Alcance estático
+
+        La expresión que debemos evaluar es \texttt{\{foo1 2\}}, por lo que 
+        \begin{verbatim}
+        {foo1 2} = {{fun {x} {* x {+ b a}}} 2}
+                 = {* x {+ b a}}
+                 = {* 2 {+ 1 0}}
+                 = {* 2 1}
+                 = 2
+        \end{verbatim}
+
+        Además, el ambiente en forma de pila correspondiente es:
+        \begin{center}
+            \begin{drawstack}[scale=1.6]
+                \cell{\texttt{a} \quad \quad $1$}
+                \cell{\texttt{b} \quad \quad $0$} 
+                \cell{\texttt{foo1 \quad \{fun \{x\} \{* x \{+ b a\}\}\}}}
+                \bcell{\texttt{x} \quad \quad $2$}
+                \cell{\texttt{a} \quad \quad $0$}
+                \cell{\texttt{b} \quad \quad $1$}
+                \cell{\texttt{a} \quad \quad $1$}
+            \end{drawstack}
+        \end{center}
+
+        \item Alcance dinámico
+
+        La expresión que debemos evaluar es \texttt{\{foo 2\}}, por lo que
+        \begin{verbatim}
+        {foo 2} = {{fun {x} {* x {+ b a}}} 2}
+                = {* x {+ b a}}
+                = {* 2 {+ 0 1}}
+                = {* 2 1}
+                = 2
+        \end{verbatim}
+
+        Además, el ambiente en forma de pila correspondiente es:
+        \begin{center}
+            \begin{drawstack}[scale=1.6]
+                \bcell{\texttt{x} \quad \quad $2$}
+                \cell{\texttt{a} \quad \quad $1$}
+                \cell{\texttt{b} \quad \quad $0$} 
+                \cell{\texttt{foo1 \quad \{fun \{x\} \{* x \{+ b a\}\}\}}}
+                \cell{\texttt{a} \quad \quad $0$}
+                \cell{\texttt{b} \quad \quad $1$}
+                \cell{\texttt{a} \quad \quad $1$}
+            \end{drawstack}
+        \end{center}
+    \end{enumerate}
+
+    \newpage
+    % Ejercicio 7.
+    \item Escribe la definición de la función recursiva \texttt{agregaN} en 
+    \textit{Racket}, que reciba tres parámetros: un elemento $e$, un número 
+    $n$ y una lista $l$. La función debe regresar la lista resultante de 
+    agregar a la lista $l$, el elemento $e$ en la posición $n$. No puedes 
+    utilizar ninguna función nativa del lenguaje, exceptuándo los operadores
+    aritméticos \texttt{car}, \texttt{cons}, \texttt{append} e \texttt{equal?}.
+    \begin{verbatim}
+    ;; agregaN: a exact list -> list 
+
+    (agregaN 2 7 (list 1 2 3 4 5 6 7 8))
+    > '(1 2 3 4 5 6 7 2 8)
+    \end{verbatim}
+
+    \textsc{Solución:}
+    \begin{lstlisting}[language=Lisp]
+        ;; agregaN: a exact list -> list
+        (define (agregaN e n l)
+          (cond
+            [(< n 0) error 'agregaN "El indice debe ser un entero positivo."]
+            [(= n 0) (cons e l)]
+            [else (cons (car l) (agregaN e (- n 1) (cdr l)))]))
+    \end{lstlisting}
+\end{enumerate}
+
+\end{document}
