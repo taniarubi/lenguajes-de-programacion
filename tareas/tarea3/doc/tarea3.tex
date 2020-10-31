@@ -18,8 +18,14 @@
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{xcolor}
+\usepackage{drawstack}
 % Modificamos los márgenes del documento.
 \usepackage[lmargin=1cm,rmargin=1cm,top=1.5cm,bottom=1.5cm]{geometry}
+
+\tikzstyle{freecell}=[fill=blue!10,draw=blue!30!black]
+\tikzstyle{occupiedcell}=[fill=blue!10!orange!10,draw=blue!30!black]
+\tikzstyle{padding}=[fill=yellow!20,draw=blue!30!black]
+\tikzstyle{highlight}=[draw=orange!50!black,text=orange!50!black]
 
 \title{Facultad de Ciencias, UNAM \\ 
        Lenguajes de Programación \\ 
@@ -32,56 +38,295 @@
 \maketitle
 
 \begin{enumerate}
-   % Ejercicio 1.
-   \item Evalúa las siguientes expresiones usando \texttt{a) alcance estático}
-   y \texttt{b) alcance dinámico}. Es necesario que muestres el ambiente de 
-   evaluación final en forma de pila y en forma de lista en cada caso.
-   \begin{enumerate}
-       % Ejercicio 1.a
-       \item 
-       \begin{verbatim}
-       {with {a 2} 
-          {with {b 3} 
-             {with {foo {fun {x} {- {+ a b} x}}} 
-                {with {a -2} 
-                   {with {b -3} 
-                      {with {foo {fun {x} {+ {- a b} x}}} 
-                         {foo -10}}}}}}}
-       \end{verbatim}
+    % Ejercicio 1.
+    \item Evalúa las siguientes expresiones usando \texttt{a) alcance estático}
+    y \texttt{b) alcance dinámico}. Es necesario que muestres el ambiente de 
+    evaluación final en forma de pila y en forma de lista en cada caso.
+    \begin{enumerate}
+        % Ejercicio 1.a
+        \item 
+        \begin{verbatim}
+        {with {a 2} 
+           {with {b 3} 
+              {with {foo {fun {x} {- {+ a b} x}}} 
+                 {with {a -2} 
+                    {with {b -3} 
+                       {with {foo {fun {x} {+ {- a b} x}}} 
+                          {foo -10}}}}}}}
+        \end{verbatim}
+        
+        \textsc{Solución:}
+        \begin{itemize}
+            \item Alcance estático
 
-       \textsc{Solución:}
+            Como la expresión que tenemos que evaluar es \texttt{\{foo 10\}}, 
+            entonces 
+            \begin{verbatim}
+            {foo -10} = {{fun {x} {+ {- a b} x}} -10}
+                      = {+ {- a b} -10}
+                      = {+ {- (-2) (-3)} -10}
+                      = {+ 1 -10}
+                      = -9
+            \end{verbatim}
 
-       % Ejercicio 1.b
-       \item 
-       \begin{verbatim}
-       {with {foo {fun {x} {+ x {foo {- x 1}}}}} 
-          {foo 10}}
-       \end{verbatim}
+            Así, la representación del ambiente final se vería como:
+            \begin{itemize}
+                \item En forma de lista
+                \begin{center}
+                    \texttt{((foo \{fun \{x\} \{+ \{- a b\} x\}\}) (x -10) (b -3)
+                            (a -2) (foo \{fun \{x\} \{- \{+ a b\} x\}\}) (b 3) 
+                            (a 2))}
+                \end{center}
 
-       \textsc{Solución:}
+                \newpage
+                \item En forma de pila 
+            \end{itemize}
 
-       % Ejercicio 1.c
-       \item 
-       \begin{verbatim}
-       {with {x 2} 
-          {with {foo {fun {a} {+ x 2}}} 
-             {with {y 3} 
-                {with {foo {fun {b} {- y b}}} 
-                   {with {x 4} 
-                      {with {goo {fun {b} {+ {foo x} {foo y}}}} {goo 3}}}}}}}
-       \end{verbatim}
 
-       \textsc{Solución:}
-   \end{enumerate}
+            \begin{center}
+            \begin{drawstack}[scale=1.45]
+                \cell{\texttt{foo} \quad \texttt{\{fun \{x\} \{+ \{- a b\} x\}\}}} 
+                \bcell{\texttt{x} \quad \quad $-10$}
+                \cell{\texttt{b} \quad \quad $-3$}
+                \cell{\texttt{a} \quad \quad $-2$}
+                \cell{\texttt{foo} \quad \texttt{\{fun \{x\} \{- \{+ a b\} x\}\}}}
+                \cell{\texttt{b} \quad \quad $3$}
+                \cell{\texttt{a} \quad \quad $2$}
+            \end{drawstack}
+            \end{center}
+        
+            \item Alcance dinámico
 
-   % Ejercicio 2.
-   \item Las primeras versiones del lenguaje \textsc{Lisp} hacían uso de 
-   alcance dinámico y sus diseñadores se negaban a cambiárlo debido a una 
-   gran ventaja que traía consigo el uso de este tipo de alcance. Con base 
-   en los resultados obtenidos en el inciso \texttt{(b)} del ejercicio 
-   anterior, menciona esta ventaja.
+            Como la expresión que tenemos que evaluar es \texttt{\{foo -10\}}, 
+            entonces 
+            \begin{verbatim}
+            {foo -10} = {{fun {x} {+ {- a b} x}} -10}
+                      = {+ {- a b} -10}
+                      = {+ {- (-2) (-3)} -10}
+                      = {+ 1 -10}
+                      = -9
+            \end{verbatim}
 
-   \textsc{Solución:}
+            Así, la representación del ambiente final se vería como:
+            \begin{itemize}
+                \item En forma de lista
+                \begin{center}
+                    \texttt{((x -10) (foo \{fun \{x\} \{+ \{- a b\} x\}\}) 
+                            (b -3) (a -2) (foo \{fun \{x\} \{- \{+ a b\} x\}\}) 
+                            (b 3) (a 2))}
+                \end{center}
+
+                \newpage
+                \item En forma de pila 
+                \begin{center}
+                \begin{drawstack}[scale=1.45]
+                    \bcell{\texttt{x} \quad \quad $-10$}
+                    \cell{\texttt{foo} \quad 
+                          \texttt{\{fun \{x\} \{+ \{- a b\} x\}\}}} 
+                    \cell{\texttt{b} \quad \quad $-3$}
+                    \cell{\texttt{a} \quad \quad $-2$}
+                    \cell{\texttt{foo} \quad 
+                          \texttt{\{fun \{x\} \{- \{+ a b\} x\}\}}}
+                    \cell{\texttt{b} \quad \quad $3$}
+                    \cell{\texttt{a} \quad \quad $2$}
+                \end{drawstack}
+                \end{center}
+            \end{itemize}
+        \end{itemize}
+        
+        % Ejercicio 1.b
+        \item 
+        \begin{verbatim}
+        {with {foo {fun {x} {+ x {foo {- x 1}}}}} 
+            {foo 10}}
+        \end{verbatim}
+        
+        \textsc{Solución:}
+        \begin{itemize}
+            \item Alcance estático 
+            
+            Como la expresión que tenemos que evaluar es \texttt{\{foo 10\}}, 
+            entonces
+            \begin{verbatim}
+                {foo 10} = {{fun {x} {+ x {foo {- x 1}}}} 10}
+                         = {+ 10 {foo {- x 1}}}
+                         = error 
+            \end{verbatim}
+
+            Por ser alcance estático, podemos encontrar el valor de $x$ en la 
+            pila, pero no podemos volver a encontrar el valor de \texttt{foo}
+            (ya que empezamos a buscar hacia abajo desde \texttt{foo}), así que 
+            tenemos un error de variable libre.
+
+            Así, la representación del ambiente final se vería como:
+            \begin{itemize}
+                \item En forma de lista
+                \begin{center}
+                    \texttt{((foo \{fun \{x\} \{+ x \{foo \{- x 1\}\}\}\}) (x 10))}
+                \end{center}
+
+                \newpage
+                \item En forma de pila 
+                \begin{center}
+                \begin{drawstack}[scale=1.78]
+                    \cell{\texttt{foo} \quad 
+                          \texttt{\{fun \{x\} \{+ x \{foo \{- x 1\}\}\}\}}}
+                    \bcell{\texttt{x} \quad \quad 10}
+                \end{drawstack}
+                \end{center}
+            \end{itemize}
+
+            \item Alcance dinámico
+            
+            Como la expresión que tenemos que evaluar es \texttt{\{foo 10\}}, 
+            entonces
+            \begin{verbatim}
+            {foo 10} = {{fun {x} {+ x {foo {- x 1}}}} 10}
+                     = {+ 10 {foo {- x 1}}}
+                     = {+ 10 {{fun {x} {+ x {foo {- x 1}}}} {- x 1}}}
+                     = {+ 10 {{fun {x} {+ x {foo {- x 1}}}} {- 10 1}}}
+                     = {+ 10 {{fun {x} {+ x {foo {- x 1}}}} 9}}
+                     = {+ 10 {+ 9 {foo {- x 1}}}}
+                     = ...
+            \end{verbatim}
+
+            Notemos que, usando alcance dinámico, esta expresión se cicla.
+            Puesto que buscamos desde el tope de la pila, vamos a ir encontrándo
+            los valores de $x$ y nunca terminamos de llamar a la función 
+            \texttt{foo} (ésta siempre se llama a sí misma). Por lo tanto, esta 
+            expresión nunca termina.
+            
+            Así, la representación del ambiente final se vería como:
+            \begin{itemize}
+                \item En forma de lista
+                \begin{center}
+                    \texttt{($\cdots$ (x 9) (x 10) 
+                            (foo \{fun \{x\} \{+ x \{foo \{- x 1\}\}\}\}))}
+                \end{center}
+
+                \newpage
+                \item En forma de pila 
+                \begin{center}
+                \begin{drawstack}[scale=1.78]
+                    \bcell{$\vdots$}
+                    \bcell{\texttt{x} \quad \quad $9$}
+                    \bcell{\texttt{x} \quad \quad $10$}
+                    \cell{\texttt{foo} \quad 
+                          \texttt{\{fun \{x\} \{+ x \{foo \{- x 1\}\}\}\}}}
+                \end{drawstack}
+                \end{center}
+            \end{itemize}
+        \end{itemize}
+        
+        % Ejercicio 1.c
+        \item 
+        \begin{verbatim}
+        {with {x 2} 
+           {with {foo {fun {a} {+ x 2}}} 
+              {with {y 3} 
+                 {with {foo {fun {b} {- y b}}} 
+                    {with {x 4} 
+                       {with {goo {fun {b} {+ {foo x} {foo y}}}} 
+                          {goo 3}}}}}}}
+        \end{verbatim}
+        
+        \textsc{Solución:}
+        \begin{itemize}
+            \item Alcance estático
+            
+            Como la expresión que tenemos que evaluar es \texttt{\{goo 3\}}, 
+            entonces 
+            \begin{verbatim}
+                {goo 3} = {{fun {b} {+ {foo x} {foo y}}} 3}
+                        = {+ {foo x} {foo y}}
+                        = {+ {foo x} {foo y}}
+                        = {+ {{fun {b} {- y b}} x} {{fun {b} {- y b}} y}}
+                        = {+ {{fun {b} {- y b}} 4} {{fun {b} {- y b}} 3}}
+                        = {+ {- y b} {- y b}}
+                        = {+ {- 3 4} {- 3 3}}
+                        = {+ (-1) 0}
+                        = -1
+            \end{verbatim}
+
+            Así, la representación del ambiente final se vería como:
+            \begin{itemize}
+                \item En forma de lista
+                \begin{center}
+                    \texttt{((goo \{fun \{b\} \{+ \{foo x\} \{foo y\}\}\}) (b 3) 
+                            (x 4) (foo \{fun \{b\} \{- y b\}\}) (b 3) (b 4) (y 3) 
+                            (foo \{fun \{a\} \{+ x 2\}\}) (x 2))}
+                \end{center}
+
+                \newpage
+                \item En forma de pila
+                \begin{center}
+                \begin{drawstack}[scale=1.78]
+                    \cell{\texttt{goo} \quad
+                          \texttt{\{fun \{b\} \{+ \{foo x\} \{foo y\}\}\}}}
+                    \bcell{\texttt{b} \quad \quad $3$}
+                    \cell{\texttt{x} \quad \quad $4$}
+                    \cell{\texttt{foo} \quad \texttt{\{fun \{b\} \{- y b\}\}}}
+                    \bcell{\texttt{b} \quad \quad $3$}
+                    \bcell{\texttt{b} \quad \quad $4$}
+                    \cell {\texttt{y} \quad \quad $3$}
+                    \cell{\texttt{foo} \quad \texttt{\{fun \{a\} \{+ x 2\}\}}}
+                    \cell{\texttt{x} \quad \quad $2$}
+                \end{drawstack}
+                \end{center}
+            \end{itemize}
+
+            \item Alcance dinámico
+
+            Como la expresión que tenemos que evaluar es \texttt{\{goo 3\}},
+            entonces 
+            \begin{verbatim}
+                {goo 3} = {{fun {b} {+ {foo x} {foo y}}} 3}
+                        = {+ {foo x} {foo y}}
+                        = {+ {{fun {b} {- y b}} x} {{fun {b} {- y b}} y}}
+                        = {+ {{fun {b} {- y b}} 4} {{fun {b} {- y b}} 3}}
+                        = {+ {- y b} {- y b}}
+                        = {+ {- 3 4} {- 3 3}}
+                        = {+ (-1) 0} = -1
+            \end{verbatim}
+
+            Así, la representación del ambiente final se vería como:
+            \begin{itemize}
+                \item En forma de lista
+                \begin{center}
+                    \texttt{((b 3) (b 4) (b 3) (goo \{fun \{b\ \{+ \{foo x\} \{foo y\}\}\}\}) (x 4) (foo \{fun \{b\} \{- y b\}\}) (y 3) (foo \{fun \{a\} \{+ x 2\}\}) (x 2))}    
+                \end{center}
+
+                \item En forma de pila
+                \begin{center}
+                \begin{drawstack}[scale=1.78]
+                    \bcell{\texttt{b} \quad \quad $3$}
+                    \bcell{\texttt{b} \quad \quad $4$}
+                    \bcell{\texttt{b} \quad \quad $3$}
+                    \cell{\texttt{goo} \quad
+                          \texttt{\{fun \{b\} \{+ \{foo x\} \{foo y\}\}\}}}
+                    \cell{\texttt{x} \quad \quad $4$}
+                    \cell{\texttt{foo} \quad \texttt{\{fun \{b\} \{- y b\}\}}}
+                    \cell {\texttt{y} \quad \quad $3$}
+                    \cell{\texttt{foo} \quad \texttt{\{fun \{a\} \{+ x 2\}\}}}
+                    \cell{\texttt{x} \quad \quad $2$}
+                \end{drawstack}
+                \end{center}
+            \end{itemize}
+        \end{itemize}
+    \end{enumerate}
+    
+    \newpage
+    % Ejercicio 2.
+    \item Las primeras versiones del lenguaje \textsc{Lisp} hacían uso de 
+    alcance dinámico y sus diseñadores se negaban a cambiárlo debido a una 
+    gran ventaja que traía consigo el uso de este tipo de alcance. Con base 
+    en los resultados obtenidos en el inciso \texttt{(b)} del ejercicio 
+    anterior, menciona esta ventaja.
+
+    \textsc{Solución:}
+
+
+    %%%%%%%%%%% Checar identación.
 
    % Ejercicio 3.
    \item En clase se revisó que la función de \textit{sustitución} es 
