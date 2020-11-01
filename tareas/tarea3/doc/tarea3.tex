@@ -323,20 +323,37 @@
     en los resultados obtenidos en el inciso \texttt{(b)} del ejercicio 
     anterior, menciona esta ventaja.
 
-    \textsc{Solución:}
+    \textsc{Solución:} En el ejercicio \texttt{1.b} podemos notar que una 
+    ventaja del alcance dinámico es que nos permite hacer o \textit{simular}
+    ciclos (\texttt{while, for}). En este caso, no tenemos un caso base para 
+    poder evitar que se cicle, pero LISP sí tiene la posibilidad de poner 
+    condicionales (y por ende, casos base); así que esa ventaja está bonita 
+    porque en lenguajes donde no hay ciclos y sólo hay recursión, el alcance 
+    dinámico puede hacer más fácil el uso o \textit{simulación} de los
+    ciclos (ya que a veces pasar de usar un montón de ciclos a sólo tener 
+    recursión es un poco confuso y difícil).
 
+    Pero, también podemos mencionar un par de ventajas más sobre el alcance 
+    dinámico:
+    \begin{itemize}
+        \item Es más sencillo implementar un lenguaje de programación con este 
+        alcance, que con alcance estático.
 
-    %%%%%%%%%%% Checar identación.
-
-   % Ejercicio 3.
-   \item En clase se revisó que la función de \textit{sustitución} es 
-   ineficiente, ya que en el peor caso es de orden cuadrático en relación 
-   al tamaño del programa (considerando el tamaño del programa como el 
-   número de nodos en el árbol de sintaxis abstracta). Por otro lado, se 
-   expuso una alternativa a este algoritmo de sustitución usando 
-   ambientes. Sin embargo, el implementar un ambiente usando una pila no 
-   parece ser mucho más eficiente.
-   \begin{enumerate}
+        \item En algunos casos, los parámetros que se pasan de un subprograma a
+        otro son variables que se definen en el \textit{llamador}. No es 
+        necesario pasar ninguno de ellos en un lenguaje de alcance dinámico, 
+        porque son implícitamente visibles en el subprograma \textit{llamado}.
+    \end{itemize}
+    
+    % Ejercicio 3.
+    \item En clase se revisó que la función de \textit{sustitución} es 
+    ineficiente, ya que en el peor caso es de orden cuadrático en relación 
+    al tamaño del programa (considerando el tamaño del programa como el 
+    número de nodos en el árbol de sintaxis abstracta). Por otro lado, se 
+    expuso una alternativa a este algoritmo de sustitución usando 
+    ambientes. Sin embargo, el implementar un ambiente usando una pila no 
+    parece ser mucho más eficiente.
+    \begin{enumerate}
         % Ejercicio 3.a
         \item Da un programa que ilustre la no linealidad de la implementación
         basada en pilas y explica brevemente por qué su ejecución en tiempo no
@@ -350,23 +367,16 @@
               {with {a_2 x} 
               ...
                  {with {a_{n-1} x}} 
-                    {+ x {+ a_1 {+ a_2 + {+ ... {+ a_{n-1} x} ... }}}}}}}
+                    {+ x {+ a_1 {+ a_2 + {+ ... {+ a_{n-2} a_{n-1}} ... }}}}}}}
         \end{verbatim}
 
-        Notemos que a cada una de las variables de ligado le corresponde una 
-        variable ligada. Entonces, la primer variable que nos encontramos es
-        $x$, así que buscamos esta variable en nuestro ambiente (que está al 
-        fondo de la pila). La siguiente variable que nos encontramos es 
-        \texttt{$a_1$}, pero el valor que le corresponde es aquel que posee 
-        $x$, por lo que tenemos que volver a buscar dentro del ambiente 
-        para poder asignarle un valor a nuestra variable \texttt{$a_1$}. 
-        De manera análoga, las demás variables $a_i$ tendrán que realizar el 
-        mismo procedimiento para poder asignarle el valor a su variable. 
-        Por lo que, cada una de las $n$ variables tiene que buscar el valor 
-        de $x$ en el ambiente. Esto nos toma tiempo $O(n^2)$ ya que buscar 
-        un elemento en la pila, en el peor caso, es lineal; pero estamos 
-        aplicándo esto a cada una de las $n$ variables que tiene nuestro 
-        programa, lo que justifica nuestra complejidad cuadrática. 
+        Notemos que esta expresión tiene $n$ variables \textbf{de-ligado}. Usando 
+        un ambiente, por cada \texttt{with} guardamos el valor de $x$ y $a_i$ 
+        con $i \in \{1, 2, \ldots, n-1\}$ en la pila; pero el valor de $a_i$ es 
+        justamente el valor que tiene $x$ (y éste ya fue agregado a la pila 
+        del ambiente), por lo que la complejidad será de $O(n^2)$ (sobre el 
+        número de variables en el ambiente) ya que se estará revisando cada 
+        uno de los nodos del árbol de sintáxis abstracta $n$ veces.
 
         % Ejercicio 3.b
         \item Describe una estructura de datos para un ambiente que un 
@@ -399,17 +409,28 @@
         Así, cada vez que mandemos a llamar una función, nos tomará tiempo 
         constante (salvo casos particularmente malos) tomar el valor del último 
         ambiente y ponerlo en nuestra función. En el peor caso, la función que 
-        mandamos a llamar carga con todas las variables que tenemos hasta el 
+        mandamos a llamar tiene todas las variables que tenemos hasta el 
         momento, lo que hará que nos tome tiempo lineal (con respecto al número 
         de elementos en la \textit{tabla hash}).
-
-   \end{enumerate}
+    \end{enumerate}
 \end{enumerate}
 
-\begin{thebibliography}{2}
+\begin{thebibliography}{4}
   \bibitem{1}
   Hash tables \\
   \url{https://en.wikipedia.org/wiki/Hash_table}
+
+  \bibitem{2}
+  What are the advantages of dynamic scoping \\
+  \url{https://stackoverflow.com/questions/321000/what-are-the-advantages-of-dynamic-scoping}
+
+  \bibitem{3}
+  What are advantages and disadvantages of dynamic scoping \\
+  \url{http://ngocchan-nguyen.blogspot.com/2011/03/what-are-advantages-and-disadvantages.html}
+
+  \bibitem{4}
+  What are the advantages of dynamic scoping \\
+  \url{https://www.quora.com/What-are-the-advantages-of-dynamic-scoping}
 \end{thebibliography}
 
 \end{document}
