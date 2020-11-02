@@ -1,0 +1,24 @@
+#lang plai
+(require (file "./grammars.rkt"))
+
+;; Toma una lista de números, symbolos o listas
+;; y la traduce a un árbol de sintaxis abstracta WAE
+;; A::=<number>
+;;    | <symbol>
+;;    | listof(A)
+;; parse: A -> WAE
+;; parse: s-expression -> WAE
+(define (parse sexp)
+  (cond
+    [(symbol? sexp) (id sexp)]
+    [(number? sexp) (num sexp)]
+    [(list? sexp)
+       (case (first sexp)
+         [(+) (add (car sexp) (parse (cdr sexp)))]
+         [(-) (sub (car sexp) (parse (cdr sexp)))]
+         [(*)]
+         [(/)]
+         [(modulo)]
+         [(expt)]
+         [(add1)]
+         [(sub1)])]))
