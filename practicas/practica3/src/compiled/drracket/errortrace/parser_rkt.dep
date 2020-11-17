@@ -1,1 +1,0 @@
-("7.8" racket ("da1306180611057981da5106a376746a8bf28d7d" . "fd8b102548086aeb7a92eb5b91775303bb63b95f") #"/home/taniarubi/Documents/fciencias/lenguajes-de-programacion/practicas/practica3/src/./grammars.rkt" (collects #"errortrace" #"errortrace-key.rkt") (collects #"plai" #"lang" #"reader.rkt") (collects #"plai" #"main.rkt") (collects #"racket" #"runtime-config.rkt"))
