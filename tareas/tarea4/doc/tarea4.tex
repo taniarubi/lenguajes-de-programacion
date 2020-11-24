@@ -169,8 +169,8 @@
                                  (\textcolor{red}{x [x := \lambda x.x]})) 
                                  \; z \\
             &\rightarrow_{\beta}
-            \textcolor{blue}{(\lambda x.x} \; (\lambda x.x)) \; z \\ 
-            &\rightarrow_{\beta} (\textcolor{red}{x [x := \lambda x.x]}) \; z \\ 
+            (\textcolor{blue}{\lambda x.x} \; (\lambda x.x)) \; z \\ 
+            &\rightarrow_{\beta} (\textcolor{red}{x [x := (\lambda x.x)]}) \; z \\ 
             &\rightarrow_{\beta} (\textcolor{blue}{\lambda x.x}) \; z \\
             &\rightarrow_{\beta} \textcolor{red}{x [x := z]} \\
             &\rightarrow_{\beta} z
@@ -197,12 +197,12 @@
             &\rightarrow_{\beta}
             (\lambda v. \; \textcolor{red}{(\lambda w.w \; (\lambda x.xu))
             [u := v]}) \; y \; (\lambda z. \lambda y.zy) \\
-            &\rightarrow_{\beta}
+            &\rightarrow_{\beta} 
             (\lambda v. \; \textcolor{red}{(\lambda w.w [u := v] \; 
             (\lambda x.xu) [u := v])}) \; y \; (\lambda z. \lambda y.zy) \\
-            &\rightarrow_{\beta}
+            &\rightarrow_{\beta} 
             (\lambda v. \; (\lambda w. \textcolor{red}{w [u := v]} \;
-            (\lambda x. \textcolor{red}{xu) [u := v]})) \; y \; 
+            (\lambda x. \textcolor{red}{xu [u := v]}))) \; y \; 
             (\lambda z. \lambda y.zy) \\
             &\rightarrow_{\beta}
             (\lambda v. \; (\lambda w.w \; (\lambda x. 
@@ -228,28 +228,36 @@
             \textcolor{blue}{(\lambda w.w} \; (\lambda x.xy))
             \; (\lambda z. \lambda y.zy) \\
             &\rightarrow_{\beta}  
-            (\textcolor{red}{w [w := \lambda x.xy]}) \; 
+            (\textcolor{red}{w [w := (\lambda x.xy)]}) \; 
             (\lambda z. \lambda y.zy)\\
             &\rightarrow_{\beta}  
             \textcolor{blue}{(\lambda x.xy)} \; 
             (\lambda z. \lambda y.zy) \\
             &\rightarrow_{\beta}  
-            \textcolor{red}{xy [x := \lambda z. \lambda y.zy]} \\
+            \textcolor{red}{xy [x := (\lambda z. \lambda y.zy)]} \\
             &\rightarrow_{\beta}
-            \textcolor{red}{x [x := \lambda z. \lambda y.zy] \; 
-                            y [x := \lambda z. \lambda y.zy]} \\
+            \textcolor{red}{x [x := (\lambda z. \lambda y.zy)] \; 
+                            y [x := (\lambda z. \lambda y.zy)]} \\
+        \end{align*}
+        \begin{align*}
+            \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; 
             &\rightarrow_{\beta}
             \textcolor{blue}{(\lambda z. \lambda y.zy)} y \\ 
             &\rightarrow_{\beta}
-            \textcolor{red}{(\lambda y.zy [z := y])} \\
+            \textcolor{red}{\lambda y.zy [z := y]} \\
             &\rightarrow_{\beta}
-            (\lambda y. \textcolor{red}{zy [z := y]}) \\
+            \lambda y. \textcolor{red}{zy [z := y]} \\
             &\rightarrow_{\beta}
-            (\lambda y. \textcolor{red}{z [z := y] \; 
-                                        y [z := y]}) \\
-            &\rightarrow_{\beta}
-            (\lambda y.yy)
+            \lambda y. \textcolor{red}{z [z := y] \; 
+                                        y [z := y]} \\
+            &\rightarrow_{\beta} \lambda y.yy
         \end{align*}
+
+        donde las expresiones en color \textcolor{blue}{azul} son el 
+        \textit{redex} y las expresiones en color \textcolor{red}{rojo} son el 
+        \textit{reducto}. Ahora bien, como la expresión $\lambda y.yy$ ya no 
+        puede reducirse más mediante $\beta-$ reducciones, entonces ya se 
+        encuentra en Forma Normal.
 
         % Ejercicio 3.d
         \item $S \; (KI) \; (KI)$
@@ -274,34 +282,35 @@
                      (yz) \; (\lambda y. \lambda x.x)) \; 
                      (\lambda y. \lambda x.x) \\
             &\rightarrow_{\beta}
-            (\textcolor{red}{\lambda y. \lambda z.xz [x := yz]} \; 
+            (\textcolor{red}{\lambda y. \lambda z.xz [x := (yz)]} \; 
             (\lambda y. \lambda x.x)) \; (\lambda y. \lambda x.x) \\
             &\rightarrow_{\beta}
-            (\lambda y. \textcolor{red}{\lambda z.xz [x := yz]} \; 
+            (\lambda y. \textcolor{red}{\lambda z.xz [x := (yz)]} \; 
             (\lambda y. \lambda x.x) \; (\lambda y. \lambda x.x) \\ 
             &\rightarrow_{\beta}
-            (\lambda y. \lambda z. \textcolor{red}{xz [x := yz]} \; 
+            (\lambda y. \lambda z. \textcolor{red}{xz [x := (yz)]} \; 
             (\lambda y. \lambda x.x)) \; (\lambda y. \lambda x.x) \\
             &\rightarrow_{\beta}
-            (\lambda y. \lambda z. \textcolor{red}{x [x := yz] \; z [x := yz]} 
+            (\lambda y. \lambda z. \textcolor{red}{x [x := (yz)] \; 
+            z [x := (yz)]} 
             \; (\lambda y. \lambda x.x)) \; (\lambda y. \lambda x.x) \\
             &\rightarrow_{\beta}
             (\textcolor{blue}{\lambda y. \lambda z.(yz)z} \; 
             (\lambda y. \lambda x.x)) \; (\lambda y. \lambda x.x) \\
             &\rightarrow_{\beta}
-            (\textcolor{red}{\lambda z.(yz)z [y := \lambda y. \lambda x.x]}) 
-            \; (\lambda y. \lambda x.x) \\
+            (\textcolor{red}{\lambda z.(yz)z 
+            [y := (\lambda y. \lambda x.x)]}) \; (\lambda y. \lambda x.x) \\
             &\rightarrow_{\beta}
-            (\lambda z. \textcolor{red}{(yz)z [y := \lambda y. \lambda x.x]}) 
+            (\lambda z. \textcolor{red}{(yz)z [y := (\lambda y. \lambda x.x)]}) 
             \; (\lambda y. \lambda x.x) \\
             &\rightarrow_{\beta}
             (\lambda z. \textcolor{red}{(yz) [y := (\lambda y. \lambda x.x)] \; 
-                                         z[y := \lambda y. \lambda x.x]}) 
+                                         z[y := (\lambda y. \lambda x.x)]}) 
             \; (\lambda y. \lambda x.x) \\
             &\rightarrow_{\beta} 
-            (\lambda z. \textcolor{red}{(y [y := \lambda y. \lambda x.x] \; 
-                                          z [y := \lambda y. \lambda x.x]) \; 
-                                          z}) \; 
+            (\lambda z. \textcolor{red}{(y [y := (\lambda y. \lambda x.x)] \; 
+                                          z [y := (\lambda y. \lambda x.x)])} 
+            \; z) \; 
             (\lambda y. \lambda x.x) \\ 
             &\rightarrow_{\beta}
             (\lambda z. (\textcolor{blue}{(\lambda y. \lambda x.x)} z)z) \; 
@@ -325,8 +334,8 @@
             (\textcolor{blue}{\lambda x. x}) \; 
             (\lambda y. \lambda x.x) \\
             &\rightarrow_{\beta}
-            \textcolor{red}{x [x := \lambda y. \lambda x.x]} \\
-            &\rightarrow_{\beta} \lambda y. \lambda x.x
+            \textcolor{red}{x [x := (\lambda y. \lambda x.x)]} \\
+            &\rightarrow_{\beta} (\lambda y. \lambda x.x)
         \end{align*}
 
         donde las expresiones en color \textcolor{blue}{azul} son el 
@@ -336,6 +345,7 @@
         encuentra en Forma Normal.
     \end{enumerate}
 
+    \newpage
     % Ejercicio 4.
     \item De acuerdo a la representación de números (Numerales de Church) y 
     representación de booleanos en el Cálculo $\lambda$:
