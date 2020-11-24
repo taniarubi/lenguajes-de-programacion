@@ -1,0 +1,359 @@
+\documentclass[letterpaper,11pt]{article}
+
+% Soporte para los acentos.
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}    
+% Idioma español.
+\usepackage[spanish,mexico, es-tabla]{babel}
+% Soporte de símbolos adicionales (matemáticas)
+\usepackage{multirow}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{latexsym}
+\usepackage{enumerate}
+\usepackage{ragged2e}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{drawstack}
+% Modificamos los márgenes del documento.
+\usepackage[lmargin=1cm,rmargin=1cm,top=1.5cm,bottom=1.5cm]{geometry}
+
+\tikzstyle{freecell}=[fill=blue!10,draw=blue!30!black]
+\tikzstyle{occupiedcell}=[fill=blue!10!orange!10,draw=blue!30!black]
+\tikzstyle{padding}=[fill=yellow!20,draw=blue!30!black]
+\tikzstyle{highlight}=[draw=orange!50!black,text=orange!50!black]
+
+\title{Facultad de Ciencias, UNAM \\ 
+       Lenguajes de Programación \\ 
+       Tarea 4}
+\author{Hernández Salinas Óscar \\ 
+        Rubí Rojas Tania Michelle }
+\date{23 de noviembre de 2020}
+
+\begin{document}
+\maketitle
+
+\begin{enumerate}
+    % Ejercicio 1.
+    \item Currifica cada uno de los siguientes términos:
+    \begin{enumerate}
+        % Ejercicio 1.a
+        \item $\lambda abc.abc$
+
+        \textsc{Solución:}
+        \begin{equation*}
+            \lambda abc.abc \rightarrow 
+            \lambda a. \lambda b. \lambda c.abc
+        \end{equation*}
+
+        % Ejercicio 1.b
+        \item $\lambda abc. \lambda cde.acbdce$
+        
+        \textsc{Solución:}
+        \begin{equation*}
+            \lambda abc. \lambda cde.acbdce \rightarrow
+            \lambda a. \lambda b. \lambda c. \lambda c. \lambda d. 
+            \lambda e.acbdce
+        \end{equation*}
+
+        % Ejercicio 1.c
+        \item $(\lambda x.(\lambda xy.y) (\lambda zw.w)) (\lambda uv.v)$
+
+        \textsc{Solución:}
+        \begin{equation*}
+            (\lambda x.(\lambda xy.y) (\lambda zw.w)) (\lambda uv.v) \rightarrow
+            (\lambda x. (\lambda x. \lambda y. y) (\lambda z. \lambda w.w))
+            (\lambda u. \lambda v.v)
+        \end{equation*}
+    \end{enumerate}
+
+    % Ejercicio 2.
+    \item Para cada uno de los siguientes términos, aplica $\alpha-$conversiones
+    para obtener términos donde todas las variables de ligado sean distintas.
+    \begin{enumerate}
+        % Ejercicio 2.a
+        \item $\lambda x. \lambda y. \; (\lambda x.y \; \lambda y.x)$
+
+        \textsc{Solución:}
+        \begin{align*}
+            \lambda x. \lambda y. \; (\lambda x.y \; \lambda y.x)
+            &\equiv_{\alpha}
+            \lambda a. \lambda y. \;(\lambda x.y \; \lambda y.x) [x := a] \\
+            &\equiv_{\alpha} 
+            \lambda a. \lambda y \; (\lambda x.y \; \lambda y.a) \\
+            &\equiv_{\alpha}
+            \lambda a. \lambda b. \; (\lambda x.y \; \lambda y.a) [y := b] \\
+            &\equiv_{\alpha}
+            \lambda a. \lambda b. \; (\lambda x.b \; \lambda y.a) 
+        \end{align*}
+
+        % Ejercicio 2.b
+        \item $\lambda x. \; (x \; (\lambda y. \; (\lambda x.x \; y) \; x))$
+        
+        \textsc{Solución:}
+        \begin{align*}
+            \lambda x. \; (x \; (\lambda y. \; (\lambda x.x \; y) \; x))
+            &\equiv_{\alpha}
+            \lambda a. \; (x \; (\lambda y. \; (\lambda x.x \; y) \; x)) 
+            [x := a] \\
+            &\equiv_{\alpha} 
+            \lambda a. \; (a \; (\lambda y. \; (\lambda x.x \; y) \; a))
+        \end{align*}
+
+        % Ejercicio 2.c
+        \item $\lambda a. \; (\lambda b.a \; \lambda b \; (\lambda a.a \; b))$
+
+        \textsc{Solución:}
+        \begin{align*}
+            \lambda a. \; (\lambda b.a \; \lambda b \; (\lambda a.a \; b))
+            &\equiv_{\alpha}
+            \lambda x. \; (\lambda b.a \; \lambda b \; (\lambda a.a \; b))
+            [a := x] \\
+            &\equiv_{\alpha}
+            \lambda x. \; (\lambda b.x \; \lambda b \; (\lambda a.a \; b)) \\
+            &\equiv_{\alpha}
+            \lambda x. \; (\lambda y.x[b := y] \; \lambda z[b := z] \; 
+            (\lambda a.a \; b)) \\
+            &\equiv_{\alpha}
+            \lambda x. \; (\lambda y.x \; \lambda z \; (\lambda a.a \; b)) \\
+        \end{align*}
+    \end{enumerate}
+
+    % Ejercicio 3.
+    \item Aplicar las $\beta-$reducciones correspondientes a las siguientes 
+    expresiones hasta llegar a una Forma Normal o justificar por qué dicha 
+    forma no existe. Indicar en cada paso la \textit{redex} y el 
+    \textit{reducto}. Considerar las siguientes definiciones:
+    \begin{equation*}
+        I =_{\text{def}} \lambda x.x \quad \quad 
+        S =_{\text{def}} \lambda x. \lambda y. \lambda z.xz (yz)
+    \end{equation*}
+    \begin{equation*}
+        K =_{\text{def}} \lambda x. \lambda y.x \quad \quad 
+        \Omega =_{\text{def}} (\lambda x.xx)(\lambda x.xx)
+    \end{equation*}
+
+    \begin{enumerate}
+        % Ejercicio 3.a
+        \item $\lambda x.xK\Omega$
+
+        \textsc{Solución:} Notemos que la expresión $\Omega$ diverge, pues
+        \begin{align*}
+            \Omega 
+            &=_{def} \textcolor{blue}{(\lambda x.xx)} (\lambda x.xx) \\
+            &\rightarrow_{\beta} 
+               \textcolor{red}{xx [x := (\lambda x.xx)]} \\
+            &\rightarrow_{\beta} (\lambda x.xx)(\lambda x.xx) \\ 
+            &= \Omega
+        \end{align*}
+
+        donde la expresión de color \textcolor{blue}{azul} es el \textit{redex}, 
+        y la expresión de color \textcolor{red}{rojo} es el \textit{reducto}.
+
+        Así, la expresión original $\lambda x.xK\Omega$ diverge y por lo tanto 
+        no tiene Forma Normal.
+
+        % Ejercicio 3.b
+        \item $(\lambda x.x \; (II)) \; z$
+
+        \textsc{Solución:} Tenemos que 
+        \begin{align*}
+            (\lambda x.x \; (II)) \; z 
+            &=_{def} (\lambda x.x \; (\textcolor{blue}{\lambda x.x} \;
+                                      \lambda x.x)) \; z \\
+            &\rightarrow_{\beta} (\lambda x.x \; 
+                                 (\textcolor{red}{x [x := \lambda x.x]})) 
+                                 \; z \\
+            &\rightarrow_{\beta}
+            \textcolor{blue}{(\lambda x.x} \; (\lambda x.x)) \; z \\ 
+            &\rightarrow_{\beta} (\textcolor{red}{x [x := \lambda x.x]}) \; z \\ 
+            &\rightarrow_{\beta} (\textcolor{blue}{\lambda x.x}) \; z \\
+            &\rightarrow_{\beta} \textcolor{red}{x [x := z]} \\
+            &\rightarrow_{\beta} z
+        \end{align*}
+
+        donde las expresiones en color \textcolor{blue}{azul} son el 
+        \textit{redex} y las expresiones en color \textcolor{red}{rojo} son el 
+        \textit{reducto}. Ahora bien, como la expresión \texttt{z} ya no puede
+        reducirse más mediante $\beta-$ reducciones, entonces ya se encuentra 
+        en Forma Normal.
+
+        % Ejercicio 3.c
+        \item $(\lambda u. \lambda v. \; (\lambda w.w \; (\lambda x.xu)) \; v) 
+        \; y \; (\lambda z. \lambda y.zy)$
+
+        \textsc{Solución:} Tenemos que 
+        \begin{align*}
+            (\textcolor{blue}{\lambda u. \lambda v. \; (\lambda w.w \; 
+                                                       (\lambda x.xu))} \; v) 
+            \; y \; (\lambda z. \lambda y.zy)
+            &\rightarrow_{\beta}
+            (\textcolor{red}{\lambda v. \; (\lambda w.w \; (\lambda x.xu))
+                             [u := v]}) \; y \; (\lambda z. \lambda y.zy) \\
+            &\rightarrow_{\beta}
+            (\lambda v. \; \textcolor{red}{(\lambda w.w \; (\lambda x.xu))
+            [u := v]}) \; y \; (\lambda z. \lambda y.zy) \\
+            &\rightarrow_{\beta}
+            (\lambda v. \; \textcolor{red}{(\lambda w.w [u := v] \; 
+            (\lambda x.xu) [u := v])}) \; y \; (\lambda z. \lambda y.zy) \\
+            &\rightarrow_{\beta}
+            (\lambda v. \; (\lambda w. \textcolor{red}{w [u := v]} \;
+            (\lambda x. \textcolor{red}{xu) [u := v]})) \; y \; 
+            (\lambda z. \lambda y.zy) \\
+            &\rightarrow_{\beta}
+            (\lambda v. \; (\lambda w.w \; (\lambda x. 
+            \textcolor{red}{x[u := v] \; u[u := v]}))) \; y \; 
+            (\lambda z. \lambda y.zy) \\
+            &\rightarrow_{\beta}
+            \textcolor{blue}{(\lambda v. \; (\lambda w.w \; (\lambda x.xv)))}
+            \; y \; (\lambda z. \lambda y.zy) \\
+            &\rightarrow_{\beta}
+            \textcolor{red}{(\lambda w.w \; (\lambda x.xv)) [v := y]}
+            \; (\lambda z. \lambda y.zy) \\
+            &\rightarrow_{\beta}
+            \textcolor{red}{(\lambda w.w [v := y] \; (\lambda x.xv) [v := y])}
+            \; (\lambda z. \lambda y.zy) \\
+            &\rightarrow_{\beta}
+            (\lambda w. \textcolor{red}{w [v := y]} \; (\lambda x.
+            \textcolor{red}{xv [v := y]})) \; (\lambda z. \lambda y.zy) \\
+            &\rightarrow_{\beta}
+            (\lambda w.w \; (\lambda x. 
+            \textcolor{red}{x [v := y] \; v [v := y]}))
+            \; (\lambda z. \lambda y.zy) \\
+            &\rightarrow_{\beta}
+            \textcolor{blue}{(\lambda w.w} \; (\lambda x.xy))
+            \; (\lambda z. \lambda y.zy) \\
+            &\rightarrow_{\beta}  
+            (\textcolor{red}{w [w := \lambda x.xy]}) \; 
+            (\lambda z. \lambda y.zy)\\
+            &\rightarrow_{\beta}  
+            \textcolor{blue}{(\lambda x.xy)} \; 
+            (\lambda z. \lambda y.zy) \\
+            &\rightarrow_{\beta}  
+            \textcolor{red}{xy [x := \lambda z. \lambda y.zy]} \\
+            &\rightarrow_{\beta}
+            \textcolor{red}{x [x := \lambda z. \lambda y.zy] \; 
+                            y [x := \lambda z. \lambda y.zy]} \\
+            &\rightarrow_{\beta}
+            \textcolor{blue}{(\lambda z. \lambda y.zy)} y \\ 
+            &\rightarrow_{\beta}
+            \textcolor{red}{(\lambda y.zy [z := y])} \\
+            &\rightarrow_{\beta}
+            (\lambda y. \textcolor{red}{zy [z := y]}) \\
+            &\rightarrow_{\beta}
+            (\lambda y. \textcolor{red}{z [z := y] \; 
+                                        y [z := y]}) \\
+            &\rightarrow_{\beta}
+            (\lambda y.yy)
+        \end{align*}
+
+        % Ejercicio 3.d
+        \item $S \; (KI) \; (KI)$
+
+        \textsc{Solución:} Tenemos que 
+        \begin{align*}
+            S \; (KI) \; (KI) 
+            &\equiv (S \; (KI)) \; (KI) \\ 
+            &=_{def} (S \; (\textcolor{blue}{\lambda x. \lambda y.x} \; 
+                            \lambda x.x)) \;
+                           (\textcolor{blue}{\lambda x. \lambda y.x} \; 
+                            \lambda x.x) \\
+            &\rightarrow_{\beta}
+            (S \; (\textcolor{red}{\lambda y.x [x := \lambda x.x]})) \;
+            (\textcolor{red}{\lambda y.x [x := \lambda x.x]}) \\
+            &\rightarrow_{\beta}
+            (S \; (\lambda y. \textcolor{red}{x [x := \lambda x.x]})) \; 
+            (\lambda y. \textcolor{red}{x [x := \lambda x.x]}) \\
+            &\rightarrow_{\beta} 
+            (S \; (\lambda y. \lambda x.x)) \; (\lambda y. \lambda x.x) \\
+            &=_{def} (\textcolor{blue}{\lambda x. \lambda y. \lambda z.xz} \; 
+                     (yz) \; (\lambda y. \lambda x.x)) \; 
+                     (\lambda y. \lambda x.x) \\
+            &\rightarrow_{\beta}
+            (\textcolor{red}{\lambda y. \lambda z.xz [x := yz]} \; 
+            (\lambda y. \lambda x.x)) \; (\lambda y. \lambda x.x) \\
+            &\rightarrow_{\beta}
+            (\lambda y. \textcolor{red}{\lambda z.xz [x := yz]} \; 
+            (\lambda y. \lambda x.x) \; (\lambda y. \lambda x.x) \\ 
+            &\rightarrow_{\beta}
+            (\lambda y. \lambda z. \textcolor{red}{xz [x := yz]} \; 
+            (\lambda y. \lambda x.x)) \; (\lambda y. \lambda x.x) \\
+            &\rightarrow_{\beta}
+            (\lambda y. \lambda z. \textcolor{red}{x [x := yz] \; z [x := yz]} 
+            \; (\lambda y. \lambda x.x)) \; (\lambda y. \lambda x.x) \\
+            &\rightarrow_{\beta}
+            (\textcolor{blue}{\lambda y. \lambda z.(yz)z} \; 
+            (\lambda y. \lambda x.x)) \; (\lambda y. \lambda x.x) \\
+            &\rightarrow_{\beta}
+            (\textcolor{red}{\lambda z.(yz)z [y := \lambda y. \lambda x.x]}) 
+            \; (\lambda y. \lambda x.x) \\
+            &\rightarrow_{\beta}
+            (\lambda z. \textcolor{red}{(yz)z [y := \lambda y. \lambda x.x]}) 
+            \; (\lambda y. \lambda x.x) \\
+            &\rightarrow_{\beta}
+            (\lambda z. \textcolor{red}{(yz) [y := (\lambda y. \lambda x.x)] \; 
+                                         z[y := \lambda y. \lambda x.x]}) 
+            \; (\lambda y. \lambda x.x) \\
+            &\rightarrow_{\beta} 
+            (\lambda z. \textcolor{red}{(y [y := \lambda y. \lambda x.x] \; 
+                                          z [y := \lambda y. \lambda x.x]) \; 
+                                          z}) \; 
+            (\lambda y. \lambda x.x) \\ 
+            &\rightarrow_{\beta}
+            (\lambda z. (\textcolor{blue}{(\lambda y. \lambda x.x)} z)z) \; 
+            (\lambda y. \lambda x.x) \\
+            &\rightarrow_{\beta}
+            (\lambda z. (\textcolor{red}{\lambda x.x [y := z]}) z) \; 
+            (\lambda y. \lambda x.x) \\
+            &\rightarrow_{\beta}
+            (\lambda z. (\lambda x. \textcolor{red}{x [y := z]}) z) \; 
+            (\lambda y. \lambda x.x) \\
+            &\rightarrow_{\beta}
+            (\textcolor{blue}{\lambda z. (\lambda x. x)} z) \; 
+            (\lambda y. \lambda x.x) \\
+            &\rightarrow_{\beta}
+            (\textcolor{red}{\lambda x.x [z =: z]}) \; 
+            (\lambda y. \lambda x.x) \\
+            &\rightarrow_{\beta}
+            (\lambda x. \textcolor{red}{x [z =: z]}) \; 
+            (\lambda y. \lambda x.x) \\
+            &\rightarrow_{\beta}
+            (\textcolor{blue}{\lambda x. x}) \; 
+            (\lambda y. \lambda x.x) \\
+            &\rightarrow_{\beta}
+            \textcolor{red}{x [x := \lambda y. \lambda x.x]} \\
+            &\rightarrow_{\beta} \lambda y. \lambda x.x
+        \end{align*}
+
+        donde las expresiones en color \textcolor{blue}{azul} son el 
+        \textit{redex} y las expresiones en color \textcolor{red}{rojo} son el 
+        \textit{reducto}. Ahora bien, como la expresión $\lambda y. \lambda x.x$
+        ya no puede reducirse más mediante $\beta-$reducciones, entonces ya se 
+        encuentra en Forma Normal.
+    \end{enumerate}
+
+    % Ejercicio 4.
+    \item De acuerdo a la representación de números (Numerales de Church) y 
+    representación de booleanos en el Cálculo $\lambda$:
+    \begin{enumerate}
+        % Ejercicio 4.a
+        \item Define la función $<$ que decide si un número es menor a otro.
+
+        % Ejercicio 4.b.
+        \item Define la función disyunción $\leftrightarrow$ (equivalencia) 
+        sobre booleanos.
+
+        % Ejercicio 4.c
+        \item Define la función disyunción exclusiva \textit{xor} sobre 
+        booleanos.
+    \end{enumerate}
+
+    % Ejercicio 5.
+    \item Dada la siguiente expresión en \textsc{racket}:
+\end{enumerate}
+
+\end{document}
