@@ -141,21 +141,9 @@
         % Ejercicio 3.a
         \item $\lambda x.xK\Omega$
 
-        \textsc{Solución:} Notemos que la expresión $\Omega$ diverge, pues
-        \begin{align*}
-            \Omega 
-            &=_{def} \textcolor{blue}{(\lambda x.xx)} (\lambda x.xx) \\
-            &\rightarrow_{\beta} 
-               \textcolor{red}{xx [x := (\lambda x.xx)]} \\
-            &\rightarrow_{\beta} (\lambda x.xx)(\lambda x.xx) \\ 
-            &= \Omega
-        \end{align*}
-
-        donde la expresión de color \textcolor{blue}{azul} es el \textit{redex}, 
-        y la expresión de color \textcolor{red}{rojo} es el \textit{reducto}.
-
-        Así, la expresión original $\lambda x.xK\Omega$ diverge y por lo tanto 
-        no tiene Forma Normal.
+        \textsc{Solución:} Como la expresión ya no puede reducirse más mediante 
+        $\beta-$reducciones ya que no tiene espacios (y por lo tanto, no tiene 
+        aplicaciones de función), entonces ya se encuentra en Forma Normal.
 
         % Ejercicio 3.b
         \item $(\lambda x.x \; (II)) \; z$
@@ -171,7 +159,7 @@
             &\rightarrow_{\beta}
             (\textcolor{blue}{\lambda x.x} \; (\lambda x.x)) \; z \\ 
             &\rightarrow_{\beta} (\textcolor{red}{x [x := (\lambda x.x)]}) \; z \\ 
-            &\rightarrow_{\beta} (\textcolor{blue}{\lambda x.x}) \; z \\
+            &\rightarrow_{\beta} \textcolor{blue}{(\lambda x.x)} \; z \\
             &\rightarrow_{\beta} \textcolor{red}{x [x := z]} \\
             &\rightarrow_{\beta} z
         \end{align*}
@@ -225,7 +213,7 @@
             \textcolor{red}{x [v := y] \; v [v := y]}))
             \; (\lambda z. \lambda y.zy) \\
             &\rightarrow_{\beta}
-            \textcolor{blue}{(\lambda w.w} \; (\lambda x.xy))
+            (\textcolor{blue}{\lambda w.w} \; (\lambda x.xy))
             \; (\lambda z. \lambda y.zy) \\
             &\rightarrow_{\beta}  
             (\textcolor{red}{w [w := (\lambda x.xy)]}) \; 
@@ -238,11 +226,8 @@
             &\rightarrow_{\beta}
             \textcolor{red}{x [x := (\lambda z. \lambda y.zy)] \; 
                             y [x := (\lambda z. \lambda y.zy)]} \\
-        \end{align*}
-        \begin{align*}
-            \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; 
             &\rightarrow_{\beta}
-            \textcolor{blue}{(\lambda z. \lambda y.zy)} y \\ 
+            (\lambda z. \lambda y.\textcolor{blue}{zy}) y \\ 
             &\rightarrow_{\beta}
             \textcolor{red}{\lambda y.zy [z := y]} \\
             &\rightarrow_{\beta}
@@ -322,19 +307,16 @@
             (\lambda z. (\lambda x. \textcolor{red}{x [y := z]}) z) \; 
             (\lambda y. \lambda x.x) \\
             &\rightarrow_{\beta}
-            (\textcolor{blue}{\lambda z. (\lambda x. x)} z) \; 
+            (\lambda z. \textcolor{blue}{(\lambda x. x)} z) \; 
             (\lambda y. \lambda x.x) \\
             &\rightarrow_{\beta}
-            (\textcolor{red}{\lambda x.x [z =: z]}) \; 
+            (\lambda z. (\textcolor{red}{x [x =: z]})) \; 
             (\lambda y. \lambda x.x) \\
             &\rightarrow_{\beta}
-            (\lambda x. \textcolor{red}{x [z =: z]}) \; 
+            \textcolor{blue}{(\lambda z. z)} \; 
             (\lambda y. \lambda x.x) \\
             &\rightarrow_{\beta}
-            (\textcolor{blue}{\lambda x. x}) \; 
-            (\lambda y. \lambda x.x) \\
-            &\rightarrow_{\beta}
-            \textcolor{red}{x [x := (\lambda y. \lambda x.x)]} \\
+            \textcolor{red}{z [z := (\lambda y. \lambda x.x)]} \\
             &\rightarrow_{\beta} (\lambda y. \lambda x.x)
         \end{align*}
 
@@ -353,13 +335,30 @@
         % Ejercicio 4.a
         \item Define la función $<$ que decide si un número es menor a otro.
 
+        \textsc{Solución:}
+
         % Ejercicio 4.b.
         \item Define la función disyunción $\leftrightarrow$ (equivalencia) 
         sobre booleanos.
 
+        \textsc{Solución:} Sabemos que
+        \begin{equation*}
+            p \leftrightarrow q \equiv (p \rightarrow q) \land (q \rightarrow p)
+        \end{equation*}
+
+        Entonces, 
+
+        Así, podemos definir la función 
+        \begin{equation*}
+            \leftrightarrow \; =_{def} \; 
+            (\lambda x. \lambda y. \land (\rightarrow xy) (\rightarrow yx))
+        \end{equation*}
+
         % Ejercicio 4.c
         \item Define la función disyunción exclusiva \textit{xor} sobre 
         booleanos.
+
+        \textsc{Solución:}
     \end{enumerate}
 
     % Ejercicio 5.
