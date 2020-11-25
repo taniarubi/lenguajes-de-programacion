@@ -30,8 +30,7 @@
 \title{Facultad de Ciencias, UNAM \\ 
        Lenguajes de Programación \\ 
        Tarea 4}
-\author{Hernández Salinas Óscar \\ 
-        Rubí Rojas Tania Michelle }
+\author{Rubí Rojas Tania Michelle}
 \date{23 de noviembre de 2020}
 
 \begin{document}
@@ -340,7 +339,7 @@
         necesariamente $x$ es menor que $y$.
         Por lo tanto, 
         \begin{equation*}
-            < \; =_{def} \; \lambda a. \lambda b. \neg (\geq ab)
+            < \; =_{def} \; (\lambda a. \lambda b. \neg \; (\geq ab))
         \end{equation*}
 
         % Ejercicio 4.b.
@@ -355,10 +354,10 @@
 
         Por lo que podemos definir las funciones 
         \begin{equation*}
-            \rightarrow \; =_{def} \; \lambda a. \lambda b. \lor (\neg a) b
+            \rightarrow \; =_{def} \; (\lambda a. \lambda b. \lor (\neg a) \; b)
             \quad \quad \quad 
             \leftrightarrow \; =_{def} \; 
-            \lambda a. \lambda b. \land (\rightarrow ab) (\rightarrow ba)
+            (\lambda a. \lambda b. \land (\rightarrow ab) \; (\rightarrow ba))
         \end{equation*}
 
         % Ejercicio 4.c
@@ -367,12 +366,64 @@
 
         \textsc{Solución:}
         \begin{equation*}
-            xor =_{def} \lambda a. \lambda b.a(bFT)(bTF)
+            xor =_{def} (\lambda a. \lambda b.a \; (bFT) \; (bTF))
         \end{equation*}
     \end{enumerate}
 
     % Ejercicio 5.
     \item Dada la siguiente expresión en \textsc{racket}:
+    \begin{equation*}
+        \texttt{(let ([sum (} \lambda \; 
+        \texttt{(n) (if (zero? n) 0 (+ n (sum (sub1 n)))))])} \; 
+        \texttt{(sum 5))}
+    \end{equation*}
+
+    \begin{enumerate}
+        % Ejercicio 5.a
+        \item Ejecútala y explica el resultado.
+        
+        \textsc{Solución:} Nos regresa un error del tipo 
+        \textcolor{red}{sum: unbound identifier in: sum}, lo que significa 
+        que hubo un error de variable libre. Esto sucede porque al momento 
+        de querer pasarle una llamada a la función, entonces \textsc{Racket}
+        no sabe que esa función es \texttt{sum} (pues la función es anónima), 
+        así que al momento de querer buscar la definición de \texttt{sum} no 
+        la encuentra; por lo que nos genera un error de variable libre.
+
+        % Ejercicio 5.b
+        \item Modifícala usando el Combinador de Punto Fijo Y. Ejecútala y 
+        explica el resultado.
+
+        \textsc{Solución:} Para usar el combinador Y debemos adaptar nuestra
+        definición de tal forma que nuestra función reciba una función como 
+        parámetro, es decir, 
+        \begin{equation*}
+            \texttt{(let ([sum (} \lambda \texttt{(sum) \; (} \lambda 
+            \texttt{(n) (if (zero? n) 0 (+ n (sum (sub1 n)))))}
+            \texttt{)]) (sum 5))}
+        \end{equation*}
+
+        De esta forma, podemos definir $Y$ mediante un identificador y 
+        aplicarlo a \texttt{sum}; esto es,
+        \begin{equation*}
+            \texttt{(let* ([Y (lambda (f) ((lambda(x) (f (x x))) 
+            (lambda (x) (f (x x)))))]}
+        \end{equation*}
+        \begin{equation*}
+            \texttt{[sum (Y (lambda(sum) (lambda (n) (if (zero? n) 0 
+            (+ n (sum (sub1 n)))))))]) (sum 5))}
+        \end{equation*}
+
+        Finalmente, al ejecutar esta expresión obtenemos un error del tipo 
+        \textcolor{red}{Interactions disabled; out of memory}, lo que 
+        significa que el programa se cicló. Esto pasa por la definición del 
+        combinador $Y$ y porque \textsc{Racket} tiene un régimen de 
+        evaluación glotón. Como en cada llamada se aplica el combinador $Y$, 
+        entonces en cada pasito se genera una nueva aplicación de la función 
+        $\lambda$\texttt{(sum)}, lo que genera llamadas infinitas; esto 
+        ocurre pues llamada tras llamada el parámetro real de la función se 
+        evalúa aunque no sea necesario (ya que es glotón).
+    \end{enumerate}
 \end{enumerate}
 
 \end{document}
