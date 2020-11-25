@@ -327,7 +327,6 @@
         encuentra en Forma Normal.
     \end{enumerate}
 
-    \newpage
     % Ejercicio 4.
     \item De acuerdo a la representación de números (Numerales de Church) y 
     representación de booleanos en el Cálculo $\lambda$:
@@ -335,7 +334,14 @@
         % Ejercicio 4.a
         \item Define la función $<$ que decide si un número es menor a otro.
 
-        \textsc{Solución:}
+        \textsc{Solución:} Como ya tenemos definida la función $\geq$, entonces 
+        podemos definir la función $<$ como la negación de $\geq$; pues si 
+        $x$ no es estrictamente mayor o igual a $y$ entonces eso implica que 
+        necesariamente $x$ es menor que $y$.
+        Por lo tanto, 
+        \begin{equation*}
+            < \; =_{def} \; \lambda a. \lambda b. \neg (\geq ab)
+        \end{equation*}
 
         % Ejercicio 4.b.
         \item Define la función disyunción $\leftrightarrow$ (equivalencia) 
@@ -343,15 +349,16 @@
 
         \textsc{Solución:} Sabemos que
         \begin{equation*}
+            p \rightarrow q \equiv \neg p \lor q \quad \quad \quad \quad 
             p \leftrightarrow q \equiv (p \rightarrow q) \land (q \rightarrow p)
         \end{equation*}
 
-        Entonces, 
-
-        Así, podemos definir la función 
+        Por lo que podemos definir las funciones 
         \begin{equation*}
+            \rightarrow \; =_{def} \; \lambda a. \lambda b. \lor (\neg a) b
+            \quad \quad \quad 
             \leftrightarrow \; =_{def} \; 
-            (\lambda x. \lambda y. \land (\rightarrow xy) (\rightarrow yx))
+            \lambda a. \lambda b. \land (\rightarrow ab) (\rightarrow ba)
         \end{equation*}
 
         % Ejercicio 4.c
@@ -359,6 +366,9 @@
         booleanos.
 
         \textsc{Solución:}
+        \begin{equation*}
+            xor =_{def} \lambda a. \lambda b.a(bFT)(bTF)
+        \end{equation*}
     \end{enumerate}
 
     % Ejercicio 5.
