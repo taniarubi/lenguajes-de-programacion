@@ -1,0 +1,80 @@
+\documentclass[letterpaper,11pt]{article}
+
+% Soporte para los acentos.
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}    
+% Idioma español.
+\usepackage[spanish,mexico, es-tabla]{babel}
+% Soporte de símbolos adicionales (matemáticas)
+\usepackage{multirow}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{latexsym}
+\usepackage{enumerate}
+\usepackage{ragged2e}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{drawstack}
+% Modificamos los márgenes del documento.
+\usepackage[lmargin=1cm,rmargin=1cm,top=1.5cm,bottom=1.5cm]{geometry}
+
+\title{Facultad de Ciencias, UNAM \\ 
+       Lenguajes de Programación \\ 
+       Tarea extra: Tabla de verdad de la conjunción}
+\author{Rubí Rojas Tania Michelle }
+\date{23 de noviembre de 2020}
+
+\begin{document}
+\maketitle
+
+Recordemos que 
+\begin{equation*}
+    \land \; =_{def} \; \lambda x. \lambda y.xyF 
+\end{equation*}
+
+Por lo tanto,  
+\begin{align*}
+    \land TT
+    &=_{def} (\lambda x. \lambda y.xyF) \; TT \\
+    &\rightarrow_{\beta} (\lambda y.TyF) \; T \\
+    &\rightarrow_{\beta} TTF \\
+    &=_{def} (\lambda x. \lambda y.x) \; TF \\
+    &\rightarrow_{\beta} (\lambda y.T) \; F \\
+    &\rightarrow_{\beta} T
+\end{align*}
+
+\begin{align*}
+    \land TF 
+    &=_{def} (\lambda x. \lambda y.xyF) \; TF \\
+    &\rightarrow_{\beta} (\lambda y.TyF) \; F \\
+    &\rightarrow_{\beta} TFF \\
+    &=_{def} (\lambda x. \lambda y.x) \; FF \\
+    &\rightarrow_{\beta} (\lambda y.F) \; F \\
+    &\rightarrow_{\beta} F
+\end{align*}
+
+\begin{align*}
+    \land FT 
+    &=_{def} (\lambda x. \lambda y.xyF) \; FT \\
+    &\rightarrow_{\beta} (\lambda y.FyF) \; T \\
+    &\rightarrow_{\beta} FTF \\
+    &=_{def} (\lambda x. \lambda y.y) \; TF \\
+    &\rightarrow_{\beta} (\lambda y.y) F \\ 
+    &\rightarrow_{\beta} F
+\end{align*}
+
+\begin{align*}
+    \land FF 
+    &=_{def} (\lambda x. \lambda y.xyF) \; FF \\
+    &\rightarrow_{\beta} (\lambda y.FyF) \; F \\
+    &\rightarrow_{\beta} FFF \\ 
+    &=_{def} ((\lambda x. \lambda y.y) \; F) \; F \\
+    &\rightarrow_{\beta} (\lambda y.y) \; F \\
+    &\rightarrow_{\beta} F
+\end{align*}
+
+\end{document}
