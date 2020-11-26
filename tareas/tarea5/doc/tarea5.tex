@@ -1,0 +1,162 @@
+\documentclass[letterpaper,11pt]{article}
+
+% Soporte para los acentos.
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+% Idioma español.
+\usepackage[spanish,mexico, es-tabla]{babel}
+% Soporte de símbolos adicionales (matemáticas)
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{latexsym}
+\usepackage{enumerate}
+\usepackage{ragged2e}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{drawstack}
+% Modificamos los márgenes del documento.                                       
+\usepackage[lmargin=1.5cm,rmargin=1.5cm,top=1.5cm,bottom=1.5cm]{geometry}
+
+\tikzstyle{freecell}=[fill=blue!10,draw=blue!30!black]
+\tikzstyle{occupiedcell}=[fill=blue!10!orange!10,draw=blue!30!black]
+\tikzstyle{padding}=[fill=yellow!20,draw=blue!30!black]
+\tikzstyle{highlight}=[draw=orange!50!black,text=orange!50!black]
+
+\title{Facultad de Ciencias, UNAM \\ 
+       Lenguajes de Programación\\ 
+       Tarea 5}
+\author{Rubí Rojas Tania Michelle}
+\date{07 de diciembre de 2020}
+
+\begin{document}
+\maketitle
+
+\begin{enumerate}
+    % Ejercicio 1.
+    \item Evalúa la siguiente expresión usando el tipo de alcance y régimen de 
+    evaluación que se indica. Es necesario incluir el ambiente final en forma 
+    de pila en cada caso. 
+    \begin{verbatim}
+    {with {a {+ 2 2}}
+       {with {b {+ a a}}
+          {with {foo {fun {x} {- x b}}
+             {with {a {- 2 2}}
+                {with {b {- a a}}
+                   {foo -3}}}}}}}
+    \end{verbatim}
+
+    \begin{enumerate}
+        % Ejercicio 1.a
+        \item Alcance estático y evaluación glotona
+
+        \textsc{Solución:} La expresión que debemos evaluar es 
+        \texttt{\{foo -3\}}, por lo que 
+        \begin{align*}
+            \texttt{\{foo -3\}} 
+            &= \texttt{\{\{fun \{x\} \{- x b\}\} -3\}} \\
+            &= \texttt{\{- (-3) b\}} \\
+            &= \texttt{\{- (-3) 8\}} \\
+            &= -11
+        \end{align*}
+        \begin{center}
+            \begin{drawstack}[scale=1.15]
+                \cell{\texttt{b} \quad \quad $0$} 
+                \cell{\texttt{a} \quad \quad $0$}
+                \cell{\texttt{foo} \quad 
+                      \texttt{\{fun \{x\} \{- x b\}\}}}
+                \bcell{\texttt{x} \quad \quad $-3$}
+                \cell{\texttt{b} \quad \quad $8$}
+                \cell{\texttt{a} \quad \quad $4$}
+            \end{drawstack}
+        \end{center}
+
+        % Ejercicio 1.b
+        \item Alcance dinámico y evaluación glotona 
+
+        \textsc{Solución:} La expresión que debemos evaluar es 
+        \texttt{\{foo -3\}}, por lo que 
+        \begin{align*}
+            \texttt{\{foo -3\}}
+            &= \texttt{\{\{fun \{x\} \{- x b\}\} -3\}} \\
+            &= \texttt{\{- (-3) 0\}} \\ 
+            &= \texttt{-3}
+        \end{align*}
+        \begin{center}
+            \begin{drawstack}[scale=1.15]
+                \bcell{\texttt{x} \quad \quad $-3$}
+                \cell{\texttt{b} \quad \quad $0$} 
+                \cell{\texttt{a} \quad \quad $0$}
+                \cell{\texttt{foo} \quad 
+                      \texttt{\{fun \{x\} \{- x b\}\}}}
+                \cell{\texttt{b} \quad \quad $8$}
+                \cell{\texttt{a} \quad \quad $4$}
+            \end{drawstack}
+        \end{center}
+
+        % Ejercicio 1.c
+        \item Alcance estático y evaluación perezosa
+
+        \textsc{Solución:} La expresión que debemos evaluar es 
+        \texttt{\{foo -3\}}, por lo que 
+        \begin{align*}
+            \texttt{\{foo -3\}}
+            &= \texttt{\{\{fun \{x\} \{- x b\}\} -3\}} \\
+            &= \texttt{\{- (-3) b\}} \\
+            &= \texttt{\{- (-3) \{+ a a\}\}} \\
+            &= \texttt{\{- (-3) \{+ \{+ 2 2\} \{+ 2 2\}\}\}} \\
+            &= \texttt{\{- (-3) \{+ 4 4\}\}} \\
+            &= \texttt{\{- (-3) 8\}} \\
+            &= \texttt{-11}
+        \end{align*}
+        \begin{center}
+            \begin{drawstack}[scale=1.15]
+                \cell{\texttt{b} \quad \quad
+                      \texttt{\{- a a\}}} 
+                \cell{\texttt{a} \quad \quad 
+                      \texttt{\{- 2 2\}}}
+                \cell{\texttt{foo} \quad 
+                      \texttt{\{fun \{x\} \{- x b\}\}}}
+                \bcell{\texttt{x} \quad \quad $-3$}
+                \cell{\texttt{b} \quad \quad 
+                      \texttt{\{+ a a\}}}
+                \cell{\texttt{a} \quad \quad 
+                      \texttt{\{+ 2 2\}}}
+            \end{drawstack}
+        \end{center}
+
+        % Ejercicio 1.d
+        \item Alcance dinámico y evaluación perezosa
+
+        \textsc{Solución:} La expresión que debemos evaluar es 
+        \texttt{\{foo -3\}}, por lo que 
+        \begin{align*}
+            \texttt{\{foo -3\}}
+            &= \texttt{\{\{fun \{x\} \{- x b\}\} -3\}} \\
+            &= \texttt{\{- (-3) b\}} \\
+            &= \texttt{\{- (-3) \{- a a\}\}} \\
+            &= \texttt{\{- (-3) \{- \{- 2 2\} \{- 2 2\}\}\}} \\
+            &= \texttt{\{- (-3) \{- 0 0\}\}} \\
+            &= \texttt{\{- (-3) 0\}} \\
+            &= \texttt{-3}
+        \end{align*}
+        \begin{center}
+            \begin{drawstack}[scale=1.15]
+                \bcell{\texttt{x} \quad \quad $-3$}
+                \cell{\texttt{b} \quad \quad
+                      \texttt{\{- a a\}}} 
+                \cell{\texttt{a} \quad \quad 
+                      \texttt{\{- 2 2\}}}
+                \cell{\texttt{foo} \quad 
+                      \texttt{\{fun \{x\} \{- x b\}\}}}
+                \cell{\texttt{b} \quad \quad 
+                      \texttt{\{+ a a\}}}
+                \cell{\texttt{a} \quad \quad 
+                      \texttt{\{+ 2 2\}}}
+            \end{drawstack}
+        \end{center}
+    \end{enumerate}
+\end{enumerate}
+
+\end{document}
