@@ -16,6 +16,7 @@
 \usepackage{ragged2e}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{drawstack}
+\usepackage{float}
 % Modificamos los márgenes del documento.                                       
 \usepackage[lmargin=1.5cm,rmargin=1.5cm,top=1.5cm,bottom=1.5cm]{geometry}
 
@@ -53,14 +54,20 @@
 
         \textsc{Solución:} La expresión que debemos evaluar es 
         \texttt{\{foo -3\}}, por lo que 
-        \begin{align*}
-            \texttt{\{foo -3\}} 
-            &= \texttt{\{\{fun \{x\} \{- x b\}\} -3\}} \\
-            &= \texttt{\{- (-3) b\}} \\
-            &= \texttt{\{- (-3) 8\}} \\
-            &= -11
-        \end{align*}
-        \begin{center}
+        \begin{table}[h]
+            \parbox{.6\linewidth}{
+            \centering
+            \begin{align*}
+                \texttt{\{foo -3\}} 
+                &= \texttt{\{\{fun \{x\} \{- x b\}\} -3\}} \\
+                &= \texttt{\{- (-3) b\}} \\
+                &= \texttt{\{- (-3) 8\}} \\
+                &= -11
+            \end{align*}
+            }
+            \hfill
+            \parbox{.4\linewidth}{
+            \centering
             \begin{drawstack}[scale=1.15]
                 \cell{\texttt{b} \quad \quad $0$} 
                 \cell{\texttt{a} \quad \quad $0$}
@@ -70,20 +77,28 @@
                 \cell{\texttt{b} \quad \quad $8$}
                 \cell{\texttt{a} \quad \quad $4$}
             \end{drawstack}
-        \end{center}
+            }
+        \end{table}
 
+        \newpage
         % Ejercicio 1.b
         \item Alcance dinámico y evaluación glotona 
 
         \textsc{Solución:} La expresión que debemos evaluar es 
         \texttt{\{foo -3\}}, por lo que 
-        \begin{align*}
-            \texttt{\{foo -3\}}
-            &= \texttt{\{\{fun \{x\} \{- x b\}\} -3\}} \\
-            &= \texttt{\{- (-3) 0\}} \\ 
-            &= \texttt{-3}
-        \end{align*}
-        \begin{center}
+        \begin{table}[h]
+            \parbox{.6\linewidth}{
+            \centering
+            \begin{align*}
+                \texttt{\{foo -3\}}
+                &= \texttt{\{\{fun \{x\} \{- x b\}\} -3\}} \\
+                &= \texttt{\{- (-3) 0\}} \\ 
+                &= \texttt{-3}
+            \end{align*}
+            }
+            \hfill
+            \parbox{.4\linewidth}{
+            \centering
             \begin{drawstack}[scale=1.15]
                 \bcell{\texttt{x} \quad \quad $-3$}
                 \cell{\texttt{b} \quad \quad $0$} 
@@ -93,24 +108,31 @@
                 \cell{\texttt{b} \quad \quad $8$}
                 \cell{\texttt{a} \quad \quad $4$}
             \end{drawstack}
-        \end{center}
+            }
+        \end{table}
 
         % Ejercicio 1.c
         \item Alcance estático y evaluación perezosa
 
         \textsc{Solución:} La expresión que debemos evaluar es 
         \texttt{\{foo -3\}}, por lo que 
-        \begin{align*}
-            \texttt{\{foo -3\}}
-            &= \texttt{\{\{fun \{x\} \{- x b\}\} -3\}} \\
-            &= \texttt{\{- (-3) b\}} \\
-            &= \texttt{\{- (-3) \{+ a a\}\}} \\
-            &= \texttt{\{- (-3) \{+ \{+ 2 2\} \{+ 2 2\}\}\}} \\
-            &= \texttt{\{- (-3) \{+ 4 4\}\}} \\
-            &= \texttt{\{- (-3) 8\}} \\
-            &= \texttt{-11}
-        \end{align*}
-        \begin{center}
+        \begin{table}[h]
+            \parbox{.6\linewidth}{
+            \centering
+            \begin{align*}
+                \texttt{\{foo -3\}}
+                &= \texttt{\{\{fun \{x\} \{- x b\}\} -3\}} \\
+                &= \texttt{\{- (-3) b\}} \\
+                &= \texttt{\{- (-3) \{+ a a\}\}} \\
+                &= \texttt{\{- (-3) \{+ \{+ 2 2\} \{+ 2 2\}\}\}} \\
+                &= \texttt{\{- (-3) \{+ 4 4\}\}} \\
+                &= \texttt{\{- (-3) 8\}} \\
+                &= \texttt{-11}
+            \end{align*}
+            }
+            \hfill
+            \parbox{.4\linewidth}{
+            \centering
             \begin{drawstack}[scale=1.15]
                 \cell{\texttt{b} \quad \quad
                       \texttt{\{- a a\}}} 
@@ -124,24 +146,32 @@
                 \cell{\texttt{a} \quad \quad 
                       \texttt{\{+ 2 2\}}}
             \end{drawstack}
-        \end{center}
+            }
+        \end{table}
 
+        \newpage
         % Ejercicio 1.d
         \item Alcance dinámico y evaluación perezosa
 
         \textsc{Solución:} La expresión que debemos evaluar es 
         \texttt{\{foo -3\}}, por lo que 
-        \begin{align*}
-            \texttt{\{foo -3\}}
-            &= \texttt{\{\{fun \{x\} \{- x b\}\} -3\}} \\
-            &= \texttt{\{- (-3) b\}} \\
-            &= \texttt{\{- (-3) \{- a a\}\}} \\
-            &= \texttt{\{- (-3) \{- \{- 2 2\} \{- 2 2\}\}\}} \\
-            &= \texttt{\{- (-3) \{- 0 0\}\}} \\
-            &= \texttt{\{- (-3) 0\}} \\
-            &= \texttt{-3}
-        \end{align*}
-        \begin{center}
+        \begin{table}[h]
+            \parbox{.6\linewidth}{
+            \centering
+            \begin{align*}
+                \texttt{\{foo -3\}}
+                &= \texttt{\{\{fun \{x\} \{- x b\}\} -3\}} \\
+                &= \texttt{\{- (-3) b\}} \\
+                &= \texttt{\{- (-3) \{- a a\}\}} \\
+                &= \texttt{\{- (-3) \{- \{- 2 2\} \{- 2 2\}\}\}} \\
+                &= \texttt{\{- (-3) \{- 0 0\}\}} \\
+                &= \texttt{\{- (-3) 0\}} \\
+                &= \texttt{-3}
+            \end{align*}
+            }
+            \hfill
+            \parbox{.4\linewidth}{
+            \centering
             \begin{drawstack}[scale=1.15]
                 \bcell{\texttt{x} \quad \quad $-3$}
                 \cell{\texttt{b} \quad \quad
@@ -155,7 +185,8 @@
                 \cell{\texttt{a} \quad \quad 
                       \texttt{\{+ 2 2\}}}
             \end{drawstack}
-        \end{center}
+            }
+        \end{table}
     \end{enumerate}
 \end{enumerate}
 
