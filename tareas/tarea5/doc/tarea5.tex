@@ -7,23 +7,9 @@
 \usepackage[spanish,mexico, es-tabla]{babel}
 % Soporte de símbolos adicionales (matemáticas)
 \usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{amsthm}
-\usepackage{amsfonts}
-\usepackage{mathtools}
-\usepackage{latexsym}
-\usepackage{enumerate}
-\usepackage{ragged2e}
 \usepackage[dvipsnames]{xcolor}
-\usepackage{drawstack}
-\usepackage{float}
 % Modificamos los márgenes del documento.                                       
 \usepackage[lmargin=1.5cm,rmargin=1.5cm,top=1.5cm,bottom=1.5cm]{geometry}
-
-\tikzstyle{freecell}=[fill=blue!10,draw=blue!30!black]
-\tikzstyle{occupiedcell}=[fill=blue!10!orange!10,draw=blue!30!black]
-\tikzstyle{padding}=[fill=yellow!20,draw=blue!30!black]
-\tikzstyle{highlight}=[draw=orange!50!black,text=orange!50!black]
 
 \title{Facultad de Ciencias, UNAM \\ 
        Lenguajes de Programación\\ 
@@ -55,7 +41,7 @@
         \textsc{Solución:} La expresión que debemos evaluar es 
         \texttt{\{foo -3\}}, por lo que 
         \begin{table}[h]
-            \parbox{.6\linewidth}{
+            \parbox{.55\linewidth}{
             \centering
             \begin{align*}
                 \texttt{\{foo -3\}} 
@@ -66,51 +52,65 @@
             \end{align*}
             }
             \hfill
-            \parbox{.4\linewidth}{
+            \parbox{.45\linewidth}{
             \centering
-            \begin{drawstack}[scale=1.15]
-                \cell{\texttt{b} \quad \quad $0$} 
-                \cell{\texttt{a} \quad \quad $0$}
-                \cell{\texttt{foo} \quad 
-                      \texttt{\{fun \{x\} \{- x b\}\}}}
-                \bcell{\texttt{x} \quad \quad $-3$}
-                \cell{\texttt{b} \quad \quad $8$}
-                \cell{\texttt{a} \quad \quad $4$}
-            \end{drawstack}
+            \begin{tabular}{|c|c|}
+            \hline
+            \texttt{b} & \texttt{0} \\
+            \hline
+            \texttt{a} & \texttt{0} \\
+            \hline
+            \texttt{foo} & \texttt{[closureV: x,\{-x b\},} \\
+             & \texttt{env-ant:((x -3),(b 8),(a 4))]} \\
+            \hline
+            \texttt{b} & \texttt{8} \\
+            \hline
+            \texttt{a} & \texttt{4} \\
+            \hline
+            \end{tabular}
+            \caption{Ambiente final}
             }
         \end{table}
 
-        \newpage
         % Ejercicio 1.b
         \item Alcance dinámico y evaluación glotona 
 
         \textsc{Solución:} La expresión que debemos evaluar es 
         \texttt{\{foo -3\}}, por lo que 
         \begin{table}[h]
-            \parbox{.6\linewidth}{
+            \parbox{.55\linewidth}{
             \centering
             \begin{align*}
                 \texttt{\{foo -3\}}
                 &= \texttt{\{\{fun \{x\} \{- x b\}\} -3\}} \\
+                &= \texttt{\{- (-3) b\}} \\
                 &= \texttt{\{- (-3) 0\}} \\ 
                 &= \texttt{-3}
             \end{align*}
             }
             \hfill
-            \parbox{.4\linewidth}{
+            \parbox{.45\linewidth}{
             \centering
-            \begin{drawstack}[scale=1.15]
-                \bcell{\texttt{x} \quad \quad $-3$}
-                \cell{\texttt{b} \quad \quad $0$} 
-                \cell{\texttt{a} \quad \quad $0$}
-                \cell{\texttt{foo} \quad 
-                      \texttt{\{fun \{x\} \{- x b\}\}}}
-                \cell{\texttt{b} \quad \quad $8$}
-                \cell{\texttt{a} \quad \quad $4$}
-            \end{drawstack}
+            \begin{tabular}{|c|c|}
+                \hline
+                \texttt{x} & \texttt{-3} \\
+                \hline
+                \texttt{b} & \texttt{0} \\
+                \hline
+                \texttt{a} & \texttt{0} \\
+                \hline
+                \texttt{foo} & \texttt{\{fun \{x\} \{- x b\}\}} \\
+                \hline
+                \texttt{b} & \texttt{8} \\
+                \hline
+                \texttt{a} & \texttt{4} \\
+                \hline
+            \end{tabular}
+            \caption{Ambiente final}
             }
         \end{table}
 
+        \newpage
         % Ejercicio 1.c
         \item Alcance estático y evaluación perezosa
 
@@ -133,23 +133,25 @@
             \hfill
             \parbox{.4\linewidth}{
             \centering
-            \begin{drawstack}[scale=1.15]
-                \cell{\texttt{b} \quad \quad
-                      \texttt{\{- a a\}}} 
-                \cell{\texttt{a} \quad \quad 
-                      \texttt{\{- 2 2\}}}
-                \cell{\texttt{foo} \quad 
-                      \texttt{\{fun \{x\} \{- x b\}\}}}
-                \bcell{\texttt{x} \quad \quad $-3$}
-                \cell{\texttt{b} \quad \quad 
-                      \texttt{\{+ a a\}}}
-                \cell{\texttt{a} \quad \quad 
-                      \texttt{\{+ 2 2\}}}
-            \end{drawstack}
+            \begin{tabular}{|c|c|}
+                \hline
+                \texttt{b} & \texttt{\{- a a\}} \\
+                \hline
+                \texttt{a} & \texttt{\{- 2 2\}} \\
+                \hline
+                \texttt{foo} & \texttt{[closureV: x,\{-x b\},} \\
+                & \texttt{env-ant:((x -3),(b \{+ a a\}),} \\
+                & \texttt{(a \{+ 2 2\}))]} \\
+                \hline
+                \texttt{b} & \texttt{\{+ a a\}} \\
+                \hline
+                \texttt{a} & \texttt{\{+ 2 2\}} \\
+                \hline
+            \end{tabular}
+            \caption{Ambiente final}
             }
         \end{table}
 
-        \newpage
         % Ejercicio 1.d
         \item Alcance dinámico y evaluación perezosa
 
@@ -172,22 +174,513 @@
             \hfill
             \parbox{.4\linewidth}{
             \centering
-            \begin{drawstack}[scale=1.15]
-                \bcell{\texttt{x} \quad \quad $-3$}
-                \cell{\texttt{b} \quad \quad
-                      \texttt{\{- a a\}}} 
-                \cell{\texttt{a} \quad \quad 
-                      \texttt{\{- 2 2\}}}
-                \cell{\texttt{foo} \quad 
-                      \texttt{\{fun \{x\} \{- x b\}\}}}
-                \cell{\texttt{b} \quad \quad 
-                      \texttt{\{+ a a\}}}
-                \cell{\texttt{a} \quad \quad 
-                      \texttt{\{+ 2 2\}}}
-            \end{drawstack}
+            \begin{tabular}{|c|c|}
+                \hline
+                \texttt{x} & \texttt{-3} \\
+                \hline
+                \texttt{b} & \texttt{\{- a a\}} \\
+                \hline
+                \texttt{a} & \texttt{\{- 2 2\}} \\
+                \hline
+                \texttt{foo} & \texttt{\{fun \{x\} \{- x b\}\}} \\
+                \hline
+                \texttt{b} & \texttt{\{+ a a\}} \\
+                \hline
+                \texttt{a} & \texttt{\{+ 2 2\}} \\
+                \hline
+            \end{tabular}
+            \caption{Ambiente final}
             }
         \end{table}
     \end{enumerate}
+
+    % Ejercicio 2.
+    \item Dada la siguiente función:
+    \begin{verbatim}
+    (define (goo l)
+        (if (empty? l)
+            empty
+            (append (car l) (goo (cdr l)))))
+    \end{verbatim}
+
+    \begin{enumerate}
+        % Ejercicio 2.a
+        \item Explica qué hace y dale un nombre mnemotécnico.
+
+        \textsc{Solución:} Por cómo está definida la función \texttt{goo}, 
+        ésta debe recibir una lista de listas; por lo que \texttt{goo} hará 
+        la concatenación de las listas de la lista $l$, es decir, regresa una 
+        lista con todos los elementos de las listas de la lista $l$. Así, un 
+        nombre mnemotécnico para esta función podría ser 
+        \texttt{concatena-listas-de-lista}. Por lo tanto, 
+        \begin{verbatim}
+            (define (concatena-listas-de-lista l)
+                (if (empty? l)
+                    empty
+                    (append (car l) (concatena-listas-de-lista (cdr l)))))
+        \end{verbatim}
+
+        \newpage
+        % Ejercicio 2.b
+        \item Muestra los registros generados cuando es llamada con el argumento
+        \texttt{'((1 2) (3 4) (4 6))}. ¿Cuántos registros son generados? ¿Cuántos 
+        son ocupados a la vez?
+
+        \textsc{Solución:} \\
+        Ingresa \texttt{(concatena-listas-de-lista '((1 2) (3 4) (4 6)))}
+        \begin{center}
+            \begin{tabular}{|c|}
+                \hline
+                resultado $=$ \texttt{(append '(1 2) 
+                (concatena-listas-de-lista '((3 4) (4 6))))}  \\
+                \hline
+                $\cdots$ \\
+                \hline
+                \texttt{(if (empty? '((1 2) (3 4) (4 6))) empty} \\
+                \texttt{(append (car '((1 2) (3 4) (4 6)))} \\
+                \texttt{(concatena-listas-de-lista 
+                (cdr '((1 2) (3 4) (4 6))))))} \\
+                \hline
+                \texttt{(if (empty? l) empty} \\
+                \texttt{(append (car l) (concatena-listas-de-lista (cdr l))))} \\
+                \hline
+                \texttt{'((1 2) (3 4) (4 6))} \\
+                \hline
+                \texttt{concatena-listas-de-lista} \\
+                \hline
+            \end{tabular}
+        \end{center}
+
+        Ingresa \texttt{(concatena-listas-de-lista '((3 4) (4 6)))}
+        \begin{center}
+            \begin{tabular}{|c|}
+                \hline
+                resultado $=$ \texttt{(append '(3 4) 
+                (concatena-listas-de-lista '((4 6))))}  \\
+                \hline
+                $\cdots$ \\
+                \hline
+                \texttt{(if (empty? '((3 4) (4 6)) empty} \\
+                \texttt{(append (car '((3 4) (4 6)))} \\ 
+                \texttt{(concatena-listas-de-lista (cdr '((3 4) (4 6)))))))} \\
+                \hline
+                \texttt{(if (empty? l) empty} \\
+                \texttt{(append (car l) (concatena-listas-de-lista (cdr l))))} \\
+                \hline
+                \texttt{'((3 4) (4 6))} \\
+                \hline
+                \texttt{concatena-listas-de-lista} \\
+                \hline
+                \hline
+                resultado $=$ \texttt{(append '(1 2) 
+                (concatena-listas-de-lista '((3 4) (4 6))))}  \\
+                \hline
+                $\cdots$ \\
+                \hline
+                \texttt{(if (empty? '((1 2) (3 4) (4 6))) empty} \\
+                \texttt{(append (car '((1 2) (3 4) (4 6)))} \\
+                \texttt{(concatena-listas-de-lista 
+                (cdr '((1 2) (3 4) (4 6))))))} \\
+                \hline
+                \texttt{(if (empty? l) empty} \\
+                \texttt{(append (car l) (concatena-listas-de-lista (cdr l))))} \\
+                \hline
+                \texttt{'((1 2) (3 4) (4 6))} \\
+                \hline
+                \texttt{concatena-listas-de-lista} \\
+                \hline
+            \end{tabular}
+        \end{center}
+
+        \newpage
+        Ingresa \texttt{(concatena-listas-de-lista '((4 6)))}
+        \begin{center}
+            \begin{tabular}{|c|}
+                \hline
+                resultado $=$ \texttt{(append '(4 6) 
+                (concatena-listas-de-lista '()))}  \\
+                \hline
+                $\cdots$ \\
+                \hline
+                \texttt{(if (empty? '((4 6)) empty} \\
+                \texttt{(append (car '((4 6))) 
+                (concatena-listas-de-lista (cdr '((4 6)))))))} \\
+                \hline
+                \texttt{(if (empty? l) empty} \\
+                \texttt{(append (car l) (concatena-listas-de-lista (cdr l))))} \\
+                \hline
+                \texttt{'((4 6))} \\
+                \hline
+                \texttt{concatena-listas-de-lista} \\
+                \hline
+                \hline
+                resultado $=$ \texttt{(append '(3 4) 
+                (concatena-listas-de-lista '((4 6))))}  \\
+                \hline
+                $\cdots$ \\
+                \hline
+                \texttt{(if (empty? '((3 4) (4 6)) empty} \\
+                \texttt{(append (car '((3 4) (4 6)))} \\ 
+                \texttt{(concatena-listas-de-lista (cdr '((3 4) (4 6)))))))} \\
+                \hline
+                \texttt{(if (empty? l) empty} \\
+                \texttt{(append (car l) (concatena-listas-de-lista (cdr l))))} \\
+                \hline
+                \texttt{'((3 4) (4 6))} \\
+                \hline
+                \texttt{concatena-listas-de-lista} \\
+                \hline
+                \hline
+                resultado $=$ \texttt{(append '(1 2) 
+                (concatena-listas-de-lista '((3 4) (4 6))))}  \\
+                \hline
+                $\cdots$ \\
+                \hline
+                \texttt{(if (empty? '((1 2) (3 4) (4 6))) empty} \\
+                \texttt{(append (car '((1 2) (3 4) (4 6)))} \\
+                \texttt{(concatena-listas-de-lista 
+                (cdr '((1 2) (3 4) (4 6))))))} \\
+                \hline
+                \texttt{(if (empty? l) empty} \\
+                \texttt{(append (car l) (concatena-listas-de-lista (cdr l))))} \\
+                \hline
+                \texttt{'((1 2) (3 4) (4 6))} \\
+                \hline
+                \texttt{concatena-listas-de-lista} \\
+                \hline
+            \end{tabular}
+        \end{center}
+
+        \newpage
+        Ingresa \texttt{(concatena-listas-de-lista '())}
+        \begin{center}
+            \begin{tabular}{|c|}
+                \hline
+                resultado $=$ \texttt{'()}  \\
+                \hline
+                $\cdots$ \\
+                \hline
+                \texttt{(if (empty? '() empty} \\
+                \texttt{(append (car '() 
+                (concatena-listas-de-lista (cdr '()))))))} \\
+                \hline
+                \texttt{(if (empty? l) empty} \\
+                \texttt{(append (car l) (concatena-listas-de-lista (cdr l))))} \\
+                \hline
+                \texttt{'()} \\
+                \hline
+                \texttt{concatena-listas-de-lista} \\
+                \hline
+                \hline
+                resultado $=$ \texttt{(append '(4 6) (goo '()))}  \\
+                \hline
+                $\cdots$ \\
+                \hline
+                \texttt{(if (empty? '((4 6)) empty} \\
+                \texttt{(append (car '((4 6))) 
+                (goo (cdr '((4 6)))))))} \\
+                \hline
+                \texttt{(if (empty? l) empty} \\
+                \texttt{(append (car l) (goo (cdr l))))} \\
+                \hline
+                \texttt{'((4 6))} \\
+                \hline
+                \texttt{concatena-listas-de-lista} \\
+                \hline
+                \hline
+                resultado $=$ \texttt{(append '(3 4) (goo '((4 6))))}  \\
+                \hline
+                $\cdots$ \\
+                \hline
+                \texttt{(if (empty? '((3 4) (4 6)) empty} \\
+                \texttt{(append (car '((3 4) (4 6))) 
+                (goo (cdr '((3 4) (4 6)))))))} \\
+                \hline
+                \texttt{(if (empty? l) empty} \\
+                \texttt{(append (car l) (goo (cdr l))))} \\
+                \hline
+                \texttt{'((3 4) (4 6))} \\
+                \hline
+                \texttt{concatena-listas-de-lista} \\
+                \hline
+                \hline
+                resultado $=$ \texttt{(append '(1 2) (goo '((3 4) (4 6))))}  \\
+                \hline
+                $\cdots$ \\
+                \hline
+                \texttt{(if (empty? '((1 2) (3 4) (4 6))) empty} \\
+                \texttt{(append (car '((1 2) (3 4) (4 6))) 
+                (goo (cdr '((1 2) (3 4) (4 6))))))} \\
+                \hline
+                \texttt{(if (empty? l) empty} \\
+                \texttt{(append (car l) (goo (cdr l))))} \\
+                \hline
+                \texttt{'((1 2) (3 4) (4 6))} \\
+                \hline
+                \texttt{concatena-listas-de-lista} \\
+                \hline
+            \end{tabular}
+        \end{center}
+
+        \newpage
+        Sale \texttt{(concatena-listas-de-lista '())}
+        \begin{center}
+            \begin{tabular}{|c|}
+                \hline
+                resultado $=$ \texttt{(append '(4 6) (goo '()))}  \\
+                \hline
+                $\cdots$ \\
+                \hline
+                \texttt{(if (empty? '((4 6)) empty} \\
+                \texttt{(append (car '((4 6))) 
+                (goo (cdr '((4 6)))))))} \\
+                \hline
+                \texttt{(if (empty? l) empty} \\
+                \texttt{(append (car l) (goo (cdr l))))} \\
+                \hline
+                \texttt{'((4 6))} \\
+                \hline
+                \texttt{concatena-listas-de-lista} \\
+                \hline
+                \hline
+                resultado $=$ \texttt{(append '(3 4) (goo '((4 6))))}  \\
+                \hline
+                $\cdots$ \\
+                \hline
+                \texttt{(if (empty? '((3 4) (4 6)) empty} \\
+                \texttt{(append (car '((3 4) (4 6))) 
+                (goo (cdr '((3 4) (4 6)))))))} \\
+                \hline
+                \texttt{(if (empty? l) empty} \\
+                \texttt{(append (car l) (goo (cdr l))))} \\
+                \hline
+                \texttt{'((3 4) (4 6))} \\
+                \hline
+                \texttt{concatena-listas-de-lista} \\
+                \hline
+                \hline
+                resultado $=$ \texttt{(append '(1 2) (goo '((3 4) (4 6))))}  \\
+                \hline
+                $\cdots$ \\
+                \hline
+                \texttt{(if (empty? '((1 2) (3 4) (4 6))) empty} \\
+                \texttt{(append (car '((1 2) (3 4) (4 6))) 
+                (goo (cdr '((1 2) (3 4) (4 6))))))} \\
+                \hline
+                \texttt{(if (empty? l) empty} \\
+                \texttt{(append (car l) (goo (cdr l))))} \\
+                \hline
+                \texttt{'((1 2) (3 4) (4 6))} \\
+                \hline
+                \texttt{concatena-listas-de-lista} \\
+                \hline
+            \end{tabular}
+        \end{center}
+
+        Sale \texttt{(concatena-listas-de-lista '((4 6)))}
+        \begin{center}
+            \begin{tabular}{|c|}
+                \hline
+                resultado $=$ \texttt{(append '(3 4) '(4 6))}  \\
+                \hline
+                $\cdots$ \\
+                \hline
+                \texttt{(if (empty? '((3 4) (4 6)) empty} \\
+                \texttt{(append (car '((3 4) (4 6))) 
+                (goo (cdr '((3 4) (4 6)))))))} \\
+                \hline
+                \texttt{(if (empty? l) empty} \\
+                \texttt{(append (car l) (goo (cdr l))))} \\
+                \hline
+                \texttt{'((3 4) (4 6))} \\
+                \hline
+                \texttt{concatena-listas-de-lista} \\
+                \hline
+                \hline
+                resultado $=$ \texttt{(append '(1 2) (goo '((3 4) (4 6))))}  \\
+                \hline
+                $\cdots$ \\
+                \hline
+                \texttt{(if (empty? '((1 2) (3 4) (4 6))) empty} \\
+                \texttt{(append (car '((1 2) (3 4) (4 6))) 
+                (goo (cdr '((1 2) (3 4) (4 6))))))} \\
+                \hline
+                \texttt{(if (empty? l) empty} \\
+                \texttt{(append (car l) (goo (cdr l))))} \\
+                \hline
+                \texttt{'((1 2) (3 4) (4 6))} \\
+                \hline
+                \texttt{concatena-listas-de-lista} \\
+                \hline
+            \end{tabular}
+        \end{center}
+
+        \newpage
+        Sale \texttt{(append '(3 4) '(4 6))}
+        \begin{center}
+            \begin{tabular}{|c|}
+                \hline
+                resultado $=$ \texttt{(append '(1 2) '(3 4 4 6))}  \\
+                \hline
+                $\cdots$ \\
+                \hline
+                \texttt{(if (empty? '((1 2) (3 4) (4 6))) empty} \\
+                \texttt{(append (car '((1 2) (3 4) (4 6))) 
+                (goo (cdr '((1 2) (3 4) (4 6))))))} \\
+                \hline
+                \texttt{(if (empty? l) empty} \\
+                \texttt{(append (car l) (goo (cdr l))))} \\
+                \hline
+                \texttt{'((1 2) (3 4) (4 6))} \\
+                \hline
+                \texttt{concatena-listas-de-lista} \\
+                \hline
+            \end{tabular}
+        \end{center}
+
+        Sale \texttt{(append '(1 2) '(3 4 4 6))}
+        \begin{center}
+            \begin{tabular}{|c|}
+                \hline
+                resultado $=$ \texttt{(append '(1 2) '(1 2 3 4 4 6))} \\
+                \hline
+                $\cdots$ \\
+                \hline
+                \texttt{(if (empty? '((1 2) (3 4) (4 6))) empty} \\
+                \texttt{(append (car '((1 2) (3 4) (4 6))) 
+                (goo (cdr '((1 2) (3 4) (4 6))))))} \\
+                \hline
+                \texttt{(if (empty? l) empty} \\
+                \texttt{(append (car l) (goo (cdr l))))} \\
+                \hline
+                \texttt{'((1 2) (3 4) (4 6))} \\
+                \hline
+                \texttt{concatena-listas-de-lista} \\
+                \hline
+            \end{tabular}
+        \end{center}
+
+        Sale \texttt{concatena-listas-de-lista()}
+
+        % Ejercicio 2.c
+        \item Optimiza la función usando la técnica de recursión de cola.
+
+        \textsc{Solución:}
+        \begin{verbatim}
+        (define (concatena-listas l)
+          (concatena-listas-tail l '()))
+
+        (define (concatena-listas-tail l acc) 
+          (if (empty? l)
+              acc
+              (concatena-listas-tail (cdr l) (append acc (car l)))))
+        \end{verbatim}
+
+        % Ejercicio 2.d
+        \item Muestra los registros generados por la función del inciso anterior
+        con el argumento \texttt{'((1 2) (3 4) (4 6))}. ¿Cuántos registros son
+        generados? ¿Cuántos son ocupados a la vez?
+    \end{enumerate}
+
+    % Ejercicio 3.
+    \item Dada la siguiente función 
+    \begin{verbatim}
+    (define (foo n)
+        (if (< n 10)
+            n
+            (+ (modulo n 10) (foo (quotient n 10)))))
+    \end{verbatim}
+
+    \begin{enumerate}
+        % Ejercicio 3.a
+        \item Explica qué hace y dale un nombre mnemotécnico.
+
+        % Ejercicio 3.b
+        \item Muestra los registros generados cuando es llamada con el 
+        argumento $1729$. ¿Cuántos registros son generados?
+
+        % Ejercicio 3.c
+        \item Optimiza la función usando la técnica de recursión de cola.
+
+        % Ejercicio 3.c
+        \item Muestra los registros generados por la función del inciso anterior 
+        con el argumento $1729$. ¿Cuántos registros son generados? ¿Cuántos son 
+        ocupados a la vez?
+    \end{enumerate}
+
+    % Ejercicio 4.
+    \item Dada la siguiente función 
+    \begin{verbatim}
+    (define (hoo n l)
+        (if (zero? n)
+            l
+            (hoo (sub1 n) (cdr l))))
+    \end{verbatim}
+
+    \begin{enumerate}
+        % Ejercicio 4.a
+        \item Explica qué hace y dale un nombre mnemotécnico.
+        
+        \textsc{Solución:}
+
+        % Ejercicio 4.b
+        \item Muestra los registros generados cuando es llamada con los 
+        argumentos $3$ y \texttt{'(1 2 3 4)}. ¿Cuántos registros son generados?
+        ¿Cuántos son ocupados a la vez?
+
+        % Ejercicio 4.c
+        \item Optimiza la función usando la técnica de recursión de cola.
+        
+        \textsc{Solución:}
+        \begin{verbatim}
+        (define (drop n l)
+          (drop-tail n l l))
+          
+        (define (drop-tail n l acc)
+          (if (zero? n)
+              l
+              (drop-tail (sub1 n) (cdr l) acc)))
+        \end{verbatim}
+
+        % Ejercicio 4.d
+        \item Muestra los registros generados por la función del inciso anterior
+        con los argumentos $3$ y \texttt{'(1 2 3 4)}. ¿Cuántos registros son 
+        generados? ¿Cuántos son ocupados a la vez?
+    \end{enumerate}
+
+    \newpage
+    % Ejercicio 5.
+    \item Evalúa la siguiente expresión usando el intérprete para cajas visto 
+    en clase. Debes usar alcance estático y evaluación glotona. Mostrar el 
+    ambiente (stack) y memoria (heap) finales.
+    \begin{verbatim}
+    {with {a newbox 17}
+       {with {b {newbox 29}}
+          {with {foo {fun {} {setbox a {openbox a}}}}
+             {with foo {fun {} {setbox b {openbox a}}}}
+                {seqn {foo}
+                   {+ {openbox a} {openbox b}}}}}}
+    \end{verbatim}
+
+    \textsc{Solución:} La expresión que debemos evaluar es 
+    \texttt{\{seqn \{foo\} \{+ \{openbox a\} \{openbox b\}\}\}}, por lo que 
+
+    % Ejercicio 6.
+    \item Dada la definición de la función \texttt{next-location} que genera 
+    nuevas direcciones de memoria, vista en clase, modifícala para que no 
+    tenga efectos secundarios, es decir, que no dependa de ninguna variable
+    externa. 
+    
+    \textit{Hint: Modifícala usando la técnica Store Passing Style}
+    \begin{verbatim}
+    (define last-location -1) ;; al inicio del intérprete
+
+    ;; next-location: number
+    (define (next-location)
+       (begin 
+          (set! last-location (add1 last-location))
+          last-location))
+    \end{verbatim}
 \end{enumerate}
 
 \end{document}
