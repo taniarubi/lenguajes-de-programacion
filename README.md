@@ -21,6 +21,9 @@ Ayudante Lab: Silvia Díaz Gómez
 Durante este curso se realizaron:
 1. Tareas
    * Tarea 1: Conceptos generales.
-   * Tarea 2: Generación de código ejecutable
+   * Tarea 2: Generación de código ejecutable.
+   * Tarea 3: Alcance.
+   * Tarea 4: Cálculo lambda.
+   * Tarea 5: Estrategias de evaluación, recursión de cola y Store-Passing Style
 2. Pŕacticas
    * Práctica 1: Introducción a Racket.
