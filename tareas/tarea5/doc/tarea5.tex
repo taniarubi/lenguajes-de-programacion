@@ -210,9 +210,11 @@
         \textsc{Solución:} Por cómo está definida la función \texttt{goo}, 
         ésta debe recibir una lista de listas; por lo que \texttt{goo} hará 
         la concatenación de las listas de la lista $l$, es decir, regresa una 
-        lista con todos los elementos de las listas de la lista $l$. Así, un 
-        nombre mnemotécnico para esta función podría ser 
-        \texttt{concatena-listas-de-lista}. Por lo tanto, 
+        lista con todos los elementos de las listas de la lista $l$ de acuerdo 
+        a su órden de aparición en su respectiva lista. Así, un nombre 
+        mnemotécnico para esta función podría ser 
+        \texttt{concatena-listas-de-lista}. Por lo tanto, nuestra función 
+        queda de la siguiente forma:
         \begin{verbatim}
             (define (concatena-listas-de-lista l)
                 (if (empty? l)
@@ -226,26 +228,19 @@
         \texttt{'((1 2) (3 4) (4 6))}. ¿Cuántos registros son generados? ¿Cuántos 
         son ocupados a la vez?
 
-        \textsc{Solución:} \\
+        \textsc{Solución:} Veamos que se generan $8$ registros de activación
+        ($4$ de entrada y $4$ de salida), y ningún registro es ocupado a la vez.
+
         Ingresa \texttt{(concatena-listas-de-lista '((1 2) (3 4) (4 6)))}
         \begin{center}
             \begin{tabular}{|c|}
                 \hline
-                resultado $=$ \texttt{(append '(1 2) 
+                \texttt{(append '(1 2) 
                 (concatena-listas-de-lista '((3 4) (4 6))))}  \\
-                \hline
                 $\cdots$ \\
-                \hline
-                \texttt{(if (empty? '((1 2) (3 4) (4 6))) empty} \\
-                \texttt{(append (car '((1 2) (3 4) (4 6)))} \\
-                \texttt{(concatena-listas-de-lista 
-                (cdr '((1 2) (3 4) (4 6))))))} \\
-                \hline
                 \texttt{(if (empty? l) empty} \\
                 \texttt{(append (car l) (concatena-listas-de-lista (cdr l))))} \\
-                \hline
                 \texttt{'((1 2) (3 4) (4 6))} \\
-                \hline
                 \texttt{concatena-listas-de-lista} \\
                 \hline
             \end{tabular}
@@ -255,97 +250,53 @@
         \begin{center}
             \begin{tabular}{|c|}
                 \hline
-                resultado $=$ \texttt{(append '(3 4) 
+                \texttt{(append '(3 4) 
                 (concatena-listas-de-lista '((4 6))))}  \\
-                \hline
                 $\cdots$ \\
-                \hline
-                \texttt{(if (empty? '((3 4) (4 6)) empty} \\
-                \texttt{(append (car '((3 4) (4 6)))} \\ 
-                \texttt{(concatena-listas-de-lista (cdr '((3 4) (4 6)))))))} \\
-                \hline
                 \texttt{(if (empty? l) empty} \\
                 \texttt{(append (car l) (concatena-listas-de-lista (cdr l))))} \\
-                \hline
                 \texttt{'((3 4) (4 6))} \\
-                \hline
                 \texttt{concatena-listas-de-lista} \\
                 \hline
                 \hline
-                resultado $=$ \texttt{(append '(1 2) 
+                \texttt{(append '(1 2) 
                 (concatena-listas-de-lista '((3 4) (4 6))))}  \\
-                \hline
                 $\cdots$ \\
-                \hline
-                \texttt{(if (empty? '((1 2) (3 4) (4 6))) empty} \\
-                \texttt{(append (car '((1 2) (3 4) (4 6)))} \\
-                \texttt{(concatena-listas-de-lista 
-                (cdr '((1 2) (3 4) (4 6))))))} \\
-                \hline
                 \texttt{(if (empty? l) empty} \\
                 \texttt{(append (car l) (concatena-listas-de-lista (cdr l))))} \\
-                \hline
                 \texttt{'((1 2) (3 4) (4 6))} \\
-                \hline
                 \texttt{concatena-listas-de-lista} \\
                 \hline
             \end{tabular}
         \end{center}
 
-        \newpage
         Ingresa \texttt{(concatena-listas-de-lista '((4 6)))}
         \begin{center}
             \begin{tabular}{|c|}
                 \hline
-                resultado $=$ \texttt{(append '(4 6) 
-                (concatena-listas-de-lista '()))}  \\
-                \hline
+                \texttt{(append '(4 6) (concatena-listas-de-lista '()))} \\
                 $\cdots$ \\
-                \hline
-                \texttt{(if (empty? '((4 6)) empty} \\
-                \texttt{(append (car '((4 6))) 
-                (concatena-listas-de-lista (cdr '((4 6)))))))} \\
-                \hline
                 \texttt{(if (empty? l) empty} \\
                 \texttt{(append (car l) (concatena-listas-de-lista (cdr l))))} \\
-                \hline
                 \texttt{'((4 6))} \\
-                \hline
                 \texttt{concatena-listas-de-lista} \\
                 \hline
                 \hline
-                resultado $=$ \texttt{(append '(3 4) 
+                \texttt{(append '(3 4) 
                 (concatena-listas-de-lista '((4 6))))}  \\
-                \hline
                 $\cdots$ \\
-                \hline
-                \texttt{(if (empty? '((3 4) (4 6)) empty} \\
-                \texttt{(append (car '((3 4) (4 6)))} \\ 
-                \texttt{(concatena-listas-de-lista (cdr '((3 4) (4 6)))))))} \\
-                \hline
                 \texttt{(if (empty? l) empty} \\
                 \texttt{(append (car l) (concatena-listas-de-lista (cdr l))))} \\
-                \hline
                 \texttt{'((3 4) (4 6))} \\
-                \hline
                 \texttt{concatena-listas-de-lista} \\
                 \hline
                 \hline
-                resultado $=$ \texttt{(append '(1 2) 
+                \texttt{(append '(1 2) 
                 (concatena-listas-de-lista '((3 4) (4 6))))}  \\
-                \hline
                 $\cdots$ \\
-                \hline
-                \texttt{(if (empty? '((1 2) (3 4) (4 6))) empty} \\
-                \texttt{(append (car '((1 2) (3 4) (4 6)))} \\
-                \texttt{(concatena-listas-de-lista 
-                (cdr '((1 2) (3 4) (4 6))))))} \\
-                \hline
                 \texttt{(if (empty? l) empty} \\
                 \texttt{(append (car l) (concatena-listas-de-lista (cdr l))))} \\
-                \hline
                 \texttt{'((1 2) (3 4) (4 6))} \\
-                \hline
                 \texttt{concatena-listas-de-lista} \\
                 \hline
             \end{tabular}
@@ -356,230 +307,141 @@
         \begin{center}
             \begin{tabular}{|c|}
                 \hline
-                resultado $=$ \texttt{'()}  \\
-                \hline
+                \texttt{'()}  \\
                 $\cdots$ \\
-                \hline
-                \texttt{(if (empty? '() empty} \\
-                \texttt{(append (car '() 
-                (concatena-listas-de-lista (cdr '()))))))} \\
-                \hline
                 \texttt{(if (empty? l) empty} \\
                 \texttt{(append (car l) (concatena-listas-de-lista (cdr l))))} \\
-                \hline
                 \texttt{'()} \\
-                \hline
                 \texttt{concatena-listas-de-lista} \\
                 \hline
                 \hline
-                resultado $=$ \texttt{(append '(4 6) (goo '()))}  \\
-                \hline
+                \texttt{(append '(4 6) (concatena-listas-de-lista '()))} \\
                 $\cdots$ \\
-                \hline
-                \texttt{(if (empty? '((4 6)) empty} \\
-                \texttt{(append (car '((4 6))) 
-                (goo (cdr '((4 6)))))))} \\
-                \hline
                 \texttt{(if (empty? l) empty} \\
-                \texttt{(append (car l) (goo (cdr l))))} \\
-                \hline
+                \texttt{(append (car l) (concatena-listas-de-lista (cdr l))))} \\
                 \texttt{'((4 6))} \\
-                \hline
                 \texttt{concatena-listas-de-lista} \\
                 \hline
                 \hline
-                resultado $=$ \texttt{(append '(3 4) (goo '((4 6))))}  \\
-                \hline
+                \texttt{(append '(3 4) 
+                (concatena-listas-de-lista '((4 6))))}  \\
                 $\cdots$ \\
-                \hline
-                \texttt{(if (empty? '((3 4) (4 6)) empty} \\
-                \texttt{(append (car '((3 4) (4 6))) 
-                (goo (cdr '((3 4) (4 6)))))))} \\
-                \hline
                 \texttt{(if (empty? l) empty} \\
-                \texttt{(append (car l) (goo (cdr l))))} \\
-                \hline
+                \texttt{(append (car l) (concatena-listas-de-lista (cdr l))))} \\
                 \texttt{'((3 4) (4 6))} \\
-                \hline
                 \texttt{concatena-listas-de-lista} \\
                 \hline
                 \hline
-                resultado $=$ \texttt{(append '(1 2) (goo '((3 4) (4 6))))}  \\
-                \hline
+                \texttt{(append '(1 2) 
+                (concatena-listas-de-lista '((3 4) (4 6))))}  \\
                 $\cdots$ \\
-                \hline
-                \texttt{(if (empty? '((1 2) (3 4) (4 6))) empty} \\
-                \texttt{(append (car '((1 2) (3 4) (4 6))) 
-                (goo (cdr '((1 2) (3 4) (4 6))))))} \\
-                \hline
                 \texttt{(if (empty? l) empty} \\
-                \texttt{(append (car l) (goo (cdr l))))} \\
-                \hline
+                \texttt{(append (car l) (concatena-listas-de-lista (cdr l))))} \\
                 \texttt{'((1 2) (3 4) (4 6))} \\
-                \hline
                 \texttt{concatena-listas-de-lista} \\
                 \hline
             \end{tabular}
         \end{center}
 
-        \newpage
         Sale \texttt{(concatena-listas-de-lista '())}
         \begin{center}
             \begin{tabular}{|c|}
                 \hline
-                resultado $=$ \texttt{(append '(4 6) (goo '()))}  \\
-                \hline
+                \texttt{(append '(4 6) '())} \\
                 $\cdots$ \\
-                \hline
-                \texttt{(if (empty? '((4 6)) empty} \\
-                \texttt{(append (car '((4 6))) 
-                (goo (cdr '((4 6)))))))} \\
-                \hline
                 \texttt{(if (empty? l) empty} \\
-                \texttt{(append (car l) (goo (cdr l))))} \\
-                \hline
+                \texttt{(append (car l) (concatena-listas-de-lista (cdr l))))} \\
                 \texttt{'((4 6))} \\
-                \hline
                 \texttt{concatena-listas-de-lista} \\
                 \hline
                 \hline
-                resultado $=$ \texttt{(append '(3 4) (goo '((4 6))))}  \\
-                \hline
+                \texttt{(append '(3 4) 
+                (concatena-listas-de-lista '((4 6))))}  \\
                 $\cdots$ \\
-                \hline
-                \texttt{(if (empty? '((3 4) (4 6)) empty} \\
-                \texttt{(append (car '((3 4) (4 6))) 
-                (goo (cdr '((3 4) (4 6)))))))} \\
-                \hline
                 \texttt{(if (empty? l) empty} \\
-                \texttt{(append (car l) (goo (cdr l))))} \\
-                \hline
+                \texttt{(append (car l) (concatena-listas-de-lista (cdr l))))} \\
                 \texttt{'((3 4) (4 6))} \\
-                \hline
                 \texttt{concatena-listas-de-lista} \\
                 \hline
                 \hline
-                resultado $=$ \texttt{(append '(1 2) (goo '((3 4) (4 6))))}  \\
-                \hline
+                \texttt{(append '(1 2) 
+                (concatena-listas-de-lista '((3 4) (4 6))))}  \\
                 $\cdots$ \\
-                \hline
-                \texttt{(if (empty? '((1 2) (3 4) (4 6))) empty} \\
-                \texttt{(append (car '((1 2) (3 4) (4 6))) 
-                (goo (cdr '((1 2) (3 4) (4 6))))))} \\
-                \hline
                 \texttt{(if (empty? l) empty} \\
-                \texttt{(append (car l) (goo (cdr l))))} \\
-                \hline
+                \texttt{(append (car l) (concatena-listas-de-lista (cdr l))))} \\
                 \texttt{'((1 2) (3 4) (4 6))} \\
-                \hline
-                \texttt{concatena-listas-de-lista} \\
-                \hline
-            \end{tabular}
-        \end{center}
-
-        Sale \texttt{(concatena-listas-de-lista '((4 6)))}
-        \begin{center}
-            \begin{tabular}{|c|}
-                \hline
-                resultado $=$ \texttt{(append '(3 4) '(4 6))}  \\
-                \hline
-                $\cdots$ \\
-                \hline
-                \texttt{(if (empty? '((3 4) (4 6)) empty} \\
-                \texttt{(append (car '((3 4) (4 6))) 
-                (goo (cdr '((3 4) (4 6)))))))} \\
-                \hline
-                \texttt{(if (empty? l) empty} \\
-                \texttt{(append (car l) (goo (cdr l))))} \\
-                \hline
-                \texttt{'((3 4) (4 6))} \\
-                \hline
-                \texttt{concatena-listas-de-lista} \\
-                \hline
-                \hline
-                resultado $=$ \texttt{(append '(1 2) (goo '((3 4) (4 6))))}  \\
-                \hline
-                $\cdots$ \\
-                \hline
-                \texttt{(if (empty? '((1 2) (3 4) (4 6))) empty} \\
-                \texttt{(append (car '((1 2) (3 4) (4 6))) 
-                (goo (cdr '((1 2) (3 4) (4 6))))))} \\
-                \hline
-                \texttt{(if (empty? l) empty} \\
-                \texttt{(append (car l) (goo (cdr l))))} \\
-                \hline
-                \texttt{'((1 2) (3 4) (4 6))} \\
-                \hline
                 \texttt{concatena-listas-de-lista} \\
                 \hline
             \end{tabular}
         \end{center}
 
         \newpage
-        Sale \texttt{(append '(3 4) '(4 6))}
+        Sale \texttt{(concatena-listas-de-lista '((4 6)))}
         \begin{center}
             \begin{tabular}{|c|}
                 \hline
-                resultado $=$ \texttt{(append '(1 2) '(3 4 4 6))}  \\
-                \hline
+                \texttt{(append '(3 4) '(4 6))}  \\
                 $\cdots$ \\
-                \hline
-                \texttt{(if (empty? '((1 2) (3 4) (4 6))) empty} \\
-                \texttt{(append (car '((1 2) (3 4) (4 6))) 
-                (goo (cdr '((1 2) (3 4) (4 6))))))} \\
-                \hline
                 \texttt{(if (empty? l) empty} \\
-                \texttt{(append (car l) (goo (cdr l))))} \\
+                \texttt{(append (car l) (concatena-listas-de-lista (cdr l))))} \\
+                \texttt{'((3 4) (4 6))} \\
+                \texttt{concatena-listas-de-lista} \\
                 \hline
+                \hline
+                \texttt{(append '(1 2) 
+                (concatena-listas-de-lista '((3 4) (4 6))))}  \\
+                $\cdots$ \\
+                \texttt{(if (empty? l) empty} \\
+                \texttt{(append (car l) (concatena-listas-de-lista (cdr l))))} \\
                 \texttt{'((1 2) (3 4) (4 6))} \\
-                \hline
                 \texttt{concatena-listas-de-lista} \\
                 \hline
             \end{tabular}
         \end{center}
 
-        Sale \texttt{(append '(1 2) '(3 4 4 6))}
+        Sale \texttt{(concatena-listas-de-lista '((3 4) (4 6)))}
         \begin{center}
             \begin{tabular}{|c|}
                 \hline
-                resultado $=$ \texttt{(append '(1 2) '(1 2 3 4 4 6))} \\
-                \hline
+                \texttt{(append '(1 2) '(3 4 4 6))}  \\
                 $\cdots$ \\
-                \hline
-                \texttt{(if (empty? '((1 2) (3 4) (4 6))) empty} \\
-                \texttt{(append (car '((1 2) (3 4) (4 6))) 
-                (goo (cdr '((1 2) (3 4) (4 6))))))} \\
-                \hline
                 \texttt{(if (empty? l) empty} \\
-                \texttt{(append (car l) (goo (cdr l))))} \\
-                \hline
+                \texttt{(append (car l) (concatena-listas-de-lista (cdr l))))} \\
                 \texttt{'((1 2) (3 4) (4 6))} \\
-                \hline
                 \texttt{concatena-listas-de-lista} \\
                 \hline
             \end{tabular}
         \end{center}
 
-        Sale \texttt{concatena-listas-de-lista()}
+        Sale \texttt{(concatena-listas-de-lista '((1 2) (3 4) (4 6)))}
+        \begin{center}
+            \begin{tabular}{|c|}
+                \hline
+                '(1 2 3 4 4 6) \\
+                \hline
+            \end{tabular}
+        \end{center}
 
         % Ejercicio 2.c
         \item Optimiza la función usando la técnica de recursión de cola.
 
         \textsc{Solución:}
         \begin{verbatim}
-        (define (concatena-listas l)
-          (concatena-listas-tail l '()))
-
-        (define (concatena-listas-tail l acc) 
+        (define (concatena-listas-de-lista l)
+          (concatena-listas-de-lista-tail l '()))
+          
+        (define (concatena-listas-de-lista-tail l acc)
           (if (empty? l)
               acc
-              (concatena-listas-tail (cdr l) (append acc (car l)))))
+              (concatena-listas-de-lista-tail (cdr l) (append acc (car l)))))
         \end{verbatim}
 
         % Ejercicio 2.d
         \item Muestra los registros generados por la función del inciso anterior
         con el argumento \texttt{'((1 2) (3 4) (4 6))}. ¿Cuántos registros son
         generados? ¿Cuántos son ocupados a la vez?
+
+        \textsc{Solución:}
     \end{enumerate}
 
     % Ejercicio 3.
