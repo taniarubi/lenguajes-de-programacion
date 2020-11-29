@@ -24,6 +24,6 @@ Durante este curso se realizaron:
    * Tarea 2: Generación de código ejecutable.
    * Tarea 3: Alcance.
    * Tarea 4: Cálculo lambda.
-   * Tarea 5: Estrategias de evaluación, recursión de cola y Store-Passing Style
+   * Tarea 5: Estrategias de evaluación, recursión y Store-Passing Style
 2. Pŕacticas
    * Práctica 1: Introducción a Racket.
