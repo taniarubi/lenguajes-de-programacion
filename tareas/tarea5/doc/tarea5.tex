@@ -514,10 +514,194 @@
     \begin{enumerate}
         % Ejercicio 3.a
         \item Explica qué hace y dale un nombre mnemotécnico.
+        
+        \textsc{Solución:} La expresión \texttt{(quotient n 10)} divide al 
+        número $n$ entre $10$, por lo que elimina el último dígito del número 
+        $n$, y la expresión \texttt{modulo n 10} regresa el residuo de la 
+        división $n$ entre $10$. Así, la función \texttt{foo} regresa la suma 
+        de los residuos de las divisiones de n (quitándole la última cifra 
+        a $n$ en cada llamada) entre $10$. Por lo tanto, un nombre 
+        mnemotécnico podría ser \texttt{suma-residuos}. De esta manera, la 
+        función queda de la siguiente forma:
+        \begin{verbatim}
+        (define (suma-residuos n)
+          (if (< n 10)
+              n
+              (+ (modulo n 10) (suma-residuos (quotient n 10)))))
+        \end{verbatim}
 
         % Ejercicio 3.b
         \item Muestra los registros generados cuando es llamada con el 
-        argumento $1729$. ¿Cuántos registros son generados?
+        argumento $1729$. ¿Cuántos registros son generados? ¿Cuántos son 
+        ocupados a la vez?
+
+        \texttt{Solución:} Veamos que se generan $5$ registros de activación 
+        y que ningún registro es ocupado a la vez.
+
+        Ingresa \texttt{(suma-residuos 1729)}
+        \begin{center}
+            \begin{tabular}[h]{|c|}
+                \hline
+                \texttt{(+ 9 (suma-residuos 172))} \\
+                \texttt{(if (< n 10) n} \\
+                \texttt{(+ (modulo n 10) (suma-residuos (quotient n 10))))} \\ 
+                \texttt{n = 1729} \\
+                \texttt{suma-residuos} \\
+                \hline
+            \end{tabular}
+        \end{center}
+
+        Ingresa \texttt{(suma-residuos 172)}
+        \begin{center}
+            \begin{tabular}[h]{|c|}
+                \hline
+                \texttt{(+ 2 (suma-residuos 17))} \\
+                \texttt{(if (< n 10) n} \\
+                \texttt{(+ (modulo n 10) (suma-residuos (quotient n 10))))} \\ 
+                \texttt{n = 172} \\
+                \texttt{suma-residuos} \\
+                \hline
+                \hline
+                \texttt{(+ 9 (suma-residuos 172))} \\
+                \texttt{(if (< n 10) n} \\
+                \texttt{(+ (modulo n 10) (suma-residuos (quotient n 10))))} \\ 
+                \texttt{n = 1729} \\
+                \texttt{suma-residuos} \\
+                \hline
+            \end{tabular}
+        \end{center}
+
+        \newpage
+        Ingresa \texttt{(suma-residuos 17)}
+        \begin{center}
+            \begin{tabular}[h]{|c|}
+                \hline
+                \texttt{(+ 7 (suma-residuos 1))} \\
+                \texttt{(if (< n 10) n} \\
+                \texttt{(+ (modulo n 10) (suma-residuos (quotient n 10))))} \\ 
+                \texttt{n = 17} \\
+                \texttt{suma-residuos} \\
+                \hline
+                \hline
+                \texttt{(+ 2 (suma-residuos 17))} \\
+                \texttt{(if (< n 10) n} \\
+                \texttt{(+ (modulo n 10) (suma-residuos (quotient n 10))))} \\ 
+                \texttt{n = 172} \\
+                \texttt{suma-residuos} \\
+                \hline
+                \hline
+                \texttt{(+ 9 (suma-residuos 172))} \\
+                \texttt{(if (< n 10) n} \\
+                \texttt{(+ (modulo n 10) (suma-residuos (quotient n 10))))} \\ 
+                \texttt{n = 1729} \\
+                \texttt{suma-residuos} \\
+                \hline
+            \end{tabular}
+        \end{center}
+
+        Ingresa \texttt{(suma-residuos 1)}
+        \begin{center}
+            \begin{tabular}[h]{|c|}
+                \hline
+                \texttt{1} \\
+                \texttt{(if (< n 10) n} \\
+                \texttt{(+ (modulo n 10) (suma-residuos (quotient n 10))))} \\ 
+                \texttt{n = 1} \\
+                \texttt{suma-residuos} \\
+                \hline
+                \hline
+                \texttt{(+ 7 (suma-residuos 1))} \\
+                \texttt{(if (< n 10) n} \\
+                \texttt{(+ (modulo n 10) (suma-residuos (quotient n 10))))} \\ 
+                \texttt{n = 17} \\
+                \texttt{suma-residuos} \\
+                \hline
+                \hline
+                \texttt{(+ 2 (suma-residuos 17))} \\
+                \texttt{(if (< n 10) n} \\
+                \texttt{(+ (modulo n 10) (suma-residuos (quotient n 10))))} \\ 
+                \texttt{n = 172} \\
+                \texttt{suma-residuos} \\
+                \hline
+                \hline
+                \texttt{(+ 9 (suma-residuos 172))} \\
+                \texttt{(if (< n 10) n} \\
+                \texttt{(+ (modulo n 10) (suma-residuos (quotient n 10))))} \\ 
+                \texttt{n = 1729} \\
+                \texttt{suma-residuos} \\
+                \hline
+            \end{tabular}
+        \end{center}
+
+        \newpage
+        Sale \texttt{(suma-residuos 1)}
+        \begin{center}
+            \begin{tabular}[h]{|c|}
+                \hline
+                \texttt{(+ 7 1)} \\
+                \texttt{(if (< n 10) n} \\
+                \texttt{(+ (modulo n 10) (suma-residuos (quotient n 10))))} \\ 
+                \texttt{n = 17} \\
+                \texttt{suma-residuos} \\
+                \hline
+                \hline
+                \texttt{(+ 2 (suma-residuos 17))} \\
+                \texttt{(if (< n 10) n} \\
+                \texttt{(+ (modulo n 10) (suma-residuos (quotient n 10))))} \\ 
+                \texttt{n = 172} \\
+                \texttt{suma-residuos} \\
+                \hline
+                \hline
+                \texttt{(+ 9 (suma-residuos 172))} \\
+                \texttt{(if (< n 10) n} \\
+                \texttt{(+ (modulo n 10) (suma-residuos (quotient n 10))))} \\ 
+                \texttt{n = 1729} \\
+                \texttt{suma-residuos} \\
+                \hline
+            \end{tabular}
+        \end{center}
+
+        Sale \texttt{(suma-residuos 17)}
+        \begin{center}
+            \begin{tabular}[h]{|c|}
+                \hline
+                \texttt{(+ 2 8)} \\
+                \texttt{(if (< n 10) n} \\
+                \texttt{(+ (modulo n 10) (suma-residuos (quotient n 10))))} \\ 
+                \texttt{n = 172} \\
+                \texttt{suma-residuos} \\
+                \hline
+                \hline
+                \texttt{(+ 9 (suma-residuos 172))} \\
+                \texttt{(if (< n 10) n} \\
+                \texttt{(+ (modulo n 10) (suma-residuos (quotient n 10))))} \\ 
+                \texttt{n = 1729} \\
+                \texttt{suma-residuos} \\
+                \hline
+            \end{tabular}
+        \end{center}
+
+        Sale \texttt{(suma-residuos 172)}
+        \begin{center}
+            \begin{tabular}[h]{|c|}
+                \hline
+                \texttt{(+ 9 10)} \\
+                \texttt{(if (< n 10) n} \\
+                \texttt{(+ (modulo n 10) (suma-residuos (quotient n 10))))} \\ 
+                \texttt{n = 1729} \\
+                \texttt{suma-residuos} \\
+                \hline
+            \end{tabular}
+        \end{center}
+
+        Sale \texttt{(suma-residuos 1729)}
+        \begin{center}
+            \begin{tabular}[h]{|c|}
+                \hline
+                19 \\
+                \hline
+            \end{tabular}
+        \end{center}
 
         % Ejercicio 3.c
         \item Optimiza la función usando la técnica de recursión de cola.
