@@ -824,6 +824,7 @@
         \end{center}
     \end{enumerate}
 
+    \newpage
     % Ejercicio 4.
     \item Dada la siguiente función 
     \begin{verbatim}
@@ -837,34 +838,164 @@
         % Ejercicio 4.a
         \item Explica qué hace y dale un nombre mnemotécnico.
         
-        \textsc{Solución:}
+        \textsc{Solución:} La función \texttt{hoo} elimina los primeros $n$
+        elementos de la lista $l$, por lo que un nombre mnemotécnico podría 
+        ser \texttt{elimina-n-elementos}. Así, la función quedaría como
+        \begin{verbatim}
+            (define (elimina-n-elementos n l)
+                (if (zero? n)
+                    l
+                    (elimina-n-elementos (sub1 n) (cdr l))))
+        \end{verbatim}
 
         % Ejercicio 4.b
         \item Muestra los registros generados cuando es llamada con los 
         argumentos $3$ y \texttt{'(1 2 3 4)}. ¿Cuántos registros son generados?
         ¿Cuántos son ocupados a la vez?
 
+        \textsc{Solución:} Veamos que se generan $8$ registros de activación, 
+        y ninguno de estos registros son ocupados a la vez.
+
+        Ingresa \texttt{(elimina-n-elementos 3 '(1 2 3 4))}
+        \begin{center}
+            \begin{tabular}[h]{|c|}
+                \hline
+                \texttt{(elimina-n-elementos 2 '(2 3 4))} \\
+                \texttt{(if (zero? n) l} \\
+                \texttt{(elimina-n-elementos (sub1 n) (cdr l)))} \\
+                \texttt{n = 3, l = '(1 2 3 4)} \\
+                \texttt{elimina-n-elementos} \\
+                \hline
+            \end{tabular}
+        \end{center}
+        
+        Ingresa \texttt{(elimina-n-elementos 2 '(2 3 4))}
+        \begin{center}
+            \begin{tabular}[h]{|c|}
+                \hline
+                \texttt{(elimina-n-elementos 1 '(3 4))} \\
+                \texttt{(if (zero? n) l} \\
+                \texttt{(elimina-n-elementos (sub1 n) (cdr l)))} \\
+                \texttt{n = 2, l = '(2 3 4)} \\
+                \texttt{elimina-n-elementos} \\
+                \hline
+                \hline
+                \texttt{(elimina-n-elementos 2 '(2 3 4))} \\
+                \texttt{(if (zero? n) l} \\
+                \texttt{(elimina-n-elementos (sub1 n) (cdr l)))} \\
+                \texttt{n = 3, l = '(1 2 3 4)} \\
+                \texttt{elimina-n-elementos} \\
+                \hline
+            \end{tabular}
+        \end{center}
+
+        \newpage
+        Ingresa \texttt{(elimina-n-elementos 1 '(3 4))}
+        \begin{center}
+            \begin{tabular}[h]{|c|}
+                \hline
+                \texttt{(elimina-n-elementos 0 '(4))} \\
+                \texttt{(if (zero? n) l} \\
+                \texttt{(elimina-n-elementos (sub1 n) (cdr l)))} \\
+                \texttt{n = 1, l = '(3 4)} \\
+                \texttt{elimina-n-elementos} \\
+                \hline
+                \hline
+                \texttt{(elimina-n-elementos 1 '(3 4))} \\
+                \texttt{(if (zero? n) l} \\
+                \texttt{(elimina-n-elementos (sub1 n) (cdr l)))} \\
+                \texttt{n = 2, l = '(2 3 4)} \\
+                \texttt{elimina-n-elementos} \\
+                \hline
+                \hline
+                \texttt{(elimina-n-elementos 2 '(2 3 4))} \\
+                \texttt{(if (zero? n) l} \\
+                \texttt{(elimina-n-elementos (sub1 n) (cdr l)))} \\
+                \texttt{n = 3, l = '(1 2 3 4)} \\
+                \texttt{elimina-n-elementos} \\
+                \hline
+            \end{tabular}
+        \end{center}
+
+        Ingresa \texttt{(elimina-n-elementos 0 '(4))}
+        \begin{center}
+            \begin{tabular}[h]{|c|}
+                \hline
+                \texttt{'(4)} \\
+                \texttt{(if (zero? n) l} \\
+                \texttt{(elimina-n-elementos (sub1 n) (cdr l)))} \\
+                \texttt{n = 0, l = '(4)} \\
+                \texttt{elimina-n-elementos} \\
+                \hline
+                \hline
+                \texttt{(elimina-n-elementos 0 '(4))} \\
+                \texttt{(if (zero? n) l} \\
+                \texttt{(elimina-n-elementos (sub1 n) (cdr l)))} \\
+                \texttt{n = 1, l = '(3 4)} \\
+                \texttt{elimina-n-elementos} \\
+                \hline
+                \hline
+                \texttt{(elimina-n-elementos 1 '(3 4))} \\
+                \texttt{(if (zero? n) l} \\
+                \texttt{(elimina-n-elementos (sub1 n) (cdr l)))} \\
+                \texttt{n = 2, l = '(2 3 4)} \\
+                \texttt{elimina-n-elementos} \\
+                \hline
+                \hline
+                \texttt{(elimina-n-elementos 2 '(2 3 4))} \\
+                \texttt{(if (zero? n) l} \\
+                \texttt{(elimina-n-elementos (sub1 n) (cdr l)))} \\
+                \texttt{n = 3, l = '(1 2 3 4)} \\
+                \texttt{elimina-n-elementos} \\
+                \hline
+                \hline
+            \end{tabular}
+        \end{center}
+
+        Sale \texttt{(elimina-n-elementos 0 '(4))}
+        \begin{center}
+            \begin{tabular}[h]{|c|}
+                \hline
+                \texttt{'(4)} \\
+                \hline
+            \end{tabular}
+        \end{center}
+
         % Ejercicio 4.c
         \item Optimiza la función usando la técnica de recursión de cola.
         
         \textsc{Solución:}
         \begin{verbatim}
-        (define (drop n l)
-          (drop-tail n l l))
+        (define (elimina-n-elementos n l)
+          (elimina-n-elementos-tail n l l))
           
-        (define (drop-tail n l acc)
+        (define (elimina-n-elementos-tail n l acc)
           (if (zero? n)
               l
-              (drop-tail (sub1 n) (cdr l) acc)))
+              (elimina-n-elementos-tail (sub1 n) (cdr l) acc)))
         \end{verbatim}
 
         % Ejercicio 4.d
         \item Muestra los registros generados por la función del inciso anterior
         con los argumentos $3$ y \texttt{'(1 2 3 4)}. ¿Cuántos registros son 
         generados? ¿Cuántos son ocupados a la vez?
+
+        \textsc{Solución:} Veamos que se generan $k$ registros de activación, y 
+        que $k$ son ocupados a la vez.
+
+        Ingresa \texttt{(elimina-n-elementos 3 '(1 2 3 4))}
+        \begin{center}
+            \begin{tabular}[h]{|c|}
+                \hline
+                \texttt{(elimina-n-elementos-tail 3 '(1 2 3 4) '(1 2 3 4))} \\
+                \texttt{(elimina-n-elementos-tail n l l)} \\
+                \texttt{n = 3, l = '(1 2 3 4)} \\
+                \texttt{elimina-n-elementos} \\
+                \hline
+            \end{tabular}
+        \end{center}
     \end{enumerate}
 
-    \newpage
     % Ejercicio 5.
     \item Evalúa la siguiente expresión usando el intérprete para cajas visto 
     en clase. Debes usar alcance estático y evaluación glotona. Mostrar el 
