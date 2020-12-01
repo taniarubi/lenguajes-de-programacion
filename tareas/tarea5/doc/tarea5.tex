@@ -965,35 +965,13 @@
         \item Optimiza la función usando la técnica de recursión de cola.
         
         \textsc{Solución:}
-        \begin{verbatim}
-        (define (elimina-n-elementos n l)
-          (elimina-n-elementos-tail n l l))
-          
-        (define (elimina-n-elementos-tail n l acc)
-          (if (zero? n)
-              l
-              (elimina-n-elementos-tail (sub1 n) (cdr l) acc)))
-        \end{verbatim}
 
         % Ejercicio 4.d
         \item Muestra los registros generados por la función del inciso anterior
         con los argumentos $3$ y \texttt{'(1 2 3 4)}. ¿Cuántos registros son 
         generados? ¿Cuántos son ocupados a la vez?
 
-        \textsc{Solución:} Veamos que se generan $k$ registros de activación, y 
-        que $k$ son ocupados a la vez.
-
-        Ingresa \texttt{(elimina-n-elementos 3 '(1 2 3 4))}
-        \begin{center}
-            \begin{tabular}[h]{|c|}
-                \hline
-                \texttt{(elimina-n-elementos-tail 3 '(1 2 3 4) '(1 2 3 4))} \\
-                \texttt{(elimina-n-elementos-tail n l l)} \\
-                \texttt{n = 3, l = '(1 2 3 4)} \\
-                \texttt{elimina-n-elementos} \\
-                \hline
-            \end{tabular}
-        \end{center}
+        \textsc{Solución:}
     \end{enumerate}
 
     % Ejercicio 5.
@@ -1001,7 +979,7 @@
     en clase. Debes usar alcance estático y evaluación glotona. Mostrar el 
     ambiente (stack) y memoria (heap) finales.
     \begin{verbatim}
-    {with {a newbox 17}
+    {with {a {newbox 17}}
        {with {b {newbox 29}}
           {with {foo {fun {} {setbox a {openbox a}}}}
              {with foo {fun {} {setbox b {openbox a}}}}
@@ -1010,7 +988,67 @@
     \end{verbatim}
 
     \textsc{Solución:} La expresión que debemos evaluar es 
-    \texttt{\{seqn \{foo\} \{+ \{openbox a\} \{openbox b\}\}\}}, por lo que 
+    \begin{verbatim}
+    {seqn {foo}
+      {+ {openbox a} {openbox b}}}
+    \end{verbatim}
+
+    Como se trata de una expresión \texttt{seqn}, entonces primero debemos 
+    evaluar la función \texttt{foo}. De esta forma, 
+    \begin{center}
+        \texttt{\{foo\} = \{fun \{\} \{setbox b \{openbox a\}\}\}}
+    \end{center}
+
+    Como \texttt{foo} no recibe ningún parámetro, entonces no agregamos nada 
+    al stack, sólo evaluamos \texttt{\{setbox b \{openbox a\}\}}. Esta 
+    expresión nos indica que a la caja $b$ le debemos asignar el valor que 
+    contiene la caja $a$. Luego, evaluamos y regresamos el valor de 
+    \texttt{\{+ \{openbox a\} \{openbox b\}\}}, ya que es nuestra última 
+    expresión dentro de \texttt{seqn}. Así, 
+    \begin{align*}
+        \texttt{\{+ \{openbox a\} \{openbox b\}\}}
+        &= \texttt{\{+ 17 17\}} \\
+        &= \texttt{34}
+    \end{align*}
+
+    Por lo tanto, el resultado de evaluar nuestra expresión es $34$. Además, 
+    el stack y el heap quedan de la siguiente forma:
+
+    \begin{table}[h]
+        \parbox{.4\linewidth}{
+        \centering
+        \begin{tabular}{|c|c|}
+            \hline
+            \texttt{foo} & \texttt{0x13} \\
+            \hline
+            \texttt{foo} & \texttt{0x12} \\
+            \hline
+            \texttt{b} & \texttt{0x11} \\
+            \hline
+            \texttt{a} & \texttt{0x10} \\
+            \hline
+        \end{tabular}
+        \caption{Ambiente (stack)}
+        }
+        \hfill
+        \parbox{.6\linewidth}{
+        \centering
+        \begin{tabular}{|c|c|}
+        \hline
+        \texttt{0x13} & \texttt{[closureV: ,\{setbox b \{openbox a\}\}\}} \\
+        & \texttt{env-ant: env3]}\\
+        \hline
+        \texttt{0x12} & \texttt{[closureV: ,\{setbox a \{openbox a\}\}} \\
+        & \texttt{env-ant: '((\fbox{17}) (\fbox{17}))]} \\
+        \hline
+        \texttt{0x11} & \boxed{\texttt{17}} \\
+        \hline
+        \texttt{0x10} & \boxed{\texttt{17}} \\
+        \hline
+        \end{tabular}
+        \caption{Memoria (heap)}
+        }
+    \end{table}
 
     % Ejercicio 6.
     \item Dada la definición de la función \texttt{next-location} que genera 
@@ -1027,6 +1065,15 @@
        (begin 
           (set! last-location (add1 last-location))
           last-location))
+    \end{verbatim}
+
+    \textsc{Solución:} Modificamos el intérprete para lograr esto. 
+    \begin{verbatim}
+    (define (next-location expr)
+      (type-case Store expr
+        [mtSto () 0]
+        [aSto (location value expr)
+              (+ 1 location)]))
     \end{verbatim}
 \end{enumerate}
 
