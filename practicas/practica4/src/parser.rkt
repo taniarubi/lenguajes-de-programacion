@@ -40,7 +40,8 @@
        ;; Funciones.
        [(fun) (fun (second sexp) (parse (third sexp)))]
        ;; Aplicación de funciones.
-       [(app) (app (parse (second sexp)) (map parse (third sexp)))])]))
+       [(app) (app (parse (second sexp)) (map parse (third sexp)))]
+       [else error 'parse "La expresión no pertenece a la gramática CFWAE."])]))
 
 ;; Función auxiliar. Regresa el operador que le corresponde a la expresión.
 ;; elige-operador: symbol -> procedure
@@ -58,13 +59,13 @@
 ;; Aplica la función parse a una expresión que inicia con un operador.
 ;; parse-op: s-expression -> WAE
 (define (parse-op sexp)
-  (op (elige-operador (first sexp)) (map parse (cdr sexp))))
+  (op (elige-operador (car sexp)) (map parse (cdr sexp))))
 
 ;; Nos dice si hay elementos duplicados en una lista.
 (define (hay-duplicados? l)
   (cond
     [(empty? l) #f]
-    [(member (first l) (cdr l)) #t]
+    [(member (car l) (cdr l)) #t]
     [else (hay-duplicados? (cdr l))]))
 
 ;; Regresa una lista con todos los binding-id's dentro de la lista de bindings

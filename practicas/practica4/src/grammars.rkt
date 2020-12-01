@@ -19,7 +19,6 @@
   [closure (param (listof symbol?)) (body CFWAE?) (env DefrdSub?)]
   [numV(n number?)])
 
-
 ;; Data-type que representa un caché de sustituciones
 (define-type DefrdSub
   [mtSub]
