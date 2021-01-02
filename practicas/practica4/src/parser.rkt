@@ -80,32 +80,4 @@
   (if (hay-duplicados? (get-ids lb))
       (error 'parse "Hay id's repetidos en los bindings.")
       (map (λ (b) (binding (car b) (parse (cadr b)))) lb)))
-
-;; Test
-(parse 'foo)
-(parse 'baz)
-
-(parse 4)
-(parse -666)
-
-(parse '{if0 {modulo a b} a b})
-(parse '{if0 {- c d} {+ c d} {* c d}})
-
-(parse '{+ 1 2 3 4})
-(parse '{/ 1 1 1 1})
-(parse '{modulo 50 10})
-(parse '{add1 1})
-(parse '{+ 1 {- 5 {* 5 {sub1 6}}}})
-
-(parse '{with {{a 666}} {+ 666 666}})
-(parse '{with {{a 666}} {with {{b 0}} {+ a b}}})
-(parse '{with {{a 666} {b 0} {c 1}} {+ a b c}})
-
-(parse '{with* {{a 0} {b a}} {+ b b}})
-(parse '{with* {{a 0} {b 1}} {+ a b}})
-(parse '{with* {{a 0} {b 1} {c 2}} {+ a b c}})
-
-(parse '{fun {x} {+ x 2}})
-(parse '{fun {z} {with {{a 666} {b 0} {c 1}} {+ a b c}}})
-
-(parse '{app {fun {a b} {+ a b}} {2 3}})
+      
