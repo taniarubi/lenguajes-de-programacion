@@ -1,0 +1,251 @@
+\documentclass[letterpaper,11pt]{article}
+
+% Soporte para los acentos.
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+% Idioma español.
+\usepackage[spanish,mexico, es-tabla]{babel}
+% Soporte de símbolos adicionales (matemáticas)
+\usepackage{amsmath}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{array}
+\newcolumntype{L}{>{\centering\arraybackslash}m{6cm}}
+% Modificamos los márgenes del documento.                                       
+\usepackage[lmargin=1.5cm,rmargin=1.5cm,top=1.5cm,bottom=1.5cm]{geometry}
+
+\title{Facultad de Ciencias, UNAM \\ 
+       Lenguajes de Programación\\ 
+       Características de la evaluación perezosa y glotona}
+\author{Rubí Rojas Tania Michelle}
+\date{07 de diciembre de 2020}
+
+\begin{document}
+\maketitle
+
+% Ejemplo 1.
+\begin{table}[ht]
+    \centering  
+    \begin{tabular}{|L|L|}
+        \hline
+        Evaluación perezosa & Evaluación glotona \\
+        \hline 
+        Los argumentos de una función no son evaluados hasta que es 
+        estrictamente necesario. &
+        Los argumentos de una función siempre deben ser reducidos a un valor.\\
+        \hline
+    \end{tabular}
+\end{table}
+
+\textsc{Ejemplo:} Definimos la función \texttt{suma} como
+\begin{verbatim}
+    (define (suma l)
+      (if (empty? l)
+          0
+          (+ (car l) (suma (cdr l)))))
+\end{verbatim}
+
+La evaluación de esta función con el parámetro \texttt{'(30 26)}
+utilizándo evaluación perezosa sería de la siguiente forma:
+\begin{verbatim}
+(suma '(30 26)) = (+ (car '(30 26)) (suma (cdr '(30 26))))
+                = (+ (car '(30 26)) (suma '(26)))
+                = (+ (car '(30 26)) 
+                     (+ (car '(26)) (suma (cdr '(26)))))
+                = (+ (car '(30 26)) 
+                     (+ (car '(26)) (suma '())))
+                = (+ (car '(30 26)) 
+                     (+ (car '(26)) 0))
+                = (+ (car '(30 26)) 
+                        (+ 26 0))
+                = (+ (car '(30 26)) 26)
+                = (+ 30 26)
+                = 56
+\end{verbatim}
+
+Mientras que la evaluación de la función \texttt{suma} con el parámetro 
+\texttt{'(30 26)} utilizándo evaluación perezosa sería de la siguiente forma:
+\begin{verbatim}
+(suma '(30 26)) = (+ (car '(30 26)) (suma (cdr '(30 26))))
+                = (+ 30 (suma '(26)))
+                = (+ 30 (+ (car '(26)) (suma (cdr '(26)))))
+                = (+ 30 (+ 26 (suma '())))
+                = (+ 30 (+ 26 0))
+                = (+ 30 26)
+                = 56
+\end{verbatim}
+
+% Ejemplo 2.
+\begin{table}[ht]
+    \centering  
+    \begin{tabular}{|L|L|}
+        \hline
+        Evaluación perezosa & Evaluación glotona \\
+        \hline 
+        Es más eficiente cuando hay variables que nunca usamos & 
+        Es menos eficiente cuando hay variables que nunca 
+        usamos. \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\textsc{Ejemplo:} Definimos las funciones \texttt{fact} y \texttt{goo} como 
+sigue 
+\begin{verbatim}
+    (define (fact n) 
+      (if (zero? n)
+          1
+          (* n (fact (sub1 n)))))
+          
+    (define (goo n)
+      (let ([x (fact 10000)])
+        (let ([y (fact 20000)])
+          (let ([z (fact 30000)])
+            n))))
+\end{verbatim}
+
+Si llamamos a \texttt{(goo 100000)}, utilizándo evaluación perezosa, como 
+nunca utilizamos ninguna aparición de \texttt{fact}, entonces en nuestra 
+pila de ejecución no tendremos la evaluación de cada una de las expresiones 
+\texttt{fact}. Por otro lado, utilizándo evaluación glotona tendremos que 
+evaluar cada una de las apariciones de la función \texttt{fact}, lo que 
+hará que esta evaluación sea más lenta y ocupe más espacio en memoria, en 
+comparación con la evaluación perezosa, la cual será más rápida y ocupará 
+menos espacio en memoria.
+
+% Ejemplo 3.
+\begin{table}[h]
+    \centering  
+    \begin{tabular}{|L|L|}
+        \hline
+        Evaluación perezosa & Evaluación glotona \\
+        \hline 
+        Puede que no detecte errores en semántica (en la expresión no 
+        evaluada) & Siempre detecta errores de semántica \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\textsc{Ejemplo:} Definimos la función \texttt{foo} como sigue
+\begin{verbatim}
+    (define (foo n)
+      (let ([x (/ 7 0)])
+        n))
+\end{verbatim}
+
+Notemos que la expresión \texttt{(/ 7 0)} ocasiona un error, pues no es posible 
+dividir entre cero. Utilizándo evaluación perezosa, como la expresión 
+\texttt{(/ 7 0)} no es usada, entonces esta asignación es ignorada (se realiza 
+la asignación, pero no la aplicación de función), por lo que simplemente 
+regresaremos el valor que le pasamos como parámetro a la función \texttt{foo}.
+Por otro lado, utilizándo evaluación glotona, la $n$ ni siquiera llega a 
+evaluarse, pues detectaría el error al intentar dividir entre cero.
+
+% Ejemplo 4.
+\begin{table}[h]
+    \centering  
+    \begin{tabular}{|L|L|}
+        \hline
+        Evaluación perezosa & Evaluación glotona \\
+        \hline 
+        En promedio, tiene peor uso de espacio & En promedio, tiene mejor uso
+        de espacio \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\textsc{Ejemplo:} Definimos la función \texttt{hoo} como sigue: 
+\begin{verbatim}
+    (define (hoo l)
+      (if (empty? l)
+          '()
+          (cons (+ (car l) 1) (hoo (cdr l)))))
+\end{verbatim}
+
+\newpage
+La evaluación de esta función con el argumento \texttt{'(5)} utilizándo 
+evaluación perezosa sería de la forma:
+\begin{verbatim}
+    (hoo '(5)) = (cons (+ (car '(5)) 1) (hoo (cdr '(5))))
+               = (cons (+ (car '(5)) 1) (hoo '()))
+               = (cons (+ (car '(5)) 1) '())
+               = (cons (+ 5 1) '())
+               = (cons 6 '())
+               = '(6)
+\end{verbatim}
+
+Mientras que la evaluación de la función con el mismo argumento utilizándo 
+evaluación glotona sería de la forma:
+\begin{verbatim}
+    (hoo '(5)) = (cons (+ (car '(5)) 1) (hoo (cdr '(5))))
+               = (cons (+ 5 1) (hoo '()))
+               = (cons 6 '())
+               = '(6)
+\end{verbatim}
+
+De esta forma, podemos notar que usando evaluación perezosa estamos cargando 
+en memoria con las expresiones que no aún no evaluamos, mientras que la 
+evaluación glotona no lo hace (pues evalúa las expresiones terminales 
+inmediatamente). Por esta razón, la evaluación glotona tiene menor complejidad 
+en espacio que la evaluación perezosa.
+
+% Ejemplo 6: Evaluación perezosa
+\begin{table}[h]
+    \centering  
+    \begin{tabular}{|L|L|}
+        \hline
+        Evaluación perezosa \\
+        \hline 
+        Es posible definir estructuras de datos infinitas. \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\textsc{Ejemplo:} Como \textsc{Haskell} utiliza evaluación perezosa, entonces 
+soporta listas infinitas. Si una función no tiene casos base, entonces podemos 
+seguir calculando algo infinitamente (o bien, produciéndo una estructura 
+infinita). Sin embargo, lo bueno de estas listas es que podemos 
+\textit{cortarlas} por donde queramos. La función \texttt{repeat} toma un 
+elemento y regresa una lista infinita que simplemente tiene ese elemento. 
+Una implementación recursiva podría ser como sigue:
+\begin{verbatim}
+    repeat :: a -> [a]
+    repeat x = x : repeat x
+\end{verbatim}
+
+Si llamamos a \texttt{repeat 5} entonces obtendríamos una lista que tiene un 
+$5$ en su cabeza y luego tendría una lista infinita de cincos en su cola, es 
+decir, una lista de la forma \texttt{[5 5 5 5 ...]} que nunca terminaría su 
+evaluación. Pero, si usamos la función \texttt{take} entonces podríamos cortar 
+la lista. De esta forma, al llamar \texttt{take 3 (repeat 5)} obtenemos una 
+lista con tres cincos, es decir, una lista de la forma \texttt{[5 5 5]}.
+
+% Ejemplo 7.
+\begin{table}[h]
+    \centering  
+    \begin{tabular}{|L|L|}
+        \hline
+        Evaluación glotona \\
+        \hline 
+        Se pierde el contexto o referencia del origen de las variables. \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\textsc{Ejemplo:} Recórdando el ejemplo número $1$ (usándo evaluación glotona) 
+podemos notar cómo vamos perdiéndo las referencias acerca de dónde obtenemos 
+cada valor. 
+\begin{verbatim}
+(suma '(30 26)) = (+ (car '(30 26)) (suma (cdr '(30 26))))
+                = (+ 30 (suma '(26)))
+                = (+ 30 (+ (car '(26)) (suma (cdr '(26)))))
+                = (+ 30 (+ 26 (suma '())))
+                = (+ 30 (+ 26 0))
+                = (+ 30 26)
+                = 56
+\end{verbatim}
+ 
+Por ejemplo, al final, el número $30$ no sabémos de dónde lo obtenemos, pues 
+hemos perdido su contexto de origen.
+
+
+\end{document}
