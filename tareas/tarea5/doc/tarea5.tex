@@ -14,7 +14,7 @@
 \title{Facultad de Ciencias, UNAM \\ 
        Lenguajes de Programación\\ 
        Tarea 5}
-\author{Rubí Rojas Tania Michelle}
+\author{Rubí Rojas Tania Michelle\\ Rodríguez Campos Erick Eduardo}
 \date{07 de diciembre de 2020}
 
 \begin{document}
@@ -228,8 +228,8 @@
         \texttt{'((1 2) (3 4) (4 6))}. ¿Cuántos registros son generados? ¿Cuántos 
         son ocupados a la vez?
 
-        \textsc{Solución:} Veamos que se generan $8$ registros de activación
-        ($4$ de entrada y $4$ de salida), y ningún registro es ocupado a la vez.
+        \textsc{Solución:} Veamos que se generan $4$ registros de activación y
+        que $4$ registros son ocupados a la vez.
 
         Ingresa \texttt{(concatena-listas-de-lista '((1 2) (3 4) (4 6)))}
         \begin{center}
@@ -333,78 +333,6 @@
             \end{tabular}
         \end{center}
 
-        Sale \texttt{(concatena-listas-de-lista '())}
-        \begin{center}
-            \begin{tabular}{|c|}
-                \hline
-                \texttt{(append '(4 6) '())} \\
-                \texttt{(if (empty? l) empty} \\
-                \texttt{(append (car l) (concatena-listas-de-lista (cdr l))))} \\
-                \texttt{l = '((4 6))} \\
-                \texttt{concatena-listas-de-lista} \\
-                \hline
-                \hline
-                \texttt{(append '(3 4) 
-                (concatena-listas-de-lista '((4 6))))}  \\
-                \texttt{(if (empty? l) empty} \\
-                \texttt{(append (car l) (concatena-listas-de-lista (cdr l))))} \\
-                \texttt{l = '((3 4) (4 6))} \\
-                \texttt{concatena-listas-de-lista} \\
-                \hline
-                \hline
-                \texttt{(append '(1 2) 
-                (concatena-listas-de-lista '((3 4) (4 6))))}  \\
-                \texttt{(if (empty? l) empty} \\
-                \texttt{(append (car l) (concatena-listas-de-lista (cdr l))))} \\
-                \texttt{l = '((1 2) (3 4) (4 6))} \\
-                \texttt{concatena-listas-de-lista} \\
-                \hline
-            \end{tabular}
-        \end{center}
-        
-        Sale \texttt{(concatena-listas-de-lista '((4 6)))}
-        \begin{center}
-            \begin{tabular}{|c|}
-                \hline
-                \texttt{(append '(3 4) '(4 6))}  \\
-                \texttt{(if (empty? l) empty} \\
-                \texttt{(append (car l) (concatena-listas-de-lista (cdr l))))} \\
-                \texttt{l = '((3 4) (4 6))} \\
-                \texttt{concatena-listas-de-lista} \\
-                \hline
-                \hline
-                \texttt{(append '(1 2) 
-                (concatena-listas-de-lista '((3 4) (4 6))))}  \\
-                \texttt{(if (empty? l) empty} \\
-                \texttt{(append (car l) (concatena-listas-de-lista (cdr l))))} \\
-                \texttt{l = '((1 2) (3 4) (4 6))} \\
-                \texttt{concatena-listas-de-lista} \\
-                \hline
-            \end{tabular}
-        \end{center}
-
-        Sale \texttt{(concatena-listas-de-lista '((3 4) (4 6)))}
-        \begin{center}
-            \begin{tabular}{|c|}
-                \hline
-                \texttt{(append '(1 2) '(3 4 4 6))}  \\
-                \texttt{(if (empty? l) empty} \\
-                \texttt{(append (car l) (concatena-listas-de-lista (cdr l))))} \\
-                \texttt{l = '((1 2) (3 4) (4 6))} \\
-                \texttt{concatena-listas-de-lista} \\
-                \hline
-            \end{tabular}
-        \end{center}
-
-        Sale \texttt{(concatena-listas-de-lista '((1 2) (3 4) (4 6)))}
-        \begin{center}
-            \begin{tabular}{|c|}
-                \hline
-                '(1 2 3 4 4 6) \\
-                \hline
-            \end{tabular}
-        \end{center}
-
         % Ejercicio 2.c
         \item Optimiza la función usando la técnica de recursión de cola.
 
@@ -424,8 +352,9 @@
         con el argumento \texttt{'((1 2) (3 4) (4 6))}. ¿Cuántos registros son
         generados? ¿Cuántos son ocupados a la vez?
 
-        \textsc{Solución:} Veamos que se generan $6$ registros de activación y 
-        que $4$ de estos registros son ocupados a la vez.
+        \textsc{Solución:} Veamos que son generados $4$ registros de activación
+        (sin contar el registro de la función \texttt{concatena-listas-de-lista}), 
+        y que solo uno es ocupado a la vez. 
 
         Entra \texttt{concatena-listas-de-lista '((1 2) (3 4) (4 6)))}
         \begin{center}
@@ -456,6 +385,7 @@
             \end{tabular}
         \end{center}
 
+        \newpage
         Ingresa$/$Sale \texttt{(concatena-listas-de-lista-tail '((3 4) (4 6))
         '(1 2))}
         \begin{center}
@@ -486,7 +416,6 @@
             \end{tabular}
         \end{center}
 
-        \newpage
         Ingresa$/$Sale \texttt{(concatena-listas-de-lista-tail '() '(1 2 3 4 4 6))}
         \begin{center}
             \begin{tabular}[h]{|c|}
@@ -501,13 +430,9 @@
             \end{tabular}
         \end{center}
         
-        Obtenemos 
+        Sale \texttt{(concatena-listas-de-lista '((1 2) (3 4) (4 6)))}
         \begin{center}
-            \begin{tabular}[h]{|c|}
-                \hline
-                '(1 2 3 4 4 6) \\
-                \hline
-            \end{tabular}
+            \texttt{'(1 2 3 4 4 6)}
         \end{center}
     \end{enumerate}
 
@@ -545,8 +470,8 @@
         argumento $1729$. ¿Cuántos registros son generados? ¿Cuántos son 
         ocupados a la vez?
 
-        \textsc{Solución:} Veamos que se generan $8$ registros de activación 
-        y que ningún registro es ocupado a la vez.
+        \textsc{Solución:} Veamos que se generan $4$ registros de activación 
+        y que $4$ registros son ocupados a la vez.
 
         Ingresa \texttt{(suma-digitos 1729)}
         \begin{center}
@@ -581,7 +506,6 @@
             \end{tabular}
         \end{center}
 
-        \newpage
         Ingresa \texttt{suma-digitos 17)}
         \begin{center}
             \begin{tabular}[h]{|c|}
@@ -642,77 +566,8 @@
                 \hline
             \end{tabular}
         \end{center}
-
+        
         \newpage
-        Sale \texttt{(suma-digitos 1)}
-        \begin{center}
-            \begin{tabular}[h]{|c|}
-                \hline
-                \texttt{(+ 7 1)} \\
-                \texttt{(if (< n 10) n} \\
-                \texttt{(+ (modulo n 10) (suma-digitos (quotient n 10))))} \\ 
-                \texttt{n = 17} \\
-                \texttt{suma-digitos} \\
-                \hline
-                \hline
-                \texttt{(+ 2 (suma-digitos 17))} \\
-                \texttt{(if (< n 10) n} \\
-                \texttt{(+ (modulo n 10) (suma-digitos (quotient n 10))))} \\ 
-                \texttt{n = 172} \\
-                \texttt{suma-digitos} \\
-                \hline
-                \hline
-                \texttt{(+ 9 (suma-digitos 172))} \\
-                \texttt{(if (< n 10) n} \\
-                \texttt{(+ (modulo n 10) (suma-digitos (quotient n 10))))} \\ 
-                \texttt{n = 1729} \\
-                \texttt{suma-digitos} \\
-                \hline
-            \end{tabular}
-        \end{center}
-
-        Sale \texttt{(suma-digitos 17)}
-        \begin{center}
-            \begin{tabular}[h]{|c|}
-                \hline
-                \texttt{(+ 2 8)} \\
-                \texttt{(if (< n 10) n} \\
-                \texttt{(+ (modulo n 10) (suma-digitos (quotient n 10))))} \\ 
-                \texttt{n = 172} \\
-                \texttt{suma-digitos} \\
-                \hline
-                \hline
-                \texttt{(+ 9 (suma-digitos 172))} \\
-                \texttt{(if (< n 10) n} \\
-                \texttt{(+ (modulo n 10) (suma-digitos (quotient n 10))))} \\ 
-                \texttt{n = 1729} \\
-                \texttt{suma-digitos} \\
-                \hline
-            \end{tabular}
-        \end{center}
-
-        Sale \texttt{(suma-digitos 172)}
-        \begin{center}
-            \begin{tabular}[h]{|c|}
-                \hline
-                \texttt{(+ 9 10)} \\
-                \texttt{(if (< n 10) n} \\
-                \texttt{(+ (modulo n 10) (suma-digitos (quotient n 10))))} \\ 
-                \texttt{n = 1729} \\
-                \texttt{suma-digitos} \\
-                \hline
-            \end{tabular}
-        \end{center}
-
-        Sale \texttt{(suma-digitos 1729)}
-        \begin{center}
-            \begin{tabular}[h]{|c|}
-                \hline
-                19 \\
-                \hline
-            \end{tabular}
-        \end{center}
-
         % Ejercicio 3.c
         \item Optimiza la función usando la técnica de recursión de cola.
 
@@ -727,14 +582,14 @@
               (suma-digitos-tail (quotient n 10) (+ acc (modulo n 10)))))
         \end{verbatim}
 
-        \newpage
         % Ejercicio 3.d
         \item Muestra los registros generados por la función del inciso anterior 
         con el argumento $1729$. ¿Cuántos registros son generados? ¿Cuántos son 
         ocupados a la vez?
 
-        \textsc{Solución:} Veamos que se generan $7$ registros de activación 
-        y que $5$ de estos registros son ocupados a la vez.
+        \textsc{Solución:} Veamos que se generan $5$ registros de activación (sin 
+        contar el registro de la función \texttt{suma-digitos}), y que solo uno es
+        ocupado a la vez.
 
         Ingresa \texttt{(suma-digitos 1729)}
         \begin{center}
@@ -804,6 +659,7 @@
             \end{tabular}
         \end{center}
 
+        \newpage
         Ingresa$/$Sale \texttt{(suma-digitos-tail 0 19)}
         \begin{center}
             \begin{tabular}[h]{|c|}
@@ -820,11 +676,10 @@
 
         Sale \texttt{(suma-digitos 1729)}
         \begin{center}
-            \boxed{19}
+            \texttt{19}
         \end{center}
     \end{enumerate}
 
-    \newpage
     % Ejercicio 4.
     \item Dada la siguiente función 
     \begin{verbatim}
@@ -840,7 +695,7 @@
         
         \textsc{Solución:} La función \texttt{hoo} elimina los primeros $n$
         elementos de la lista $l$, por lo que un nombre mnemotécnico podría 
-        ser \texttt{elimina-n-elementos}. Así, la función quedaría como
+        ser \texttt{elimina-n-elementos}. Así, la función quedaría como:
         \begin{verbatim}
             (define (elimina-n-elementos n l)
                 (if (zero? n)
@@ -853,11 +708,13 @@
         argumentos $3$ y \texttt{'(1 2 3 4)}. ¿Cuántos registros son generados?
         ¿Cuántos son ocupados a la vez?
 
-        \textsc{Solución:} Veamos que se generan $8$ registros de activación, 
-        y ninguno de estos registros son ocupados a la vez.
+        \textsc{Solución:} Veamos que se generan $4$ registros de activación, y 
+        que $4$ registros son ocupados a la vez.
 
-        Ingresa \texttt{(elimina-n-elementos 3 '(1 2 3 4))}
-        \begin{center}
+        Veamos que se generan $4$ registros de activación, y que solamente uno 
+        de los registros es ocupado a la vez.\\ 
+            Ingresa \textbackslash Sale \texttt{(elimina-n-elementos 3 '(1 2 3 4))}
+            \begin{center}
             \begin{tabular}[h]{|c|}
                 \hline
                 \texttt{(elimina-n-elementos 2 '(2 3 4))} \\
@@ -869,7 +726,7 @@
             \end{tabular}
         \end{center}
         
-        Ingresa \texttt{(elimina-n-elementos 2 '(2 3 4))}
+        Ingresa \textbackslash Sale \texttt{(elimina-n-elementos 2 '(2 3 4))}
         \begin{center}
             \begin{tabular}[h]{|c|}
                 \hline
@@ -879,18 +736,9 @@
                 \texttt{n = 2, l = '(2 3 4)} \\
                 \texttt{elimina-n-elementos} \\
                 \hline
-                \hline
-                \texttt{(elimina-n-elementos 2 '(2 3 4))} \\
-                \texttt{(if (zero? n) l} \\
-                \texttt{(elimina-n-elementos (sub1 n) (cdr l)))} \\
-                \texttt{n = 3, l = '(1 2 3 4)} \\
-                \texttt{elimina-n-elementos} \\
-                \hline
             \end{tabular}
         \end{center}
-
-        \newpage
-        Ingresa \texttt{(elimina-n-elementos 1 '(3 4))}
+        Ingresa\textbackslash Sale \texttt{(elimina-n-elementos 1 '(3 4))}
         \begin{center}
             \begin{tabular}[h]{|c|}
                 \hline
@@ -900,24 +748,10 @@
                 \texttt{n = 1, l = '(3 4)} \\
                 \texttt{elimina-n-elementos} \\
                 \hline
-                \hline
-                \texttt{(elimina-n-elementos 1 '(3 4))} \\
-                \texttt{(if (zero? n) l} \\
-                \texttt{(elimina-n-elementos (sub1 n) (cdr l)))} \\
-                \texttt{n = 2, l = '(2 3 4)} \\
-                \texttt{elimina-n-elementos} \\
-                \hline
-                \hline
-                \texttt{(elimina-n-elementos 2 '(2 3 4))} \\
-                \texttt{(if (zero? n) l} \\
-                \texttt{(elimina-n-elementos (sub1 n) (cdr l)))} \\
-                \texttt{n = 3, l = '(1 2 3 4)} \\
-                \texttt{elimina-n-elementos} \\
-                \hline
             \end{tabular}
         \end{center}
 
-        Ingresa \texttt{(elimina-n-elementos 0 '(4))}
+        Ingresa\textbackslash Sale \texttt{(elimina-n-elementos 0 '(4))}
         \begin{center}
             \begin{tabular}[h]{|c|}
                 \hline
@@ -927,51 +761,25 @@
                 \texttt{n = 0, l = '(4)} \\
                 \texttt{elimina-n-elementos} \\
                 \hline
-                \hline
-                \texttt{(elimina-n-elementos 0 '(4))} \\
-                \texttt{(if (zero? n) l} \\
-                \texttt{(elimina-n-elementos (sub1 n) (cdr l)))} \\
-                \texttt{n = 1, l = '(3 4)} \\
-                \texttt{elimina-n-elementos} \\
-                \hline
-                \hline
-                \texttt{(elimina-n-elementos 1 '(3 4))} \\
-                \texttt{(if (zero? n) l} \\
-                \texttt{(elimina-n-elementos (sub1 n) (cdr l)))} \\
-                \texttt{n = 2, l = '(2 3 4)} \\
-                \texttt{elimina-n-elementos} \\
-                \hline
-                \hline
-                \texttt{(elimina-n-elementos 2 '(2 3 4))} \\
-                \texttt{(if (zero? n) l} \\
-                \texttt{(elimina-n-elementos (sub1 n) (cdr l)))} \\
-                \texttt{n = 3, l = '(1 2 3 4)} \\
-                \texttt{elimina-n-elementos} \\
-                \hline
-                \hline
             \end{tabular}
         \end{center}
-
-        Sale \texttt{(elimina-n-elementos 0 '(4))}
-        \begin{center}
-            \begin{tabular}[h]{|c|}
-                \hline
-                \texttt{'(4)} \\
-                \hline
-            \end{tabular}
-        \end{center}
+        Sale \texttt{'(4)}
 
         % Ejercicio 4.c
         \item Optimiza la función usando la técnica de recursión de cola.
         
-        \textsc{Solución:}
+        \textsc{Solución:} La función ya está optimizada debido a que al 
+        momento de realizar las llamadas recursivas estas generan un resultado 
+        en cada llamada, es decir, no tenemos llamadas pendientes. 
 
         % Ejercicio 4.d
         \item Muestra los registros generados por la función del inciso anterior
         con los argumentos $3$ y \texttt{'(1 2 3 4)}. ¿Cuántos registros son 
         generados? ¿Cuántos son ocupados a la vez?
 
-        \textsc{Solución:}
+        \textsc{Solución:} Como la función ya está optimizada no hay 
+        registros nuevos y por ende son generados $4$ registros pero solo es 
+        ocupado uno a la vez.
     \end{enumerate}
 
     % Ejercicio 5.
@@ -1011,6 +819,7 @@
         &= \texttt{34}
     \end{align*}
 
+    \newpage
     Por lo tanto, el resultado de evaluar nuestra expresión es $34$. Además, 
     el stack y el heap quedan de la siguiente forma:
 
@@ -1019,13 +828,13 @@
         \centering
         \begin{tabular}{|c|c|}
             \hline
-            \texttt{foo} & \texttt{0x13} \\
+            \texttt{foo} & \texttt{5} \\
             \hline
-            \texttt{foo} & \texttt{0x12} \\
+            \texttt{foo} & \texttt{4} \\
             \hline
-            \texttt{b} & \texttt{0x11} \\
+            \texttt{b} & \texttt{2} \\
             \hline
-            \texttt{a} & \texttt{0x10} \\
+            \texttt{a} & \texttt{0} \\
             \hline
         \end{tabular}
         \caption{Ambiente (stack)}
@@ -1035,15 +844,19 @@
         \centering
         \begin{tabular}{|c|c|}
         \hline
-        \texttt{0x13} & \texttt{[closureV: ,\{setbox b \{openbox a\}\}\}} \\
-        & \texttt{env-ant: env3]}\\
+        \texttt{5} & \texttt{[closureV: ,\{setbox b \{openbox a\}\}\}} \\
+        & \texttt{env-ant: env5]}\\
         \hline
-        \texttt{0x12} & \texttt{[closureV: ,\{setbox a \{openbox a\}\}} \\
-        & \texttt{env-ant: '((\fbox{17}) (\fbox{17}))]} \\
+        \texttt{4} & \texttt{[closureV: ,\{setbox a \{openbox a\}\}} \\
+        & \texttt{env-ant: env4]} \\
         \hline
-        \texttt{0x11} & \boxed{\texttt{17}} \\
+        \texttt{3} & \texttt{17} \\
         \hline
-        \texttt{0x10} & \boxed{\texttt{17}} \\
+        \texttt{2} & \boxed{3} \\
+        \hline
+        \texttt{1} & \texttt{17} \\
+        \hline
+        \texttt{0} & \boxed{1} \\
         \hline
         \end{tabular}
         \caption{Memoria (heap)}
@@ -1067,12 +880,33 @@
           last-location))
     \end{verbatim}
 
-    \textsc{Solución:} Modificamos el intérprete para lograr esto. 
+    \textsc{Solución:} Modificamos el intérprete para lograr esto, 
+    específicamente en la parte de aplicación de funciones.
     \begin{verbatim}
-    (define (next-location expr)
-      (type-case Store expr
-        [mtSto () 0]
-        [aSto (location value expr)
+    [app (fun-expr arg)
+       (let* ([fun-res (interp fun-expr env sto)]
+              [fun-val (v×s-value fun-res)]
+              [fun-sto (v×s-store fun-res)]
+              [arg-res (inter arg env fun-sto)]
+              [arg-val (v×s-value arg-res)]
+              [arg-sto (v×s-store arg-res)]
+              [new-loc (next-location arg-sto)])
+          (interp (closureV-body fun-val)
+                  (aSub (closureV-param fun-val)
+                        new-loc
+                        (closureV-env fun-val ))
+                  (aSto new-loc
+                        arg-val
+                        arg-sto )))]
+    \end{verbatim}
+    
+    \newpage
+    donde \texttt{next-location} es re-definido como sigue:
+    \begin{verbatim}
+    (define (next-location sto)
+      (type-case Store sto
+        [mtSto () 1]
+        [aSto (location value rest-sto)
               (+ 1 location)]))
     \end{verbatim}
 \end{enumerate}
