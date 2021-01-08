@@ -413,7 +413,31 @@
         Y =_{def} \lambda f.(\lambda x.f (xx)) (\lambda x.f (xx))
     \end{equation*}
 
-    Definiéndo la función 
+    La siguiente expresión define la función \texttt{fibonacci} usando la 
+    primitiva \texttt{let} de \textsc{Racket}.
+    \begin{verbatim}
+    (let ([fib (lambda (n) (if (< n 2) n (+ (fib (- n 1)) (fib (- n 2)))))]))
+    \end{verbatim}
+
+    Para usar el combinador Y debemos adaptar nuestra definición de tal forma 
+    que la función reciba una función parámetro.
+    \begin{verbatim}
+    (let ([fib (lambda (fib) 
+                  (lambda (n) (if (< n 2) n (+ (fib (- n 1)) (fib (- n 2))))))])
+      (fib 3))
+    \end{verbatim}
+
+    De esta manera, podemos definir $Y$ mediante un identificador y aplicarlo a 
+    \texttt{fib}. Usamos \texttt{let*} para facilitar la escritura.
+    \begin{verbatim}
+    (let* ([Y (lambda (f) ((lambda (x) (f (x x))) (lambda (x) (f (x x)))))]
+           [fib (Y (lambda (fib) 
+                     (lambda (n) (if (< n 2) n (+ (fib (- n 1)) (fib (- n 2)))))))])
+      (fib 3))
+    \end{verbatim}
+
+    Al ejecutar esta expresión se cicla el programa, pues siempre estamos 
+    generando una nueva aplicación de \texttt{fib}. 
 
     % Ejercicio 6.
     \item Da un ejemplo en \textsc{Racket} donde uses la estructura de cajas y
