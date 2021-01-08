@@ -406,10 +406,31 @@
 
     % Ejercicio 6.
     \item Da un ejemplo en \textsc{Racket} donde uses la estructura de cajas y
-    expongas el concepto de estado y CPS. En el ejemplo se debe reflejar el 
+    expongas el concepto de estado y SPS. En el ejemplo se debe reflejar el 
     cambio de estado de una variable definida como una caja, cuyo valor dentro 
     de la caja sea inicialmente $0$ (cero) y termine con valor de $2$, teniéndo 
     un valor de $1$ de forma intermedia.
+
+    \textsc{Solución:} Definimos la expresión \texttt{expr} como 
+    \begin{verbatim}
+    '{with {b {newbox 0}}
+       {seqn {setbox b {+ 1 {openbox b}}}
+             {setbox b {+ 1 {openbox b}}}
+             {openbox b}}}
+    \end{verbatim}
+    
+    Para interpretar un programa, llamamos a la función \texttt{interp} 
+    con un ambiente y un Store (los cuales vimos en clase).
+    \begin{verbatim}
+    (vxs-value (interp (parse expr) (mtSub) (mtSto)))
+    \end{verbatim}
+
+    Lo cual nos regresa como resultado \texttt{2}. Notemos que inicialmente
+    la caja tiene un valor de $0$, luego adquiere un valor de $1$ al ejecutarse 
+    la primer línea del \texttt{seqn} y finalmente toma un valor de $2$ al 
+    ejecutarse la segunda líneal del \texttt{seqn}. Como la última línea de 
+    éste es la que se regresa, entonces obtenemos el valor actual de la caja, 
+    el cual es $2$.
 \end{enumerate}
 
 \end{document}

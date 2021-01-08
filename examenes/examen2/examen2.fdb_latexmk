@@ -1,7 +1,7 @@
 # Fdb version 3
-["pdflatex"] 1610080966 "/home/taniarubi/Documents/fciencias/lenguajes-de-programacion/examenes/examen2/examen2.tex" "/home/taniarubi/Documents/fciencias/lenguajes-de-programacion/examenes/examen2/examen2.pdf" "examen2" 1610080967
-  "/home/taniarubi/Documents/fciencias/lenguajes-de-programacion/examenes/examen2/examen2.aux" 1610080967 596 c02b48a68402370269a9f985c92278a0 ""
-  "/home/taniarubi/Documents/fciencias/lenguajes-de-programacion/examenes/examen2/examen2.tex" 1610080965 13256 5cfd7f4c24191f82725b5bdca12a8364 ""
+["pdflatex"] 1610086302 "/home/taniarubi/Documents/fciencias/lenguajes-de-programacion/examenes/examen2/examen2.tex" "/home/taniarubi/Documents/fciencias/lenguajes-de-programacion/examenes/examen2/examen2.pdf" "examen2" 1610086303
+  "/home/taniarubi/Documents/fciencias/lenguajes-de-programacion/examenes/examen2/examen2.aux" 1610086302 596 c02b48a68402370269a9f985c92278a0 ""
+  "/home/taniarubi/Documents/fciencias/lenguajes-de-programacion/examenes/examen2/examen2.tex" 1610086301 14150 f41f09e91f9eb15618533a8ed036bf21 ""
   "/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc" 1607249373 2971 def0b6c1f0b107b3b936def894055589 ""
   "/usr/share/texmf-dist/fonts/map/fontname/texfonts.map" 1607249373 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texmf-dist/fonts/tfm/jknappen/ec/eccc1095.tfm" 1607249373 3072 1b1df026a15993ee98d265b49cf8d5f2 ""
@@ -62,11 +62,11 @@
   "/usr/share/texmf-dist/web2c/texmf.cnf" 1607249373 33301 a3134070eacafb10b1f371612ce2650d ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1609913413 5013534 fd35bdaa60a6f086a27ce99b94bb8742 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1609913386 2635857 c32770d40f934e30844f953a5f5893aa ""
-  "examen2.aux" 1610080967 596 c02b48a68402370269a9f985c92278a0 "pdflatex"
-  "examen2.tex" 1610080965 13256 5cfd7f4c24191f82725b5bdca12a8364 ""
+  "examen2.aux" 1610086302 596 c02b48a68402370269a9f985c92278a0 "pdflatex"
+  "examen2.tex" 1610086301 14150 f41f09e91f9eb15618533a8ed036bf21 ""
   (generated)
   "examen2.pdf"
   "/home/taniarubi/Documents/fciencias/lenguajes-de-programacion/examenes/examen2/examen2.log"
-  "/home/taniarubi/Documents/fciencias/lenguajes-de-programacion/examenes/examen2/examen2.pdf"
   "examen2.aux"
+  "/home/taniarubi/Documents/fciencias/lenguajes-de-programacion/examenes/examen2/examen2.pdf"
   "examen2.log"
