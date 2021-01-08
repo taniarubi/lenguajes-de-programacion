@@ -238,7 +238,16 @@
 
     entonces es un ejemplo que muestra la transparencia referencial de $f$.
 
-    \textsc{Solución:}
+    \textsc{Solución:} Tengamos en cuenta que transparencia referencial puede 
+    ser definida como \textit{reemplazar iguales por iguales} (como por 
+    ejemplo, reemplazar $2+2$ por $4$). De esta forma, si siempre se cumple 
+    que 
+    \begin{equation*}
+        2 * (f \; x) == (f \; x) + (f \; x)
+    \end{equation*}
+    
+    entonces éste un ejemplo de transparencia referencial, pues los valores 
+    finales son equivalentes y así es posible reemplazar iguales por iguales. 
 
     % Ejercicio 3.
     \item Transforma la siguiente función usando recursión de cola, y agrega
@@ -404,6 +413,8 @@
         Y =_{def} \lambda f.(\lambda x.f (xx)) (\lambda x.f (xx))
     \end{equation*}
 
+    Definiéndo la función 
+
     % Ejercicio 6.
     \item Da un ejemplo en \textsc{Racket} donde uses la estructura de cajas y
     expongas el concepto de estado y SPS. En el ejemplo se debe reflejar el 
@@ -425,7 +436,7 @@
     (vxs-value (interp (parse expr) (mtSub) (mtSto)))
     \end{verbatim}
 
-    Lo cual nos regresa como resultado \texttt{2}. Notemos que inicialmente
+    Lo cual nos regresa como resultado \texttt{(num 2)}. Notemos que inicialmente
     la caja tiene un valor de $0$, luego adquiere un valor de $1$ al ejecutarse 
     la primer línea del \texttt{seqn} y finalmente toma un valor de $2$ al 
     ejecutarse la segunda líneal del \texttt{seqn}. Como la última línea de 
