@@ -1,0 +1,135 @@
+\documentclass[letterpaper,11pt]{article}
+
+% Soporte para los acentos.
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+% Idioma español.
+\usepackage[spanish,mexico, es-tabla]{babel}
+% Soporte de símbolos adicionales (matemáticas)
+\usepackage{amsmath}
+\usepackage{fancyvrb}
+\usepackage[dvipsnames]{xcolor}
+% Modificamos los márgenes del documento.                                       
+\usepackage[lmargin=1.5cm,rmargin=1.5cm,top=1.5cm,bottom=1.5cm]{geometry}
+
+\title{Facultad de Ciencias, UNAM \\ 
+       Lenguajes de Programación\\
+       Ejecuciones}
+\author{Rubí Rojas Tania Michelle}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+Realiza la ejecución paso a paso de:
+
+\begin{enumerate}
+    % Ejercicio 1.
+    \item \texttt{(make-list 5)}
+
+    Usando la implementación de CPS
+    \begin{verbatim}
+    (define (make-list n)
+      (make-list/k n (lambda (x) x)))
+
+    (define (make-list/k n k)
+      (if (zero? n)
+          (k '())
+          (make-list/k (sub1 n) (lambda (v) (k (cons n v))))))
+    \end{verbatim}
+
+    \textsc{Solución:}
+    \begin{align*}
+        \texttt{(make-list 5)} 
+        &= \texttt{(make-list/k \textcolor{red}{5} 
+                                \textcolor{blue}{($\lambda$(x) x)})} \\ 
+        &= \texttt{(make-list/k \textcolor{red}{4}
+                                \textcolor{blue}{($\lambda$(v) (($\lambda$(x) x) (cons \textcolor{red}{5} v)))})} \\ 
+        &= \texttt{(make-list/k \textcolor{red}{3}
+                                \textcolor{blue}{($\lambda$(v) (($\lambda$(v) (($\lambda$(x) x) (cons \textcolor{red}{5} v))) (cons \textcolor{red}{4} v)))})} \\ 
+        &= \texttt{(make-list/k \textcolor{red}{2}
+                                \textcolor{blue}{($\lambda$(v) (($\lambda$(v) (($\lambda$(v) (($\lambda$(x) x) (cons \textcolor{red}{5} v))) (cons \textcolor{red}{4} v)))}} \\ 
+        &\; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; 
+        \; \; \; \; \; \; \; \; \; 
+                                \texttt{\textcolor{blue}{(cons \textcolor{red}{3} v)))})} \\ 
+        &= \texttt{(make-list/k \textcolor{red}{1}
+                                \textcolor{blue}{($\lambda$(v) (($\lambda$(v) (($\lambda$(v) (($\lambda$(v) (($\lambda$(x) x) (cons \textcolor{red}{5} v)))}} \\  
+        &\; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; 
+        \; \; \; \; \; \; \; \; \; 
+        \texttt{\textcolor{blue}{(cons \textcolor{red}{4} v))) (cons \textcolor{red}{3} v))) (cons \textcolor{red}{2} v)))})} \\ 
+        &= \texttt{(make-list/k \textcolor{red}{0}
+                                \textcolor{blue}{($\lambda$(v) (($\lambda$(v) (($\lambda$(v) (($\lambda$(v) (($\lambda$(v) (($\lambda$(x) x) (cons \textcolor{red}{5} v)))}} \\ 
+        &\; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; 
+        \; \; \; \; \; \; \; \; \; 
+        \texttt{\textcolor{blue}{(cons \textcolor{red}{4} v))) (cons \textcolor{red}{3} v))) (cons \textcolor{red}{2} v))) (cons \textcolor{red}{1} v)))})} \\ 
+        &= \texttt{(\textcolor{blue}{($\lambda$(v) (($\lambda$(v) (($\lambda$(v) (($\lambda$(v) (($\lambda$(v) (($\lambda$(x) x) (cons \textcolor{red}{5} v)))}} \\ 
+        &\; \; \; \; \; 
+        \texttt{\textcolor{blue}{(cons \textcolor{red}{4} v))) (cons \textcolor{red}{3} v))) (cons \textcolor{red}{2} v))) (cons \textcolor{red}{1} v)))} \textcolor{green}{'()})} \\ 
+        &= \texttt{(\textcolor{blue}{($\lambda$(v) (($\lambda$(v) (($\lambda$(v) (($\lambda$(v) (($\lambda$(x) x) (cons \textcolor{red}{5} v))) (cons \textcolor{red}{4} v))) }} \\ 
+        &\; \; \; \; \; 
+        \texttt{\textcolor{blue}{(cons \textcolor{red}{3} v))) (cons \textcolor{red}{2} v)))} \textcolor{green}{'(1)})} \\ 
+        &= \texttt{(\textcolor{blue}{($\lambda$(v) (($\lambda$(v) (($\lambda$(v) (($\lambda$(x) x) (cons \textcolor{red}{5} v))) (cons \textcolor{red}{4} v))) (cons \textcolor{red}{3} v)))}} \\
+        &\; \; \; \; \; 
+        \texttt{\textcolor{green}{'(2 1)})} \\ 
+        &= \texttt{(\textcolor{blue}{($\lambda$(v) (($\lambda$(v) (($\lambda$(x) x) (cons \textcolor{red}{5} v))) (cons \textcolor{red}{4} v)))} \textcolor{green}{'(3 2 1)})} \\
+        &= \texttt{(\textcolor{blue}{($\lambda$(v) (($\lambda$(x) x) (cons \textcolor{red}{5} v))) } \textcolor{green}{'(4 3 2 1)})} \\
+        &= \texttt{(\textcolor{blue}{($\lambda$(x) x)} \textcolor{green}{'(5 4 3 2 1)})} \\
+        &= \texttt{\textcolor{green}{'(5 4 3 2 1)}}
+    \end{align*}
+
+    % Ejercicio 2.
+    \item \texttt{(map add1 '(1 2 3))}
+
+    Usando la implementación de CPS
+    \begin{verbatim}
+    (define (map f lst)
+      (map2 f lst (lambda (x) x)))
+
+    (define (map2 f lst k)
+      (if (null? lst)
+          (k '())
+          (f (car lst))
+             (lambda (v) (map2 f (cdr lst) (lambda (v2) (k (cons v v2))))))))
+    \end{verbatim}
+
+    \textsc{Solución:} Redefinimos la función \texttt{map2} de la siguiente manera
+    \begin{verbatim}
+    (define (map2 f lst k)
+      (if (null? lst)
+          (k '())
+          (map2 f (cdr lst) (lambda (v) (k (cons (f (car lst)) v))))))
+    \end{verbatim}
+
+    pues al ejecutar la función original de \texttt{map2} obtenemos un error de 
+    compilación. De cualquier forma, esta nueva versión utiliza CPS.
+    \begin{align*}
+        \texttt{(map add1 '(1 2 3))}
+        &= \texttt{(map2 \textcolor{green}{add1} 
+                         \textcolor{red}{'(1 2 3)} 
+                         \textcolor{blue}{($\lambda$(x) x)})} \\ 
+        &= \texttt{(map2 \textcolor{green}{add1}
+                         \textcolor{red}{'(2 3)}
+                         \textcolor{blue}{($\lambda$(v) (($\lambda$(x) x) (cons (\textcolor{green}{add1} \textcolor{red}{1}) v)))})} \\ 
+        &= \texttt{(map2 \textcolor{green}{add1}
+                         \textcolor{red}{'(3)}
+                         \textcolor{blue}{($\lambda$(v) (($\lambda$(v) (($\lambda$(x) x) (cons (\textcolor{green}{add1} \textcolor{red}{1}) v)))}} \\
+        &\; \; \; \; \; 
+                         \texttt{\textcolor{blue}{(cons (\textcolor{green}{add1} \textcolor{red}{2}) v)))})} \\ 
+        &= \texttt{(map2 \textcolor{green}{add1}
+                         \textcolor{red}{'()}
+                         \textcolor{blue}{($\lambda$(v) (($\lambda$(v) (($\lambda$(v) (($\lambda$(x) x) (cons (\textcolor{green}{add1} \textcolor{red}{1}) v)))}} \\ 
+        &\; \; \; \; \; 
+                         \texttt{\textcolor{blue}{(cons (\textcolor{green}{add1} \textcolor{red}{2}) v))) (cons (\textcolor{green}{add1} \textcolor{red}{3}) v)))})} \\
+        &= \texttt{(\textcolor{blue}{($\lambda$(v) (($\lambda$(v) (($\lambda$(v) (($\lambda$(x) x) (cons (\textcolor{green}{add1} \textcolor{red}{1}) v)))}} \\ 
+        &\; \; \; \; \; 
+                         \texttt{\textcolor{blue}{(cons (\textcolor{green}{add1} \textcolor{red}{2}) v))) (cons (\textcolor{green}{add1} \textcolor{red}{3}) v)))} \textcolor{orange}{'()})} \\
+        &= \texttt{(\textcolor{blue}{($\lambda$(v) (($\lambda$(v) (($\lambda$(x) x) (cons (\textcolor{green}{add1} \textcolor{red}{1}) v)))}} \\ 
+        &\; \; \; \; \; 
+                         \texttt{\textcolor{blue}{(cons (\textcolor{green}{add1} \textcolor{red}{2}) v)))} \textcolor{orange}{'(4)})} \\
+        &= \texttt{(\textcolor{blue}{($\lambda$(v) (($\lambda$(x) x) (cons (\textcolor{green}{add1} \textcolor{red}{1}) v)))} \textcolor{orange}{'(3 4)})} \\ 
+        &= \texttt{(\textcolor{blue}{($\lambda$(x) x)} \textcolor{orange}{'(2 3 4)})} \\ 
+        &= \texttt{\textcolor{orange}{'(2 3 4)}}
+    \end{align*}
+\end{enumerate}
+
+\end{document}
