@@ -19,7 +19,4 @@
 ;; sustituciones y lo interpreta dependiendo de las definiciones dentro del caché,
 ;; devolviendo el valor numérico correspondiente.
 ;; interp: CFWAE DefrdSub-> number
-(define (interp expr ds)
-  (type-case CFWAE expr
-    [id (i) (lookup i ds)]
-    [num (n) n]))
+(define (interp expr ds))

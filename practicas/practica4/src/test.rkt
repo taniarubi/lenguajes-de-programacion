@@ -35,7 +35,6 @@
 (test (parse '{{fun {x y} {+ {* x y} x}} {3 4}})
       (app (fun '(x y) (op + (list (op * (list (id 'x) (id 'y))) (id 'x)))) (list (num 3) (num 4))))
 
-
 (printf "___________________________________________________________________________________________________________________________\nInician pruebas de la función interp\n")
 #| Pruebas de interp
 de if0 |#

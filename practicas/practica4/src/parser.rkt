@@ -9,39 +9,89 @@
 ;; parse: A -> CFWAE
 ;; parse: s-expression -> CFWAE
 (define (parse sexp)
-  (cond
+  (match sexp
     ;; Identificadores.
-    [(symbol? sexp) (id sexp)]
+    [(? symbol?) (id sexp)]
     ;; Números.
-    [(number? sexp) (num sexp)]
-    [(list? sexp)
-     (case (first sexp)
-       ;; Condicionales if0.
-       [(if0)
-        (if0 (parse (second sexp))
-             (parse (third sexp))
-             (parse (fourth sexp)))]
+    [(? number?) (num sexp)]
+    ;; Condicionales if.
+    [(list 'if condicion then else)
+     (if0 (parse condicion) (parse then) (parse else))]
+    ;; With.
+    [(list 'with bindings body)
+     (get-fun (get-id bindings) body (get-value bindings))]
+    ;; With*
+    [(list 'with* bindings body)
+     (to-fun (get-id bindings) (get-value bindings) body)]
+    ;; Funciones.
+    [(list (list 'fun params body) args)
+     (get-fun params body args)]
+    [(list 'fun (list args ...) body)
+     (fun (check-id args) (parse body))]
+    ;; Aplicaciones de funciones.
+    [(list func-name (list args ...))
+     (app (parse func-name) (map parse args))]
+    ;; Operadores.
+    [(cons x xs)
+     (case x
        ;; Operadores n-arios.
-       [(+ - * /) (parse-op sexp)]
+       [(+ - * /) (parse-op (cons x xs))]
        ;; Operadores binarios.
        [(modulo expt)
-        (if (equal? (length sexp) 3)
-            (parse-op sexp)
+        (if (equal? (length (cons x xs)) 3)
+            (parse-op (cons x xs))
             (error 'parse "El operador es binario."))]
        ;; Operadores unarios.
        [(add1 sub1)
-        (if (equal? (length sexp) 2)
-            (parse-op sexp)
-            (error 'parse "El operador es unario."))]
-       ;; Asignaciones with.
-       [(with) (with (parse-bindings (second sexp)) (parse (third sexp)))]
-       ;; Asignaciones with*.
-       [(with*) (with* (parse-bindings (second sexp)) (parse (third sexp)))]
-       ;; Funciones.
-       [(fun) (fun (second sexp) (parse (third sexp)))]
-       ;; Aplicación de funciones.
-       [(app) (app (parse (second sexp)) (map parse (third sexp)))]
-       [else error 'parse "La expresión no pertenece a la gramática CFWAE."])]))
+        (if (equal? (length (cons x xs)) 2)
+            (parse-op (cons x xs))
+            (error 'parse "El operador es unario."))])]))
+
+;; Nos dice si hay elementos duplicados en una lista.
+(define (hay-duplicados? l)
+  (cond
+    [(empty? l) #f]
+    [(member (car l) (cdr l)) #t]
+    [else (hay-duplicados? (cdr l))]))
+
+;; Regresa los id's de una lista de bindings.
+(define (get-id bindings)
+  (if (empty? bindings)
+      '()
+      (append (list (caar bindings)) (get-id (cdr bindings)))))
+
+;; Aplica la función parse a una expresión with.
+(define (get-fun args body value)
+  (if (equal? (length args) (length value))
+      (app (fun (check-id args) (parse body)) (map parse value))
+      (error "parser: La cardinalidad de los argumentos difiere de la aridad de la función")))
+
+;; Revisa los id's de una función.
+(define (check-id ids)
+  (cond
+    [(empty? ids) ids]
+    [(hay-duplicados? ids)
+     (error (~a "parser: parámetro definido dos veces: " (car ids)))]
+    [else (append (list (car ids)) (check-id (cdr ids)))]))
+
+;; Regresa los valores de una lista de bindings.
+(define (get-value bindings)
+  (if (empty? bindings)
+      '()
+      (append (cdar bindings) (get-value (cdr bindings)))))
+
+;; Aplica la función parse a una expresión with*.
+(define (to-fun id value body)
+  (if (empty? id)
+      (parse body)
+      (app (fun (check-id (list (car id)))
+                (to-fun (cdr id) (cdr value) body))
+           (list (parse (car value))))))
+
+;; Aplica la función parse a una expresión que inicia con un operador.
+;; parse-op: s-expression -> WAE
+(define (parse-op sexp)
+  (op (elige-operador (car sexp)) (map parse (cdr sexp))))
 
 ;; Función auxiliar. Regresa el operador que le corresponde a la expresión.
 ;; elige-operador: symbol -> procedure
@@ -55,29 +105,3 @@
     [(expt) expt]
     [(add1) add1]
     [(sub1) sub1]))
-
-;; Aplica la función parse a una expresión que inicia con un operador.
-;; parse-op: s-expression -> WAE
-(define (parse-op sexp)
-  (op (elige-operador (car sexp)) (map parse (cdr sexp))))
-
-;; Nos dice si hay elementos duplicados en una lista.
-(define (hay-duplicados? l)
-  (cond
-    [(empty? l) #f]
-    [(member (car l) (cdr l)) #t]
-    [else (hay-duplicados? (cdr l))]))
-
-;; Regresa una lista con todos los binding-id's dentro de la lista de bindings
-;; de una expresión with.
-(define (get-ids lb)
-  (if (empty? lb)
-      '()
-      (cons (caar lb) (get-ids (cdr lb)))))
-
-;; Aplica la función parse a una lista de bindings.
-(define (parse-bindings lb)
-  (if (hay-duplicados? (get-ids lb))
-      (error 'parse "Hay id's repetidos en los bindings.")
-      (map (λ (b) (binding (car b) (parse (cadr b)))) lb)))
-      
