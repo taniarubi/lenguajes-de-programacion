@@ -10,7 +10,7 @@
 ;; (define (lookup name ds)
 (define (lookup name ds)
   (type-case DefrdSub ds
-    [mtSub () (error (~a "lookup: Variable libre: " name))]
+    [mtSub () (error (~a "lookup: Hay un identificador libre: " name))]
     [aSub (bound-name value rest-ds)
           (if (symbol=? bound-name name)
               value
