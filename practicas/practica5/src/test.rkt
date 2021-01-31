@@ -104,7 +104,6 @@
 
 (test/exn (prueba '{if {fun {x} {+ x 1}} 5 6}) "interp: Símbolo no esperado la condicional de if, no es un booleano")
 
-
 (test (prueba'{cond {(= 2 2) 5} {#t 6} {(<= 3 3) 7} {#f 8} {else 9}}) (numV 5))
 
 (test (prueba'{cond {(= 2 4) 5} {#t 6} {(<= 3 3) 7} {#f 8} {else 9}}) (numV 6))

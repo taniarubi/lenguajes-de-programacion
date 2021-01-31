@@ -61,17 +61,21 @@
 ;; Aplica la función interp a una expresión app.
 (define (interp-app fun args ds)
   (let* ([fun-val (interp fun ds)]
-               [params (closure-param fun-val)]
-               [init-env (closure-env fun-val)]
-               [argumentos (map (λ (a) (interp a init-env)) args)]
-               [fenv (final-env params args init-env)])
-           (interp (closure-body fun-val) fenv)))
+         [local-ds (closure-env fun-val)])
+    (interp (closure-body fun-val)
+            (add-func-bindings (closure-param fun-val)
+                               args
+                               local-ds
+                               ds))))
 
-(define (final-env params args env)
+(define (add-func-bindings param-lis arg-lis ds original-ds)
   (cond
-    [(empty? params) env]
-    [else
-     (aSub (car params) (car args) (final-env (cdr params) (cdr args) env))]))
-
-;----------------
-;;(interp (desugar (parse '{fun {x} {+ x x}})))
+    [(and (null? param-lis) (null? arg-lis)) ds]
+    [(equal? (length param-lis) (length arg-lis))
+     (add-func-bindings (rest param-lis)
+                        (rest arg-lis)
+                        (aSub (first param-lis)
+                              (interp (first arg-lis) original-ds)
+                              ds)
+                        original-ds)]
+    [else (error ' interp "argument list (~a) does not have required number of elements (~a)" (length param-lis) (length arg-lis))]))
