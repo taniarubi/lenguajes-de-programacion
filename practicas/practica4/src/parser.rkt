@@ -15,7 +15,7 @@
     ;; Números.
     [(? number?) (num sexp)]
     ;; Condicionales if.
-    [(list 'if condicion then else)
+    [(list 'if0 condicion then else)
      (if0 (parse condicion) (parse then) (parse else))]
     ;; With.
     [(list 'with bindings body)

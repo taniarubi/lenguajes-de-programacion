@@ -17,7 +17,7 @@
 ;;Data-type que representa la sintaxis abstracta de CFWAE-Value
 (define-type CFWAE-Value
   [closure (param (listof symbol?)) (body CFWAE?) (env DefrdSub?)]
-  [numV(n number?)])
+  [numV (n number?)])
 
 ;; Data-type que representa un caché de sustituciones
 (define-type DefrdSub
