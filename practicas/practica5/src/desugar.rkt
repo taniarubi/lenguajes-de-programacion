@@ -18,7 +18,7 @@
     [(withS bindings body) (desugar-with bindings body)]
     [(withS* bindings body) (desugar-with* bindings body)]
     [(funS params body) (desugar-funS params body)]
-    ;;[(appS 'f args)()]
+    [(appS (idS 'f) args) (app (id 'f) (map desugar args))]
     [(appS fun args) (desugar-appS fun args)]))
 
 ;; Aplica la función desugar a una expresión if.
@@ -59,35 +59,10 @@
 
 ;; Aplica la función desugar a una expresión funS.
 (define (desugar-funS params body)
-  (fun (car params)
-       (if (empty? (cdr params))
-           (desugar body)
-           (desugar (funS (cdr params) body)))))
+  (fun params (desugar body)))
 
 ;; Aplica la función desugar a una expresión appS.
 (define (desugar-appS fun args)
   (if (empty? (cdr args))
       (app (desugar fun) (desugar (car args)))
       (desugar (appS (appS fun (list (car args))) (cdr args)))))
-
-
-;; ------------
-;;(desugar '{with {{x 1}
- ;;                    {y 2}}
-   ;;                 {with* {{z 3}
-     ;;                      {w z}}
-       ;;                   {with {{f {fun {x} x}}}
-         ;;                       {f {w}}}}})
-
-
-(parse '{f {w}})
-;(app (fun '(x y)
- ;          (app (fun '(z)
-  ;                   (app (fun '(w)
-   ;                            (app (fun '(f)
-    ;                                     (app (id 'f)
-     ;                                         (list (id 'w))))
-      ;                              (list (fun '(x) (id 'x)))))
-       ;                   (list (id 'z))))
-        ;        (list (num 3))))
-      ;(list (num 1) (num 2))))
