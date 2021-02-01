@@ -1,0 +1,470 @@
+\documentclass[letterpaper,11pt]{article}
+
+% Soporte para los acentos.
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+% Idioma español.
+\usepackage[spanish,mexico, es-tabla]{babel}
+% Soporte de símbolos adicionales (matemáticas)
+\usepackage{amsmath}
+\usepackage[dvipsnames]{xcolor}
+% Modificamos los márgenes del documento.                                       
+\usepackage[lmargin=1.5cm,rmargin=1.5cm,top=1.5cm,bottom=1.5cm]{geometry}
+
+\usepackage{graphicx}
+\usepackage{alltt}
+
+\usepackage{amssymb}
+
+\usepackage{bussproofs}
+\EnableBpAbbreviations
+
+\title{Facultad de Ciencias, UNAM \\ 
+       Lenguajes de Programación\\ 
+       Tarea 7}
+\author{ Rodríguez Campos Erick Eduardo\\ Rubí Rojas Tania Michelle}
+\date{31 de enero de 2021}
+
+
+\begin{document}
+\maketitle
+                                                                                %
+\begin{enumerate}
+    \item Da la derivación de las siguientes expresiones usando las reglas de 
+    semántica operacional para $FAE$, vistas en clase:
+    \begin{itemize}
+        \item [$(a)$] \texttt{\{- \{\{fun \{x\} x\} 2 \} \{+ 3 5\}\}}
+        \item [$(b)$] \texttt{\{\{\{fun \{x\} \{fun \{y\}\{+ x y\}\}\}2\}3\}}
+    \end{itemize}
+    \item Realiza el juicio de tipo para cada una de las siguientes expresiones, 
+    usa las reglas visitas en clase.
+    \begin{itemize}
+        \item [$(a)$] \begin{verbatim}{with {a : number 2}
+    {+ a 2}} 
+        \end{verbatim}
+        \begin{prooftree}
+            \AxiomC{$\varnothing \vdash 2:number$}
+            \AxiomC{$[a\leftarrow number]\vdash a:number$}
+            \AxiomC{$[a\leftarrow number]\vdash 2:number$}
+            \BinaryInfC{$[a\leftarrow number]\vdash \{+\; a\; 2\}:number$}
+            \BinaryInfC{$\varnothing \vdash \{with \{a:number\;2\}\;\{+\; a\; 2\}\}:number$}
+        \end{prooftree}
+        \item [$(b)$] \begin{verbatim}{fun {x : number} : number {+ x 2}}
+        \end{verbatim}
+        \begin{prooftree}
+            \AxiomC{$[x\leftarrow number]\vdash x:number$}
+            \AxiomC{$[x\leftarrow number]\vdash 2:number$}
+            \BinaryInfC{$[x\leftarrow number]\vdash \{+\;x\;2\}:number$}
+            \UnaryInfC{$\varnothing \vdash \{fun \{x:number\}:number\{+\;x\;2\}\}:\{number \rightarrow number\}$}
+        \end{prooftree}
+        \item [$(c)$] \begin{verbatim}{{fun {x} {+ x 2}} {+ 3 4}}
+        \end{verbatim}
+        \begin{prooftree}
+            \AxiomC{$[x\leftarrow number]\vdash x:number$}
+            \AxiomC{$[x\leftarrow number]\vdash 2:number$}
+            \BinaryInfC{$[x\leftarrow number]\vdash \{+\;x\;2\}:number$}
+            \UnaryInfC{$\varnothing \vdash \{fun \{x:number\}:number\{+\;x\;2\}\}:\{number \rightarrow number\}$}
+            \AxiomC{$\varnothing \vdash 3:number$}
+            \AxiomC{$\varnothing \vdash 2:number$}
+            \BinaryInfC{$\varnothing \vdash \{+\; 3\; 4\}:number$}
+            \BinaryInfC{$\varnothing \vdash \{\{fun \{x:number\}:number\{+\; x\; 2\}\}\; \{+\; 3\; 4\}\}:number$} 
+        \end{prooftree}
+        \item [$(d)$]\begin{verbatim}{with {f : {number -> number} {fun {x : number} : number {+ x 2}}} 
+    {f {+ 3 4}}}
+        \end{verbatim}
+        \begin{prooftree}
+            \AxiomC{A}
+            \AxiomC{B}
+            \BinaryInfC{C}
+            \UnaryInfC{D}
+            \AxiomC{E}
+            \AxiomC{F}
+            \AxiomC{G}
+            \BinaryInfC{H}
+            \BinaryInfC{I}
+            \BinaryInfC{J}
+        \end{prooftree}
+        Donde:
+        \begin{itemize}
+            \item [$A$] es $[x\leftarrow number]\vdash x:number$
+            \item [$B$] es $[x\leftarrow number]\vdash 2:number$
+            \item [$C$] es $[x\leftarrow number]\vdash \{+\; x\; 2\}:number$
+            \item [$D$] es $\varnothing \vdash \{fun\{x:number\}:number\{+\;x\;2\}\}:\{number\rightarrow number\}$
+            \item [$E$] es $[f\leftarrow\{number \rightarrow number\}] \vdash f:\{number\rightarrow number\}$
+            \item [$F$] es $[f \leftarrow \{number \rightarrow number\}]\vdash 3:number$
+            \item [$G$] es $[f \leftarrow \{number \rightarrow number\}]\vdash 2:number$
+            \item [$H$] es $[f\leftarrow \{number\rightarrow number\}]\vdash\{+\;3\;4\}:number$
+            \item [$I$] es $[f\leftarrow\{number\rightarrow number\}]\vdash \{f\{+\;3\;4\}\}:number$
+            \item [$J$] es $\varnothing \vdash \{with \{f:\{number\rightarrow number\}\{fun \;\{x:number\}:number\;\{+\;x\;2\}\}\}\;\{f\{+\;3\;4\}\}\}:number$
+        \end{itemize}
+        \item [$(e)$]\begin{verbatim}{with {g {fun {x} {x 4}}}
+    {g {fun {y} {- y 2}}}}
+        \end{verbatim}
+        \item [$(f)$]\begin{verbatim}{rec {f : {number -> number}
+    {fun {x : number} : number
+        {if0 x 1 {* n {f {- n 1}}}}}}
+    {f 5}}
+        \end{verbatim}
+    \end{itemize}
+    
+    % Ejercicio 3.
+    \item Para cada una de las siguientes expresiones, realiza su inferencia 
+    de tipos generando las restricciones de tipo correspondientes
+    \begin{enumerate}
+        % Ejercicio 3.a
+        \item 
+        \begin{verbatim} (define (potencia a b)
+    (if (zero? b)
+        1
+        (* a (potencia a (sub1 b)))))
+        \end{verbatim}
+        
+        \textsc{Solución:} Primero, identificamos cada una de nuestras 
+        sub-expresiones y las enumeramos.
+        \begin{itemize}
+            \item \fbox{1} \texttt{(if (zero? b) 1 (* a (potencia a (sub1 b))))}
+
+            \item \fbox{2} \texttt{(zero? b)}
+
+            \item \fbox{3} \texttt{1}
+
+            \item \fbox{4} \texttt{(* a (potencia a (sub1 b)))}
+
+            \item \fbox{5} \texttt{(potencia a (sub1 b))}
+
+            \item \fbox{6} \texttt{(sub1 b)}
+        \end{itemize}
+        
+        Luego, vamos a analizar el tipo de expresiones que encontramos.
+        \begin{itemize}
+            \item Para la primer cajita, 
+            \begin{align*}
+                [[ \; \fbox{1} \; ]]
+                &= [[ \; \texttt{(if (zero? b) 1 (* a (potencia a (sub1 b))))} \; ]] \\
+                &= [[ \; \texttt{(if \fbox{2} \fbox{3} \fbox{4})} \; ]]
+            \end{align*}
+            
+            de donde 
+            \begin{itemize}
+                \item $[[$ \fbox{1} $]]$ = $[[$ \fbox{3} $]]$
+                \item $[[$ \fbox{1} $]]$ = $[[$ \fbox{4} $]]$
+                \item $[[$ \fbox{3} $]]$ = $[[$ \fbox{4}$]]$ 
+                \item $[[$ \fbox{2} $]]$ = \texttt{boolean}
+            \end{itemize}
+            
+            \item Para la segunda cajita, 
+            \begin{align*}
+                [[ \; \fbox{2} \; ]]
+                &= [[\texttt{(zero? b)}]]
+            \end{align*}
+            
+            de donde 
+            \begin{itemize}
+                \item $[[$\texttt{(zero? b)}$]] =$ \texttt{boolean}
+                \item $[[$\texttt{b}$]] =$ \texttt{number}
+            \end{itemize}
+            
+            \item Para la tercer cajita, 
+            \begin{align*}
+                [[ \; \fbox{3} \; ]] = [[1]] = \texttt{number}
+            \end{align*}
+            
+            \item Para la cuarta cajita, 
+            \begin{align*}
+                [[\; \fbox{4} \;]]
+                &= [[\texttt{(* a (potencia a (sub1 b)))}]] \\
+                &= [[\texttt{(* a \fbox{5}}]]
+            \end{align*}
+            
+            de donde 
+            \begin{itemize}
+                \item $[[\; \fbox{4}\;]]$ = \texttt{number}
+                \item $[[$\texttt{a}$]] = $ \texttt{number}
+                \item $[[\; \fbox{5} \;]] =$ \texttt{number}
+            \end{itemize}
+            
+            \item Para la quinta cajita,
+            \begin{align*}
+                [[ \; \fbox{5} \; ]]
+                &= [[\texttt{(potencia a (sub1 b))}]] \\
+                &= [[\texttt{(potencia a \fbox{6})}]]
+            \end{align*}
+
+            de donde $[[\texttt{a} \rightarrow \fbox{6}]]$
+            
+            \item Para la sexta cajita,
+            \begin{equation*}
+                [[\; \fbox{6} \;]] = [[\texttt{(sub1 b)}]]
+            \end{equation*}
+
+            de donde 
+            \begin{itemize}
+                \item $[[$\texttt{(sub1 b)}$]] =$ \texttt{number}
+                \item $[[$\texttt{b}$]] =$ \texttt{number}
+            \end{itemize}
+        \end{itemize}
+        
+        Por lo tanto, el tipo de la función \texttt{potencia} es 
+        \begin{center}
+            \texttt{potencia: number number -> number}
+        \end{center}
+        
+        donde $a$ y $b$ son ambos \texttt{number}.
+        
+        % Ejercicio 3.b
+        \item \begin{verbatim}(define (suma l)
+    (if (nempty? l)
+        0
+        (ncons (nfirst l) (suma (nrest l)))))
+        \end{verbatim}
+
+        \textsc{Solución:} Primero, identificamos cada una de nuestras 
+        sub-expresiones y las enumeramos.
+        \begin{itemize}
+            \item \fbox{1} \texttt{(if (nempty? l) 0 
+            (ncons (nfirst l) (suma (nrest l))))}
+
+            \item \fbox{2} \texttt{(nempty? l)}
+            
+            \item \fbox{3} \texttt{0}
+            
+            \item \fbox{4} \texttt{(ncons (nfirst l) (suma (nrest l)))}
+
+            \item \fbox{5} \texttt{(nfirst l)}
+
+            \item \fbox{6} \texttt{(suma (nrest l))}
+
+            \item \fbox{7} \texttt{(nrest l)}
+        \end{itemize}
+
+        Luego, vamos a analizar el tipo de expresiones que encontramos.
+        \begin{itemize}
+            \item Para la primer cajita, 
+            \begin{align*}
+                [[\; \fbox{1} \;]] 
+                &= [[ \texttt{(if (nempty? l) 0 
+                (ncons (nfirst l) (suma (nrest l))))}]] \\ 
+                &= [[ \texttt{(if \fbox{2} \fbox{3} \fbox{4})} ]]
+            \end{align*}
+
+            de donde 
+            \begin{itemize}
+                \item $[[\; \fbox{1} \; ]]$ $=$ $[[\; \fbox{3} \;]]$
+                \item $[[\; \fbox{1} \; ]]$ $=$ $[[\; \fbox{4} \;]]$
+                \item $[[\; \fbox{3} \; ]]$ $=$ $[[\; \fbox{4} \;]]$
+                \item $[[\; \fbox{2} \; ]]$ $=$ \texttt{boolean}
+            \end{itemize}
+
+            \item Para la segunda cajita, 
+            \begin{equation*}
+                [[\; \fbox{2} \;]] = [[\; \texttt{(nempty? l)} \;]] 
+            \end{equation*}
+
+            de donde 
+            \begin{itemize}
+                \item $[[$\texttt{(nempty? l)}$]]$ = \texttt{boolean}
+                \item $[[$\texttt{b}$]]$ = \texttt{nlist}
+            \end{itemize}
+
+            \item Para la tercer cajita,
+            \begin{equation*}
+                [[\; \fbox{3} \;]] 
+                = [[\texttt{0} ]]
+                = \texttt{number}
+            \end{equation*}
+
+            \item Para la cuarta cajita, 
+            \begin{align*}
+                [[\; \fbox{4} \;]]
+                &= [[\; \texttt{(ncons (nfirst l) (suma (nrest l)))} \;]] \\ 
+                &= [[\texttt{(ncons \fbox{5} \fbox{6})}]]
+            \end{align*}
+
+            de donde 
+            \begin{itemize}
+                \item $[[\; \fbox{4} \;]] =$ \texttt{nlist}
+                \item $[[\; \fbox{5} \;]] = [[\texttt{(nfirst l)}]] =$
+                \texttt{number}
+
+                \item $[[\; \fbox{6} \;]] = [[\texttt{(suma (nrest l))}]]$
+                \begin{itemize}
+                    \item $[[\texttt{suma}]] = [[\texttt{(nrest l)}]] 
+                    \rightarrow [[\;\fbox{6}\;]] = [[\;\fbox{7}\;]] 
+                    \rightarrow [[\;\fbox{6}\;]] = $ \texttt{nlist}
+                    \begin{itemize}
+                        \item $[[\texttt{(nrest l)}]] = \texttt{nlist}$
+                        \item $[[\texttt{l}]] = \texttt{nlist}$
+                    \end{itemize}
+                \end{itemize}
+            \end{itemize}
+        \end{itemize}
+
+        Sin embargo, por el análisis de la primer cajita tenemos que 
+        $[[\; \fbox{3} \;]] = [[\; \fbox{4} \;]]$, pero 
+        \begin{equation*}
+            [[\; \fbox{3} \;]] = \texttt{number} \neq 
+            \texttt{nlist} = [[\; \fbox{4} \;]]
+        \end{equation*}
+
+        Por lo tanto, obtenemos una contradicción.
+
+        % Ejercicio 3.c
+        \item \begin{verbatim}(define (nfilter p l)
+    (cond
+        [(nempty? l) nempty]
+        [(p (nfirst l)) (ncons (nfirst l) (nfilter p (nrest l)))]
+        [else (nfilter p (nrest l))]))
+        \end{verbatim}
+
+        \textsc{Solución:} Primero, identificamos cada una de nuestras 
+        sub-expresiones y las enumeramos.
+        \begin{itemize}
+            \item \fbox{1} \texttt{(cond [(nempty? l) nempty] 
+            [(p (nfirst l)) (ncons (nfirst l) (nfilter p (nrest l)))] 
+            [else (nfilter p (nrest l))])}
+
+            \item \fbox{2} \texttt{(nempty? l)}
+
+            \item \fbox{3} \texttt{nempty}
+
+            \item \fbox{4} \texttt{(p (nfirst l))}
+
+            \item \fbox{5} \texttt{(nfirst l)}
+
+            \item \fbox{6} \texttt{(ncons (nfirst l) (nfilter p (nrest l)))}
+
+            \item \fbox{7} \texttt{(nfirst l)}
+
+            \item \fbox{8} \texttt{(nfilter p (nrest l))}
+
+            \item \fbox{9} \texttt{(nrest l)}
+
+            \item \fbox{10} \texttt{else}
+
+            \item \fbox{11} \texttt{(nfilter p (nrest l))}
+
+            \item \fbox{12} \texttt{(nrest l)}
+        \end{itemize}
+
+        Luego, vamos a analizar el tipo de expresiones que encontramos.
+        \begin{itemize}
+            \item Para la primer cajita, 
+            \begin{align*}
+                [[\;\fbox{1}\;]] 
+                &= [[\texttt{(cond [\;\fbox{2} \fbox{3}\;] 
+                [\;\fbox{4} \fbox{6}\;] [\;\fbox{10} \fbox{11}\;])}]] \\ 
+                &= [[\;\fbox{2}\;]] \rightarrow [[\;\fbox{3}\;]] \texttt{or}
+                [[\;\fbox{4}\;]] \rightarrow [[\;\fbox{6}\;]] \texttt{or}
+                [[\;\fbox{10}\;]] \rightarrow [[\;\fbox{11}\;]]
+            \end{align*}
+
+            de donde 
+            \begin{itemize}
+                \item $[[\;\fbox{2}\;]] =$ \texttt{boolean}
+                \item $[[\;\fbox{4}\;]] =$ \texttt{boolean}
+                \item $[[\;\fbox{3}\;]] = [[\;\fbox{6}\;]] = [[\;\fbox{11}\;]]$
+            \end{itemize}
+
+            \item Para la segunda cajita, 
+            \begin{equation*}
+                [[\;\fbox{2}\;]] = \texttt{(nempty? l)}
+            \end{equation*}
+
+            de donde 
+            \begin{itemize}
+                \item $[[\texttt{(nempty? l)}]] =$ \texttt{boolean}
+                \item $[[\texttt{b}]] =$ \texttt{nlist}
+            \end{itemize}
+
+            \item Para la tercer cajita, 
+            \begin{equation*}
+                [[\;\fbox{3}\;]] = \texttt{nempty} = \texttt{nlist} 
+            \end{equation*}
+            \item Para la cuarta cajita,
+            \begin{align*}
+                [[\;\fbox{4}\;]] 
+                &= \texttt{(p (nfirst l))} \\ 
+                &= \texttt{(p \fbox{5})}
+            \end{align*}
+
+            donde $[[\texttt{p}]] = [[\;\fbox{5}\;]] \rightarrow 
+            [[\;\fbox{4}\;]]$
+
+            \item Para la quinta cajita,
+            \begin{equation*}
+                [[\;\fbox{5}\;]] 
+                = \texttt{(nfirst l)}
+            \end{equation*}
+
+            de donde 
+            \begin{itemize}
+                \item $[[(\texttt{(nfirst l)})]]$ = \texttt{number}
+                \item $[[\texttt{l}]]$ = \texttt{nlist}
+            \end{itemize}
+
+            \item Para la sexta cajita, 
+            \begin{align*}
+                [[\;\fbox{6}\;]] 
+                &= [[\texttt{(ncons (nfirst l) (nfilter p (nrest l)))}]] \\
+                &= [[\texttt{(ncons \fbox{7} \fbox{8})}]]
+            \end{align*}
+
+            de donde 
+            \begin{itemize}
+                \item $[[\;\fbox{6}\;]] = \texttt{nlist}$
+                \item $[[\;\fbox{7}\;]] = [[\;\fbox{5}\;]] =\texttt{number}$
+                \item $[[\;\fbox{8}\;]] = \texttt{(nfilter p (nrest l))} = 
+                \texttt{(nfilter p \fbox{9})}$
+                \begin{itemize}
+                    \item $[[\texttt{nfilter}]] = [[\texttt{p}]] [[\;\fbox{9}\;]]
+                    \rightarrow [[\;\fbox{8}\;]] = \texttt{nlist}$
+                \end{itemize}
+            \end{itemize}
+
+            \item Para la novena cajta,
+            \begin{equation*}
+                [[\;\fbox{9}\;]] = \texttt{(nrest l)}
+            \end{equation*}
+
+            de donde 
+            \begin{itemize}
+                \item $[[\texttt{(nrest l)}]] = $ \texttt{nlist}
+                \item $[[\texttt{l}]] = $ \texttt{nlist}
+            \end{itemize}
+
+            \item Para la décima cajita, 
+            \begin{equation*}
+                [[\;\fbox{10}\;]] = [[\texttt{else}]] = [[\texttt{true}]] = 
+                \texttt{boolean}
+            \end{equation*}
+
+            \item Para la undécima cajita, 
+            \begin{equation*}
+                [[\;\fbox{11}\;]] = [[\;\fbox{8}\;]] = \texttt{nlist}
+            \end{equation*}
+
+            \item Para la duodécima cajita, 
+            \begin{equation*}
+                [[\;\fbox{12}\;]] = [[\;\fbox{9}\;]] = \texttt{nlist}
+            \end{equation*}
+        \end{itemize}
+
+        Por lo tanto, el tipo de la función \texttt{nfilter} es 
+        \begin{center}
+            \texttt{nfilter: (number -> boolean) nlist -> nlist}
+        \end{center}
+
+        donde $p$ es una función del tipo \texttt{(number -> boolean)}
+        y $l$ es del tipo \texttt{nlist}.
+    \end{enumerate}
+
+
+    \item Usando el algoritmo de unificación, muestra la inferencia de tipos de las siguientes expresiones:
+    \begin{itemize}
+        \item [$(a)$] $(\lambda\; (x)\; (x\; 2\; 3))$
+        \item [$(b)$] $((\lambda\; (x)\; (*\; x\; 2))\; (+\; 2\; 3))$
+    \end{itemize}
+    \item Indica si el sistema de Macros de \texttt{RACKET} y \texttt{C} es \textit{higiénico} o no. Justifica con un pequeño programa que haga uso de macros.
+\end{enumerate}
+
+\end{document}
