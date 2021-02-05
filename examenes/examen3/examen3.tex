@@ -1,0 +1,307 @@
+\documentclass[letterpaper,11pt]{article}
+
+% Soporte para los acentos.
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+% Idioma español.
+\usepackage[spanish,mexico, es-tabla]{babel}
+% Soporte de símbolos adicionales (matemáticas)
+\usepackage{amsmath}
+\usepackage[dvipsnames]{xcolor}
+% Modificamos los márgenes del documento.                                       
+\usepackage[lmargin=1.5cm,rmargin=1.5cm,top=1.5cm,bottom=1.5cm]{geometry}
+
+\title{Facultad de Ciencias, UNAM \\ 
+       Lenguajes de Programación\\ 
+       Examen Parcial 3}
+\author{Rubí Rojas Tania Michelle}
+\date{04 de febrero de 2021}
+
+\begin{document}
+\maketitle
+
+\begin{enumerate}
+    % Ejercicio 1.
+    \item Evalúa las siguientes expresiones usando cada uno de los pasos de 
+    parámetros que se solicitan, debes de poner la última expresión a evaluar
+    antes de dar el resultado final de la misma.
+    \begin{verbatim}
+    {with* {{i -1} {j -1}
+              {swap {fun {x y}
+                         {seqn {set tmp x}
+                               {set x y}
+                               {set y tmp}}}}
+            {seqn {swap i j}
+                  {- j i}}}}
+    \end{verbatim}
+
+    \begin{itemize}
+        % Ejercicio 1.a
+        \item Usando paso de parámetros por valor.
+        % Ejercicio 1.b
+        \item Usando paso de parámetros por referencia.
+    \end{itemize}
+
+    % Ejercicio 2.
+    \item ¿Cuáles son las diferencias principales entre el paso de parámetros
+    por necesidad y por nombre?
+
+    % Ejercicio 3.
+    \item Del siguiente código en \textsc{Racket}:
+    \begin{verbatim}
+    (define (filter-neg l)
+      (cond
+        [(empty? l) empty]
+        [else 
+          (if (< (first l) 0)
+              (cons (first l) (filter-neg (rest l)))
+              (filter-neg (rest l)))]))
+    \end{verbatim}
+
+    \begin{enumerate}
+        % Ejercicio 3.a
+        \item Convierte el código anterior a CPS.
+        % Ejercicio 3.b
+        \item ¿Qué regresa la función que convertiste a CPS cuando recibe la 
+        lista \texttt{'(0 1 -1 0 -4 1 -2)}?
+    \end{enumerate}
+
+    % Ejercicio 4.
+    \item Da la expresión asociada a la continuación y el resultado de dicha 
+    expresión, para cada uno de los siguientes códigos:
+    % Ejercicio 4.a
+    \begin{verbatim}
+    > (define c #f)
+    > (+ 1 (+ 2 (+ 3 (+ (let/cc here 
+                        (set! c here)
+                        4) 5))))
+    \end{verbatim}
+
+    \textsc{Solución:}
+
+    % Ejercicio 4.b
+    \begin{verbatim}
+    > (define c empty)
+    > (+ 1 (+ 2 (+ 3 (+ (let/cc here (set! c here) 4) 5))))
+    > (c 20)
+    \end{verbatim}
+
+    % Ejercicio 5.
+    \item Da el juicio de tipo para la siguiente expresión, la cual está 
+    implementada en el lenguaje \textsc{Racket}.
+    \begin{verbatim}
+    {let {x {+ 1 1}}
+      {{fun {y} {+ 0 x}} {+ 2 2}}}
+    \end{verbatim}
+
+    % Ejercicio 6.
+    \item Realiza la inferencia de tipos de la siguiente expresión, mencionándo
+    al término de la inferencia, los tipos de cada una de las variables de la 
+    función.
+    \begin{verbatim}
+    (define foo 
+      (lambda (lst item)
+        (cond 
+          [(nempty? nlist) nempty]
+          [(nequal? item (nfirst lst)) (nrest lst)]
+          [else (ncons (nfirst lst) (foo (nrest lst) item))])))
+    \end{verbatim}
+
+    \textsc{Solución:} Primero, identificamos cada una de nuestras 
+    sub-expresiones y las enumeramos.
+    \begin{itemize}
+        \item \fbox{1} \texttt{(lambda (lst item) (cond [(nempty? nlist) nempty]
+        [(nequal? item (nfirst lst))} \\ 
+        \texttt{(nrest lst)] [else (ncons (nfirst lst) (foo (nrest lst) item))]))}
+
+        \item \fbox{2} \texttt{(cond [(nempty? nlist) nempty] [(nequal? item 
+        (nfirst lst)) (nrest lst)]} \\ 
+        \texttt{[else (ncons (nfirst lst) (foo (nrest lst) item))])}
+
+        \item \fbox{3} \texttt{(nempty? nlist)}
+
+        \item \fbox{4} \texttt{nempty}
+        
+        \item \fbox{5} \texttt{(nequal? item (nfirst lst))}
+
+        \item \fbox{6} \texttt{(nfirst lst)}
+        
+        \item \fbox{7} \texttt{(nrest lst)}
+        
+        \item \fbox{8} \texttt{else}
+        
+        \item \fbox{9} \texttt{(ncons (nfirst lst) (foo (nrest lst) item))}
+
+        \item \fbox{10} \texttt{(nfirst lst)}
+
+        \item \fbox{11} \texttt{(foo (nrest lst) item)}
+
+        \item \fbox{12} \texttt{(nrest lst)}
+    \end{itemize}
+
+    Luego, vamos a analizar el tipo de expresiones que encontramos.
+    \begin{itemize}
+        \item Para la cajita uno,
+        \begin{align*}
+            [[\;\fbox{1}\;]]
+            &= [[\texttt{(lambda (lst item) (cond [(nempty? nlist) nempty]} \\ 
+            &\; \; \; \; \; \; \; \texttt{[(nequal? item (nfirst lst)) 
+            (nrest lst)]} \\
+            &\; \; \; \; \; \; \; \texttt{[else (ncons (nfirst lst) 
+            (foo (nrest lst) item))]))}]] \\ 
+            &= [[\texttt{lst}]] \times [[\texttt{item}]] \rightarrow 
+            [[\texttt{(cond [(nempty? nlist) nempty]} \\ 
+            &\; \; \; \; \; \; \; \texttt{[(nequal? item (nfirst lst)) 
+            (nrest lst)]} \\
+            &\; \; \; \; \; \; \; \texttt{[else (ncons (nfirst lst) 
+            (foo (nrest lst) item))])}]] \\ 
+            &= [[\texttt{lst}]] \times [[\texttt{item}]] \rightarrow [[\;\fbox{2}\;]]
+        \end{align*}
+   
+        \item Para la cajita dos, 
+        \begin{align*}
+            [[\;\fbox{2}\;]] 
+            &= [[\texttt{(cond [(nempty? nlist) nempty] [(nequal? item 
+            (nfirst lst)) (nrest lst)]} \\ 
+            &\; \; \; \; \; \; \; \texttt{[else (ncons (nfirst lst) 
+            (foo (nrest lst) item))])}]] \\ 
+            &= [[\texttt{(cond [\;\fbox{3} \fbox{4}\;] [\;\fbox{5} \fbox{7}\;] 
+            [\;\fbox{8} \fbox{9}\;])}]] \\
+            &= [[\;\fbox{3} \rightarrow \fbox{4}\;]] \texttt{or} 
+            [[\;\fbox{5} \rightarrow \fbox{7}\;]] \texttt{or}
+            [[\;\fbox{8} \rightarrow \fbox{9}\;]]
+        \end{align*}
+
+        de donde 
+        \begin{itemize}
+            \item $[[\;\fbox{3}\;]] =$ \texttt{boolean}
+            \item $[[\;\fbox{5}\;]] =$ \texttt{boolean}
+            \item $[[\;\fbox{4}\;]] = [[\;\fbox{7}\;]] = [[\;\fbox{9}\;]]$
+        \end{itemize}
+
+        \item Para la cajita tres, 
+        \begin{equation*}
+            [[\;\fbox{3}\;]] = [[\texttt{(nempty? nlist)}]]
+        \end{equation*}
+
+        donde 
+        \begin{itemize}
+            \item $[[\texttt{(nempty? list)}]] = \texttt{boolean}$
+            \item $[[\texttt{list}]] = \texttt{nlist}$
+        \end{itemize}
+
+        \item Para la cajita cuatro, 
+        \begin{equation*}
+            [[\;\fbox{4}\;]] = [[\texttt{nempty}]] = \texttt{nlist}
+        \end{equation*}
+
+        \item Para la cajita cinco,
+        \begin{align*}
+            [[\;\fbox{5}\;]]
+            &= [[\texttt{(nequal? item (nfirst lst))}]] \\ 
+            &= [[\texttt{(nequal? item \fbox{6})}]] 
+        \end{align*}
+
+        de donde 
+        \begin{itemize}
+            \item $[[\texttt{(nequal? item \fbox{6})}]] = \texttt{boolean}$
+            \item $[[\texttt{item}]] = \texttt{number}$
+            \item $[[\;\fbox{6}\;]] = [[\texttt{(nfirst lst)}]]$
+            \begin{itemize}
+                \item $[[\texttt{(nfirst lst)}]] =$ \texttt{number}
+                \item $[[\texttt{lst}]] = \texttt{nlist}$
+            \end{itemize}
+        \end{itemize}
+
+        \item Para la cajita siete, 
+        \begin{equation*}
+            [[\;\fbox{7}\;]] = [[\texttt{(nrest lst)}]]
+        \end{equation*}
+
+        donde 
+        \begin{itemize}
+            \item $[[\texttt{(nrest lst)}]] =$ \texttt{nlist}
+            \item $[[\texttt{lst}]] = \texttt{nlist}$
+        \end{itemize}
+
+        \item Para la cajita ocho,
+        \begin{equation*}
+            [[8]] = [[\texttt{else}]] = [[\texttt{true}]] = \texttt{boolean}
+        \end{equation*}
+
+        \item Para la cajita nueve,
+        \begin{align*}
+            [[\;\fbox{9}\;]]
+            &= [[\texttt{(ncons (nfirst lst) (foo (nrest lst) item))}]] \\ 
+            &= [[\texttt{(ncons \fbox{10} \fbox{11})}]] 
+        \end{align*}
+
+        de donde 
+        \begin{itemize}
+            \item $[[\;\fbox{9}\;]] = \texttt{nlist}$
+            \item $[[\;\fbox{10}\;]] = [[\;\fbox{6}\;]] = \texttt{nlist}$
+            \item $[[\;\fbox{11} \;]] = [[\texttt{(foo (nrest lst) item)}]] = $
+            $[[\texttt{(foo \fbox{12} item)}]] =$ \\ 
+            $[[\;\fbox{12}\;]] \times [[\texttt{item}]] \rightarrow 
+            [[\texttt{(foo (nrest lst) item)}]]$
+
+            con 
+            \begin{itemize}
+                \item $[[\;\fbox{12}\;]] = [[\;\fbox{7}\;]] = \texttt{nlist}$
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+
+    Por lo tanto, los tipos de las variables de la función son \texttt{lst = nlist}
+    e \texttt{item = number}; por lo que el tipo de la función \texttt{foo} es 
+    \begin{equation*}
+        \texttt{foo: (nlist x number) -> nlist}
+    \end{equation*}
+
+    % Ejercicio 7.
+    \item Utiliza el algoritmo de unificación visto en clase en la expresión
+    \begin{verbatim}
+    ((lambda (y) (* y (+ 0 0))) 1)
+    \end{verbatim}
+
+    % Ejercicio 8.
+    \item Da las sentencias de variables de tipo para las siguientes funciones 
+    de \texttt{Racket}:
+    \begin{itemize}
+        \item \texttt{list-length}
+        \item \texttt{fibonacci}
+    \end{itemize}
+
+    % Ejercicio 9.
+    \item Selecciona dos características de la siguiente lista del Paradigma 
+    Orientado a Objetos:
+    \begin{itemize}
+        \item Herencia
+        \item Encapsulamiento de información
+        \item Abstracción
+        \item Modularidad
+    \end{itemize}
+
+    Ahora define y explícalas, usando ejemplos.
+
+    % Ejercicio 10.
+    \item Se tiene el siguiente código que intenta dar una versión 
+    \textit{memoizada} de la función que calcula el $n-$ésimo número de la 
+    sucesión de \texttt{Tribonacci}:
+    \begin{verbatim}
+    (define (tribonacci n)
+      (if (< n 3)
+          1
+          (+ (tribonacci (- n 1)) (tribonacci (- n 2)) (tribonacci (- n 3)))))
+    \end{verbatim}
+
+    (define (tribonnacci-memo n tabla)
+      (let ([res (hash-ref tabla n 'ninguno)])
+        (cond
+          [(equal? res 'ninguno)
+           (hash-set! tabla n (tribonacci n))
+           (hash-ref tabla n)]
+          [else res])))
+\end{enumerate}
+
+\end{document}
