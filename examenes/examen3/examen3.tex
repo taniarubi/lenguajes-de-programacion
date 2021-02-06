@@ -411,11 +411,11 @@
           (let ([res (hash-ref tabla n 'ninguno)])
             (cond
               [(equal? res 'ninguno)
-               (define nuevo 
-                 (+ (tribonacci (- n 1))
-                    (tribonacci (- n 2))
+               (define nuevo
+                 (+ (tribonacci (- n 1)) 
+                    (tribonacci (- n 2)) 
                     (tribonacci (- n 3))))
-               (hash-ref tabla n nuevo)
+               (hash-set! tabla n nuevo)
                nuevo]
               [else res])))
         \end{verbatim}
