@@ -38,6 +38,49 @@
     \begin{itemize}
         % Ejercicio 1.a
         \item Usando paso de parámetros por valor.
+        \item 
+        \textsc{Solución:} La expresión que debemos evaluar es 
+        \texttt{\{seqn \{swap i j\} \{- j i\}\}}. La primera expresión con 
+        la que nos encontramos es \texttt{\{swap i j\}}, la cual es una 
+        función que recibe los parámetros $x,y$; y en la aplicación le 
+        estamos pasando $i,j$. Por lo que los parámetros formales serán 
+        $x,y$ y los reales serán $i,j$. Como vamos a usar paso por valor, 
+        entonces \texttt{\{set tmp x\}} (con \texttt{tmp=x=-1}) es una 
+        copia del valor $i=-1$. De igual forma, cuando hacemos 
+        \texttt{\{set x y\}} (con \texttt{x=y=-1}) pasamos una copia del 
+        valor de $y$
+        
+        Por último, el ambiente y la memoria son:
+        \begin{table}[h]
+            \parbox{.30\linewidth}{
+            \centering
+            \begin{tabular}{|c|c|}
+            \hline
+            \texttt{swap} & \texttt{2} \\
+            \hline
+            \texttt{j} & \texttt{1} \\
+            \hline
+            \texttt{i} & \texttt{0} \\
+            \hline
+            \end{tabular}
+            }
+            \hfill
+            \parbox{.67\linewidth}{
+            \centering
+            \begin{tabular}{|c|c|}
+            \hline
+            \texttt{2} & \texttt{\{fun \{x y\} \{seqn \{set tmp x\}
+                  \{set x y\}
+                  \{set y tmp\}\}\}} \\
+            \hline
+            \texttt{1} & \texttt{-1} \\
+            \hline
+            \texttt{0} & \texttt{-1} \\
+            \hline
+            \end{tabular}
+            }
+        \end{table}
+
         % Ejercicio 1.b
         \item Usando paso de parámetros por referencia.
     \end{itemize}
@@ -264,6 +307,23 @@
     ((lambda (y) (* y (+ 0 0))) 1)
     \end{verbatim}
 
+    \textsc{Solución:} Primero, identificamos cada una de nuestras 
+    sub-expresiones y las enumeramos.
+    \begin{itemize}
+        \item \fbox{1} \texttt{((lambda (y) (* y (+ 0 0))) 1)}
+        \item \fbox{2} \texttt{(lambda (y) (* y (+ 0 0)))}
+        \item \fbox{3} \texttt{(* y (+ 0 0))}
+        \item \fbox{4} \texttt{(+ 0 0)}
+        \item \fbox{5} \texttt{0}
+        \item \fbox{6} \texttt{0}
+        \item \fbox{7} \texttt{1}
+    \end{itemize}
+
+    Luego, generamos las restricciones de tipo.
+    \begin{itemize}
+        \item $[[\;\fbox{1}\;]]$ = $[[\;\fbox{2}\;]] \rightarrow$
+    \end{itemize}
+
     % Ejercicio 8.
     \item Da las sentencias de variables de tipo para las siguientes funciones 
     de \texttt{Racket}:
@@ -294,14 +354,73 @@
           1
           (+ (tribonacci (- n 1)) (tribonacci (- n 2)) (tribonacci (- n 3)))))
     \end{verbatim}
-
-    (define (tribonnacci-memo n tabla)
+    \begin{verbatim}
+    (define (tribonacci-memo n tabla)
       (let ([res (hash-ref tabla n 'ninguno)])
         (cond
           [(equal? res 'ninguno)
            (hash-set! tabla n (tribonacci n))
            (hash-ref tabla n)]
           [else res])))
+    \end{verbatim}
+
+    \begin{enumerate}
+        % Ejercicio 10.a
+        \item ¿Por qué la función \texttt{tribonacci-memo} del código anterior 
+        no hace uso correcto de la técnica de memoización?
+
+        \textsc{Solución:} Esta función no hace uso correcto de la memoización
+        porque gracias a la línea 
+        \begin{center}
+            \texttt{(hash-set! tabla n (tribonacci n))}
+        \end{center}
+
+        efectivamente vamos agregando nuevos registros a la tabla, pero como 
+        el valor lo obtenemos llamando a la función \texttt{(tribonacci n)}, 
+        entonces se están generando sus respectivas llamadas a función 
+        repetidas, es decir, al utilizar la función \texttt{(tribonacci n)} 
+        estamos volviendo a calcular valores que ya habíamos obtenido antes 
+        (lo cual queremos evitar usando memoización).
+
+        % Ejercicio 10.b
+        \item Describir cómo se corregiría este código para que emplee bien la 
+        técnica de memoización.
+        
+        \textsc{Solución:} Primero, debemos cambiar la línea 
+        \begin{center}
+            \texttt{(hash-set! tabla n (tribonacci n))}    
+        \end{center}
+
+        por la definición de una variable \texttt{nuevo}, la cual debe calcular 
+        el valor para el parámetro realizando la operación
+        \begin{center}
+            \texttt{(+ (tribonacci (- n 1)) (tribonacci (- n 2)) 
+            (tribonacci (- n 3)))}
+        \end{center}
+        
+        y después debemos modificar la línea
+        \begin{center}
+            \texttt{(hash-ref tabla n)}
+        \end{center}
+
+        para poder asignar este valor a la tabla y posteriormente regresarlo.
+        
+        Por lo tanto, la función modificada queda como:
+        \begin{verbatim}
+        (define (tribonacci-memo n tabla)
+          (let ([res (hash-ref tabla n 'ninguno)])
+            (cond
+              [(equal? res 'ninguno)
+               (define nuevo 
+                 (+ (tribonacci (- n 1))
+                    (tribonacci (- n 2))
+                    (tribonacci (- n 3))))
+               (hash-ref tabla n nuevo)
+               nuevo]
+              [else res])))
+        \end{verbatim}
+    \end{enumerate}
+
 \end{enumerate}
 
 \end{document}
