@@ -344,6 +344,45 @@
 
     Ahora define y explícalas, usando ejemplos.
 
+    \textsc{Solución:}
+    \begin{itemize}
+        % Ejercicio 9.a
+        \item Herencia
+
+        La herencia es el procedimiento por el cual una clase hereda los 
+        atributos y métodos de otra clase. La clase cuyas propiedades y métodos 
+        se heredan se conoce como clase Padre. Y la clase que hereda las 
+        propiedades de la clase padre es la clase hija.
+
+        Ejemplo: Supongamos que tenemos alumnos universitarios. Algunos son 
+        alumnos normales, otros son de intercambio y otros son becarios. 
+        Probablemente tendremos una clase \texttt{Alumno} con una serie de 
+        métodos como \texttt{asistir\_a\_clase()}, \texttt{hacer\_examen()}, 
+        etc., y una serie de atributos como \texttt{nombre}, \texttt{número de 
+        cuenta}, etc.; que son comúnes a todos los alumnos, pero hay operaciones 
+        que son diferentes en cada tipo de alumno como 
+        \texttt{pagar\_mensualidad()} (los becarios no pagan) o 
+        \texttt{matricularse()} (los de intercambio se matriculan en su 
+        universidad de origen). En este caso, la clase Padre sería 
+        \texttt{Alumno} y las clases hijas serán \texttt{AlumnoNormal},
+        \texttt{AlumnoIntercambio} y \texttt{AlumnoBecado}.
+
+        % Ejercicio 9.b
+        \item Abstracción
+
+        Una clase abstracta es aquella en la que no podemos instanciar objetos.
+        Expresa las características específicas de un objeto, aquellas que lo 
+        distinguen de los demás tipos y que logran definir límites conceptuales
+        respecto a quién está haciéndo dicha abstracción.
+
+        Ejemplo: Supongamos que queremos aplicar la Abstracción a las Aves. 
+        Un \texttt{Ave} es sólo un concepto abstracto que no puede instanciarse.
+        Existen muchas aves que heredan sus características (como el pico, las 
+        plumas, las alas, las patas, volar, etc) y ellas sí pueden existir 
+        por sí mismos. Un pájaro o un pato serían ejemplos de aves que sí 
+        pueden existir de la clase abstracta \texttt{Ave}.
+    \end{itemize}
+
     % Ejercicio 10.
     \item Se tiene el siguiente código que intenta dar una versión 
     \textit{memoizada} de la función que calcula el $n-$ésimo número de la 
