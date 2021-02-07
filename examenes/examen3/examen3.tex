@@ -242,12 +242,78 @@
         \item Convierte el código anterior a CPS.
 
         \textsc{Solución:}
+        \begin{verbatim}
+        (define (filter-neg l)
+          (filter-neg/k l (lambda (x) x)))
+          
+        (define (filter-neg/k l k)
+          (cond
+            [(empty? l) (k '())]
+            [else
+              (if (< (first l) 0)
+                  (filter-neg/k (rest l)
+                                (lambda (v) (k (cons (first l) v))))
+                  (filter-neg/k (rest l) k))]))
+        \end{verbatim}
 
+        \newpage
         % Ejercicio 3.b
         \item ¿Qué regresa la función que convertiste a CPS cuando recibe la 
         lista \texttt{'(0 1 -1 0 -4 1 -2)}?
 
         \textsc{Solución:}
+        \begin{align*}
+            \texttt{(filter-neg \textcolor{red}{'(0 1 -1 0 -4 1 -2)})}
+            &= \texttt{(filter-neg/k
+                        \textcolor{red}{'(0 1 -1 0 -4 1 -2)}
+                        \textcolor{blue}{($\lambda$(x) x)})} \\ 
+            &= \texttt{(filter-neg/k 
+                        \textcolor{red}{'(1 -1 0 -4 1 -2)}
+                        \textcolor{blue}{($\lambda$(x) x)})} \\ 
+            &= \texttt{(filter-neg/k 
+                        \textcolor{red}{'(-1 0 -4 1 -2)}
+                        \textcolor{blue}{($\lambda$(x) x)})} \\ 
+            &= \texttt{(filter-neg/k 
+                        \textcolor{red}{'(0 -4 1 -2)}} \\ 
+            & \quad \quad \quad \quad \quad \quad \quad \quad \; \;
+            \texttt{\textcolor{blue}{($\lambda$(v) (($\lambda$(x) x) (cons -1 v)))})} \\
+            &= \texttt{(filter-neg/k 
+                        \textcolor{red}{'(-4 1 -2)}} \\ 
+            & \quad \quad \quad \quad \quad \quad \quad \quad \; \;
+            \texttt{\textcolor{blue}{($\lambda$(v) (($\lambda$(x) x) (cons -1 v)))})} \\
+            &= \texttt{(filter-neg/k 
+                        \textcolor{red}{'(1 -2)}} \\ 
+            & \quad \quad \quad \quad \quad \quad \quad \quad \; \;
+            \texttt{\textcolor{blue}{($\lambda$(v) (($\lambda$(v) (($\lambda$(x) x) (cons -1 v)))}} \\ 
+            & \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \;
+            \texttt{\textcolor{blue}{(cons -4 v)))})} \\ 
+            &= \texttt{(filter-neg/k 
+                        \textcolor{red}{'(-2)}} \\ 
+            & \quad \quad \quad \quad \quad \quad \quad \quad \; \;
+            \texttt{\textcolor{blue}{($\lambda$(v) (($\lambda$(v) (($\lambda$(x) x) (cons -1 v)))}} \\ 
+            & \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \;
+            \texttt{\textcolor{blue}{(cons -4 v)))})} \\ 
+            &= \texttt{(filter-neg/k
+                        \textcolor{red}{'()}} \\ 
+            & \quad \quad \quad \quad \quad \quad \quad \quad \; \;
+            \texttt{\textcolor{blue}{($\lambda$(v) (($\lambda$(v) (($\lambda$(v) (($\lambda$(x) x)}} \\ 
+            & \quad \quad \quad \quad \quad \quad \quad \quad \; \;
+            \texttt{\textcolor{blue}{(cons -1 v))) (cons -4 v))) (cons -2 v)))})} \\ 
+            %%%%%%%%%
+            &= \texttt{(\textcolor{blue}{($\lambda$(v) (($\lambda$(v) (($\lambda$(v) (($\lambda$(x) x) (cons -1 v)))}} \\ 
+            & \quad \; \; \; 
+            \texttt{\textcolor{blue}{(cons -4 v))) (cons -2 v)))}  \textcolor{green}{'()})} \\ 
+            &= \texttt{(\textcolor{blue}{($\lambda$(v) (($\lambda$(v) (($\lambda$(x) x) (cons -1 v))) (cons -4 v)))}} \\ 
+            & \quad \; \; \; 
+            \texttt{\textcolor{green}{'(-2)})} \\ 
+            &= \texttt{(\textcolor{blue}{($\lambda$(v) (($\lambda$(x) x) (cons -1 v)))}
+                        \textcolor{green}{'(-4 -2)})} \\ 
+            &= \texttt{(\textcolor{blue}{($\lambda$(x) x)}
+                        \textcolor{green}{'(-1 -4 -2)})} \\
+            &= \texttt{\textcolor{green}{'(-1 -4 -2)}}
+        \end{align*}
+
+        Por lo tanto, la función \texttt{filter-neg} regresa la lista \texttt{'(-1 -4 -2)}.
     \end{enumerate}
 
     % Ejercicio 4.

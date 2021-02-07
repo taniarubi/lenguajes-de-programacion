@@ -1,7 +1,7 @@
 # Fdb version 3
-["pdflatex"] 1612683199 "/home/taniarubi/Documents/fciencias/lenguajes-de-programacion/examenes/examen3/examen3.tex" "/home/taniarubi/Documents/fciencias/lenguajes-de-programacion/examenes/examen3/examen3.pdf" "examen3" 1612683218
-  "/home/taniarubi/Documents/fciencias/lenguajes-de-programacion/examenes/examen3/examen3.aux" 1612683200 132 299bab8561975636a65a016c761e464c ""
-  "/home/taniarubi/Documents/fciencias/lenguajes-de-programacion/examenes/examen3/examen3.tex" 1612683218 23480 54e9b5f8cc270f6a2f4079e024e76dcb ""
+["pdflatex"] 1612688514 "/home/taniarubi/Documents/fciencias/lenguajes-de-programacion/examenes/examen3/examen3.tex" "/home/taniarubi/Documents/fciencias/lenguajes-de-programacion/examenes/examen3/examen3.pdf" "examen3" 1612688515
+  "/home/taniarubi/Documents/fciencias/lenguajes-de-programacion/examenes/examen3/examen3.aux" 1612688515 132 d9ec930ff0a9812c1ab69e49d4591a6e ""
+  "/home/taniarubi/Documents/fciencias/lenguajes-de-programacion/examenes/examen3/examen3.tex" 1612688514 27152 b949b62bebc951da26aecb4a6d03244b ""
   "/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc" 1607249373 2971 def0b6c1f0b107b3b936def894055589 ""
   "/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1607249373 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/share/texmf-dist/fonts/map/fontname/texfonts.map" 1607249373 3524 cb3e574dea2d1052e39280babc910dc8 ""
@@ -18,8 +18,10 @@
   "/usr/share/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1607249373 1004 54797486969f23fa377b128694d548df ""
   "/usr/share/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1607249373 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
   "/usr/share/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm" 1607249373 916 f87d7c45f9c908e672703b83b72241a3 ""
+  "/usr/share/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam5.tfm" 1607249373 924 9904cf1d39e9767e7a3622f2a125a565 ""
   "/usr/share/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam7.tfm" 1607249373 928 2dc8d444221b7a635bb58038579b861a ""
   "/usr/share/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm" 1607249373 908 2921f8a10601f252058503cc6570e581 ""
+  "/usr/share/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm5.tfm" 1607249373 940 75ac932a52f80982a9f8ea75d03a34cf ""
   "/usr/share/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm7.tfm" 1607249373 940 228d6584342e91276bf566bcf9716b83 ""
   "/usr/share/texmf-dist/fonts/tfm/public/cm/cmex10.tfm" 1607249373 992 662f679a0b3d2d53c1b94050fdaa3f50 ""
   "/usr/share/texmf-dist/fonts/tfm/public/cm/cmmi10.tfm" 1607249373 1528 abec98dbc43e172678c11b3b9031252a ""
@@ -77,11 +79,11 @@
   "/usr/share/texmf-dist/web2c/texmf.cnf" 1607249373 33301 a3134070eacafb10b1f371612ce2650d ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1611082550 5013534 fd35bdaa60a6f086a27ce99b94bb8742 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1611082485 2635854 128ff0592050a72041d2378f9a041c47 ""
-  "examen3.aux" 1612683200 132 299bab8561975636a65a016c761e464c "pdflatex"
-  "examen3.tex" 1612683218 23480 54e9b5f8cc270f6a2f4079e024e76dcb ""
+  "examen3.aux" 1612688515 132 d9ec930ff0a9812c1ab69e49d4591a6e "pdflatex"
+  "examen3.tex" 1612688514 27152 b949b62bebc951da26aecb4a6d03244b ""
   (generated)
-  "/home/taniarubi/Documents/fciencias/lenguajes-de-programacion/examenes/examen3/examen3.log"
-  "examen3.aux"
-  "examen3.pdf"
   "examen3.log"
+  "examen3.pdf"
   "/home/taniarubi/Documents/fciencias/lenguajes-de-programacion/examenes/examen3/examen3.pdf"
+  "examen3.aux"
+  "/home/taniarubi/Documents/fciencias/lenguajes-de-programacion/examenes/examen3/examen3.log"
