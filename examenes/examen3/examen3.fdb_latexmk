@@ -1,7 +1,7 @@
 # Fdb version 3
-["pdflatex"] 1612600708 "/home/taniarubi/Documents/fciencias/lenguajes-de-programacion/examenes/examen3/examen3.tex" "/home/taniarubi/Documents/fciencias/lenguajes-de-programacion/examenes/examen3/examen3.pdf" "examen3" 1612600708
-  "/home/taniarubi/Documents/fciencias/lenguajes-de-programacion/examenes/examen3/examen3.aux" 1612600708 132 462ebd3c084d784ad5674f55d5e904b2 ""
-  "/home/taniarubi/Documents/fciencias/lenguajes-de-programacion/examenes/examen3/examen3.tex" 1612600707 16845 285489db55a1e4be4900287ca68ab4b2 ""
+["pdflatex"] 1612661473 "/home/taniarubi/Documents/fciencias/lenguajes-de-programacion/examenes/examen3/examen3.tex" "/home/taniarubi/Documents/fciencias/lenguajes-de-programacion/examenes/examen3/examen3.pdf" "examen3" 1612664317
+  "/home/taniarubi/Documents/fciencias/lenguajes-de-programacion/examenes/examen3/examen3.aux" 1612661474 132 462ebd3c084d784ad5674f55d5e904b2 ""
+  "/home/taniarubi/Documents/fciencias/lenguajes-de-programacion/examenes/examen3/examen3.tex" 1612661472 17274 c0e1d7b00ed228bf16dc041ab2284880 ""
   "/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc" 1607249373 2971 def0b6c1f0b107b3b936def894055589 ""
   "/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1607249373 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/share/texmf-dist/fonts/map/fontname/texfonts.map" 1607249373 3524 cb3e574dea2d1052e39280babc910dc8 ""
@@ -65,11 +65,11 @@
   "/usr/share/texmf-dist/web2c/texmf.cnf" 1607249373 33301 a3134070eacafb10b1f371612ce2650d ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1611082550 5013534 fd35bdaa60a6f086a27ce99b94bb8742 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1611082485 2635854 128ff0592050a72041d2378f9a041c47 ""
-  "examen3.aux" 1612600708 132 462ebd3c084d784ad5674f55d5e904b2 "pdflatex"
-  "examen3.tex" 1612600707 16845 285489db55a1e4be4900287ca68ab4b2 ""
+  "examen3.aux" 1612661474 132 462ebd3c084d784ad5674f55d5e904b2 "pdflatex"
+  "examen3.tex" 1612661472 17274 c0e1d7b00ed228bf16dc041ab2284880 ""
   (generated)
-  "examen3.pdf"
-  "/home/taniarubi/Documents/fciencias/lenguajes-de-programacion/examenes/examen3/examen3.pdf"
-  "examen3.log"
   "/home/taniarubi/Documents/fciencias/lenguajes-de-programacion/examenes/examen3/examen3.log"
+  "examen3.log"
+  "/home/taniarubi/Documents/fciencias/lenguajes-de-programacion/examenes/examen3/examen3.pdf"
   "examen3.aux"
+  "examen3.pdf"
