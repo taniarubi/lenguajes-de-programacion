@@ -41,19 +41,52 @@
     \begin{itemize}
         % Ejercicio 1.a
         \item Usando paso de parámetros por valor.
-        \item 
-        \textsc{Solución:} La expresión que debemos evaluar es 
-        \texttt{\{seqn \{swap i j\} \{- j i\}\}}. La primera expresión con 
-        la que nos encontramos es \texttt{\{swap i j\}}, la cual es una 
-        función que recibe los parámetros $x,y$; y en la aplicación le 
-        estamos pasando $i,j$. Por lo que los parámetros formales serán 
-        $x,y$ y los reales serán $i,j$. Como vamos a usar paso por valor, 
-        entonces \texttt{\{set tmp x\}} (con \texttt{tmp=x=-1}) es una 
-        copia del valor $i=-1$. De igual forma, cuando hacemos 
-        \texttt{\{set x y\}} (con \texttt{x=y=-1}) pasamos una copia del 
-        valor de $y$
         
-        Por último, el ambiente y la memoria son:
+        \textsc{Solución:} La expresión que debemos evaluar es 
+        \begin{verbatim}
+        {seqn {swap i j} 
+              {- j i}}
+        \end{verbatim}
+
+        Como se trata de una expresión \texttt{seqn}, entonces primero 
+        debemos evaluar la función \texttt{swap}. De esta forma,  
+        \begin{verbatim}
+        {swap i j} = {swap {fun {x y}
+                       {seqn {set tmp x}
+                             {set x y}
+                             {set y tmp}}}}
+        \end{verbatim}
+
+        Esta expresión es una función que recibe los parámetros $x,y$; y en 
+        la aplicación le estamos pasando $i,j$. Por lo que, los parámetros 
+        formales serán $x,y$ y los reales serán $i,j$. Como vamos a usar 
+        paso por valor, entonces
+        \begin{equation*}
+            \texttt{\{set tmp x\}} \quad \quad \texttt{;; tmp=x=-1}
+        \end{equation*} 
+        
+        es una copia del valor $i=-1$. De igual forma, cuando hacemos
+        \begin{equation*}
+            \texttt{\{set x y\}} \quad \quad \texttt{;; x=y=-1}
+        \end{equation*}
+        
+        pasamos una copia del valor de $y=-1$. Posteriormente, hacemos 
+        \begin{equation*}
+            \texttt{\{set y tmp\}} \quad \quad \texttt{;; y=tmp=-1}
+        \end{equation*}
+
+        \newpage
+        Sin embargo, el intercambio de valores se realizó dentro de la función, 
+        por lo que al ejecutar la última expresión del \texttt{seqn} obtenemos
+        \begin{verbatim}
+        {- j i} = {- (-1) (-1)}
+                = 0
+        \end{verbatim}
+
+        pues los valores $i=-1$, $j=-1$ siguen conservando sus valores. Así, 
+        el resultado final de evaluar esta expresión es $0$.
+        
+        Por otro lado, el ambiente y la memoria quedan de la siguiente manera:
         \begin{table}[h]
             \parbox{.30\linewidth}{
             \centering
@@ -86,6 +119,84 @@
 
         % Ejercicio 1.b
         \item Usando paso de parámetros por referencia.
+        
+        \textsc{Solución:} La expresión que debemos evaluar es
+        \begin{verbatim}
+        {seqn {swap i j}
+              {- j i}}
+        \end{verbatim}
+
+        Como se trata de una expresión \texttt{seqn}, entonces primero 
+        debemos evaluar la función \texttt{swap}. De esta forma, 
+        \begin{verbatim}
+        {swap i j} = {swap {fun {x y}
+                       {seqn {set tmp x}
+                             {set x y}
+                             {set y tmp}}}}
+        \end{verbatim}
+
+        Esta expresión es una función que recibe los parámetros $x,y$; y en la 
+        aplicación le estamos pasando $i,j$. Por lo que, los parámetros formales 
+        serán $x,y$ y los reales serán $i,j$. Como vamos a usar paso por 
+        referencia, entonces 
+        \begin{equation*}
+            \texttt{\{set tmp x\}} \quad \quad \texttt{;; tmp=x=-1}
+        \end{equation*}
+
+        pasa la dirección en memoria de $i$, que es $0$. En esta dirección 
+        encontramos que el valor de $i$ es $-1$. De igual forma, cuando hacemos 
+        \begin{equation*}
+            \texttt{\{set x y\}} \quad \quad \texttt{;; x=y=-1}
+        \end{equation*}
+
+        pasamos la dirección en memoria de $j$, que es $1$. En esta dirección 
+        encontramos que el valor de $j$ es $-1$. Posteriormente, hacemos 
+        \begin{equation*}
+            \texttt{\{set y tmp\}} \quad \quad \texttt{;; y=tmp=-1}
+        \end{equation*}
+
+        Sin embargo, el intercambio de valores se realizó en el ambiente global, 
+        por lo que al ejecutar la última expresión del \texttt{seqn} obtenemos 
+        \begin{verbatim}
+        {- j i} = {- (-1) (-1)}
+                = 0
+        \end{verbatim}
+
+        pues los valores $i=-1$, $j=-1$ esta vez sí fueron modificados (pero 
+        como tienen el mismo valor, no se puede apreciar la diferencia). Así, el 
+        resultado final de evaluar esta expresión es $0$.
+
+        \newpage
+        Por otro lado, el ambiente y la memoria quedan de la siguiente manera:
+        \begin{table}[h]
+            \parbox{.30\linewidth}{
+            \centering
+            \begin{tabular}{|c|c|}
+            \hline
+            \texttt{swap} & \texttt{2} \\
+            \hline
+            \texttt{j} & \texttt{1} \\
+            \hline
+            \texttt{i} & \texttt{0} \\
+            \hline
+            \end{tabular}
+            }
+            \hfill
+            \parbox{.67\linewidth}{
+            \centering
+            \begin{tabular}{|c|c|}
+            \hline
+            \texttt{2} & \texttt{\{fun \{x y\} \{seqn \{set tmp x\}
+                  \{set x y\}
+                  \{set y tmp\}\}\}} \\
+            \hline
+            \texttt{1} & \texttt{-1} \\
+            \hline
+            \texttt{0} & \texttt{-1} \\
+            \hline
+            \end{tabular}
+            }
+        \end{table}
     \end{itemize}
 
     % Ejercicio 2.
