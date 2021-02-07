@@ -322,12 +322,25 @@
     % Ejercicio 4.a
     \begin{verbatim}
     > (define c #f)
-    > (+ 1 (+ 2 (+ 3 (+ (let/cc here 
-                        (set! c here)
-                        4) 5))))
+    > (+ 1 (+ 2 (+ 3 (+ (let/cc here (set! c here) 4) 5))))
     \end{verbatim}
 
-    \textsc{Solución:}
+    \textsc{Solución:} La continuación asociada es
+    \begin{center}
+        \texttt{($\lambda \uparrow$(v) (+ 1 (+ 2 (+ 3 (+ v 5)))))}
+    \end{center}
+
+    Ahora bien, notemos que en la primer línea lo que hacemos es definir una 
+    variable global \texttt{c} con el valor booleano \texttt{\#f}. Como la 
+    expresión \texttt{let/cc} guarda nuestra continuación en \texttt{c} y 
+    luego regresa $4$, entonces tenemos que 
+    \begin{align*}
+        \texttt{((($\lambda \uparrow$(v) (+ 1 (+ 2 (+ 3 (+ v 5)))))) 4)}
+        &= \texttt{(+ 1 (+ 2 (+ 3 (+ 4 5))))} \\ 
+        &= 15
+    \end{align*}
+
+    Por lo tanto, el resultado de nuestra expresión es $15$.
 
     % Ejercicio 4.b
     \begin{verbatim}
@@ -335,6 +348,25 @@
     > (+ 1 (+ 2 (+ 3 (+ (let/cc here (set! c here) 4) 5))))
     > (c 20)
     \end{verbatim}
+
+    \textsc{Solución:} La continuación asociada es
+    \begin{center}
+        \texttt{($\lambda \uparrow$(v) (+ 1 (+ 2 (+ 3 (+ v 5)))))}
+    \end{center}
+
+    Ahora bien, notemos que en la primer línea lo que hacemos es definir una 
+    variable global \texttt{c} con el valor de una lista vacía \texttt{'()}. 
+    Luego, la expresión \texttt{let/cc} guarda nuestra continuación en 
+    \texttt{c} y luego regresa $4$. Como llamamos a nuestra continuación 
+    \texttt{c} con un argumento, entonces esto es equivalente a reemplazar el 
+    valor de $4$ por $20$, por lo que obtenemos 
+    \begin{align*}
+        \texttt{((($\lambda \uparrow$(v) (+ 1 (+ 2 (+ 3 (+ v 5)))))) 20)}
+        &= \texttt{(+ 1 (+ 2 (+ 3 (+ 20 5))))} \\ 
+        &= 31
+    \end{align*}
+
+    Por lo tanto, el resultado de nuestra expresión es $31$.
 
     % Ejercicio 5.
     \item Da el juicio de tipo para la siguiente expresión, la cual está 
@@ -550,7 +582,7 @@
         \item \fbox{7} \texttt{1}
     \end{itemize}
 
-    begin{center}
+    \textbf{Pendiente}
 
 
     % Ejercicio 8.
