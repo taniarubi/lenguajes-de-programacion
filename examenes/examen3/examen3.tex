@@ -203,6 +203,28 @@
     \item ¿Cuáles son las diferencias principales entre el paso de parámetros
     por necesidad y por nombre?
 
+    \textsc{Solución:} El paso de parámetros por necesidad sigue la siguiente 
+    filosofía: \textit{"Si ya se evaluó una función y posteriormente se vuelve 
+    a llamar, entonces nos quedamos con el valor obtenido en esa primera 
+    evaluación y ya no la volvemos a evaluar"}; mientras que el paso de 
+    parámetros por nombre realiza las llamadas a función por su nombre (es 
+    decir, evalúa una función las veces que sea necesaria, sin importar 
+    cuántas veces aparezca). Por ejemplo, si la función $foo$ dentro de un 
+    programa es llamada $n$ veces, entonces
+    \begin{itemize}
+        \item Usando paso de parámetros por necesidad, la función $foo$ sólo 
+        se evalúa una vez y para las siguietes $n-1$ llamadas regresa el 
+        valor obtenido de esa primera llamada a función.
+        
+        \item Usando paso de parámetros nombre, la función $foo$ se evalúa 
+        las $n$ veces que es llamada.
+    \end{itemize}
+
+    Otra diferencia es que el paso por necesidad no preserva siempre el 
+    concepto de estado (pues no va mutando los valores correspondientes en 
+    cada una de las llamadas), mientras que el paso por nombre sí lo hace 
+    (en cada una de sus llamadas muta los valores correspondientes).
+
     % Ejercicio 3.
     \item Del siguiente código en \textsc{Racket}:
     \begin{verbatim}
@@ -218,9 +240,14 @@
     \begin{enumerate}
         % Ejercicio 3.a
         \item Convierte el código anterior a CPS.
+
+        \textsc{Solución:}
+
         % Ejercicio 3.b
         \item ¿Qué regresa la función que convertiste a CPS cuando recibe la 
         lista \texttt{'(0 1 -1 0 -4 1 -2)}?
+
+        \textsc{Solución:}
     \end{enumerate}
 
     % Ejercicio 4.
