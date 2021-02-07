@@ -7,6 +7,9 @@
 \usepackage[spanish,mexico, es-tabla]{babel}
 % Soporte de símbolos adicionales (matemáticas)
 \usepackage{amsmath}
+\usepackage{amssymb} 
+\usepackage{bussproofs}
+\usepackage{longtable}
 \usepackage[dvipsnames]{xcolor}
 % Modificamos los márgenes del documento.                                       
 \usepackage[lmargin=1.5cm,rmargin=1.5cm,top=1.5cm,bottom=1.5cm]{geometry}
@@ -136,6 +139,30 @@
     {let {x {+ 1 1}}
       {{fun {y} {+ 0 x}} {+ 2 2}}}
     \end{verbatim}
+
+    \textsc{Solución:} 
+    \begin{prooftree}
+        \AxiomC{$\varnothing \vdash$ \texttt{1:number}}
+        \AxiomC{$\varnothing \vdash$ \texttt{1:number}}
+        \BinaryInfC{$\varnothing \vdash$ \texttt{\{+ 1 1\}:number}}
+        \AxiomC{\texttt{$\Gamma \vdash$ 0:number}}
+        \AxiomC{\texttt{$\Gamma \vdash$ x:number}}
+        \BinaryInfC{\texttt{$\Gamma \vdash$ \{+ 0 x\}:number}}
+        \AxiomC{\texttt{$\Gamma' \vdash$ 2:number}}
+        \AxiomC{\texttt{$\Gamma' \vdash$ 2:number}}
+        \BinaryInfC{\texttt{\texttt{$\Gamma' \vdash$ \{+ 2 2\}:number}}}
+        \BinaryInfC{\texttt{$\Gamma \vdash$ 
+        \{\{fun \{y\} \{+ 0 x\}\} \{+ 2 2\}\}:number}}
+        \BinaryInfC{$\varnothing \vdash$ \texttt{\{let \{x \{+ 1 1\}\} 
+        \{\{fun \{y\} \{+ 0 x\}\} \{+ 2 2\}\}\}:number}}
+    \end{prooftree}
+
+    donde 
+    \begin{itemize}
+        \item \texttt{$\Gamma$ = [x $\leftarrow$number]}
+        \item \texttt{$\Gamma'$ = [x $\leftarrow$number, 
+        y $\leftarrow$number]}
+    \end{itemize}
 
     % Ejercicio 6.
     \item Realiza la inferencia de tipos de la siguiente expresión, mencionándo
@@ -319,10 +346,8 @@
         \item \fbox{7} \texttt{1}
     \end{itemize}
 
-    Luego, generamos las restricciones de tipo.
-    \begin{itemize}
-        \item $[[\;\fbox{1}\;]]$ = $[[\;\fbox{2}\;]] \rightarrow$
-    \end{itemize}
+    begin{center}
+
 
     % Ejercicio 8.
     \item Da las sentencias de variables de tipo para las siguientes funciones 
