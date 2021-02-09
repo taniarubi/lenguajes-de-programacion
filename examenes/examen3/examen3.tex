@@ -582,8 +582,176 @@
         \item \fbox{7} \texttt{1}
     \end{itemize}
 
-    \textbf{Pendiente}
+    Luego, generamos las restricciones de tipo asociadas:
+    \begin{itemize}
+        \item Para la cajita $1$, 
+        \begin{equation*}
+            [[\;\fbox{1}\;]] = 
+            [[\texttt{((lambda (y) (* y (+ 0 0))) 1)}]]
+        \end{equation*}
 
+        donde 
+        \begin{equation*}
+            [[\;\fbox{2}\;]] = [[\;\fbox{7}\;]] \rightarrow [[\;\fbox{1}\;]]
+        \end{equation*}
+
+        \item Para la cajita $2$, 
+        \begin{align*}
+            [[\;\fbox{2}\;]]
+            &= [[\texttt{(lambda (y) (* y (+ 0 0)))}]] \\ 
+            &= [[\texttt{y}]] \rightarrow [[\texttt{(* y (+ 0 0))}]] \\ 
+            &= [[\texttt{y}]] \rightarrow [[\;\fbox{3}\;]]
+        \end{align*}
+
+        \item Para la cajita $3$, 
+        \begin{equation*}
+            [[\;\fbox{3}\;]] = [[\texttt{(* y (+ 0 0))}]]
+        \end{equation*}
+
+        donde 
+        \begin{itemize}
+            \item $[[\texttt{(* y (+ 0 0))}]] = $ \texttt{number}
+            \item $[[\texttt{y}]] = $ \texttt{number}
+            \item $[[\texttt{(+ 0 0)}]] = $ \texttt{number}
+        \end{itemize}
+
+        \item Para la cajita $4$, 
+        \begin{equation*}
+            [[\;\fbox{4}\;]] = [[\texttt{(+ 0 0)}]]
+        \end{equation*}
+
+        donde 
+        \begin{itemize}
+            \item $[[\texttt{+ 0 0}]] =$ \texttt{number}
+            \item $[[\texttt{0}]]$ = \texttt{number} 
+            \item $[[\texttt{0}]]$ = \texttt{number} 
+        \end{itemize}
+
+        \item Para la cajita $5$, 
+        \begin{equation*}
+            [[\;\fbox{5}\;]] = [[\texttt{0}]] = \texttt{number}
+        \end{equation*}
+
+        \item Para la cajita $6$, 
+        \begin{equation*}
+            [[\;\fbox{6}\;]] = [[\;\fbox{5}\;]] = \texttt{number}
+        \end{equation*}
+
+        \item Para la cajita $7$, 
+        \begin{equation*}
+            [[\;\fbox{7}\;]] = [[\texttt{1}]] = \texttt{number}
+        \end{equation*}
+    \end{itemize}
+
+    Ahora bien, ejecutamos el algoritmo de unificación:
+    \begin{center}
+        \begin{longtable}{|c|c|c|}
+             \hline
+             Action & Stack & Substitution\\
+             \hline
+             &$[[\fbox{2}]]=[[\fbox{7}]]\rightarrow [[\fbox{1}]]$&\\
+             Initialize&$[[\fbox{2}]]=[[y]]\rightarrow [[\fbox{3}]]$&empty\\
+             &$[[\fbox{3}]]=number$&\\
+             &$[[y]]=number$&\\
+             &$[[\fbox{4}]]=number$&\\
+             &$[[\fbox{5}]]=number$&\\
+             &$[[\fbox{6}]]=number$&\\ 
+             &$[[\fbox{7}]]=number$&\\
+             \hline
+             &$[[\fbox{7}]] \rightarrow [[\fbox{1}]]=[[y]]\rightarrow [[\fbox{3}]]$ & 
+             $[[\fbox{2}]]\leftarrow[[\fbox{7}]]\rightarrow [[\fbox{1}]]$\\
+             step2&$[[\fbox{3}]]=number$&\\
+             &$[[y]]=number$&\\
+             &$[[\fbox{4}]]=number$&\\
+             &$[[\fbox{5}]]=number$& \\
+             &$[[\fbox{6}]]=number$& \\
+             &$[[\fbox{7}]]=number$& \\
+             \hline
+             &$[[\fbox{7}]]=[[y]]$&
+             $[[\fbox{2}]]\leftarrow[[\fbox{7}]]\rightarrow [[\fbox{1}]]$\\
+             step4&$[[\fbox{1}]]=[[\fbox{3}]]$&\\
+             &$[[\fbox{3}]]=number$&\\
+             &$[[y]]=number$&\\
+             &$[[\fbox{4}]]=number$&\\
+             &$[[\fbox{5}]]=number$&\\
+             &$[[\fbox{6}]]=number$&\\
+             &$[[\fbox{7}]]=number$&\\
+             \hline
+             &$[[\fbox{1}]]=[[\fbox{3}]]$&
+             $[[\fbox{2}]]\leftarrow[[y]]\rightarrow [[\fbox{1}]]$\\
+             step2&$[[\fbox{3}]]=number$&$[[\fbox{7}]]\leftarrow[[y]]$\\
+             &$[[y]]=number$&\\
+             &$[[\fbox{4}]]=number$&\\
+             &$[[\fbox{5}]]=number$&\\ 
+             &$[[\fbox{6}]]=number$&\\ 
+             &$[[y]]=number$&\\ 
+             \hline
+             &$[[\fbox{3}]]=number$&
+             $[[\fbox{2}]]\leftarrow[[y]]\rightarrow [[\fbox{3}]]$\\
+             step2&$[[y]]=number$&$[[\fbox{7}]]\leftarrow [[y]]$\\
+             &$[[\fbox{4}]]=number$&$[[\fbox{1}]]\leftarrow [[\fbox{3}]]$\\
+             &$[[\fbox{5}]]=number$&\\
+             &$[[\fbox{6}]]=number$&\\ 
+             &$[[y]]=number$&\\ 
+             \hline
+             &$[[y]]=number$&
+             $[[\fbox{2}]]\leftarrow [[y]] \rightarrow number$\\
+             step2&$[[\fbox{4}]]=number$&$[[\fbox{7}]]\leftarrow [[y]]$\\
+             &$[[\fbox{5}]]=number$&$[[\fbox{1}]]\leftarrow number$\\
+             &$[[\fbox{6}]]=number$&$[[\fbox{3}]]\leftarrow number$\\
+             &$[[y]]=number$&\\
+             \hline
+             &$[[\fbox{4}]]=number$&
+             $[[\fbox{2}]] \leftarrow number \rightarrow number$\\
+             &$[[\fbox{5}]]=number$&
+             $[[\fbox{7}]]\leftarrow number$\\
+             &$[[\fbox{6}]]=number$&
+             $[[\fbox{1}]]\leftarrow number$\\
+             step2&$number=number$&$[[\fbox{3}]]\leftarrow number$\\
+             &&$[[y]]\leftarrow number$\\
+            \hline
+            &$[[\fbox{5}]]=number$&$[[\fbox{2}]] \leftarrow number \rightarrow number$ \\
+            &$[[\fbox{6}]]=number$&$[[\fbox{7}]] \leftarrow number$\\
+            step2&$number=number$&$[[\fbox{1}]] \leftarrow number$ \\
+            &&$[[\fbox{3}]] \leftarrow number$ \\
+            &&$[[y]] \leftarrow number$ \\ 
+            &&$[[\fbox{4}]] \leftarrow number$ \\
+            \hline
+            &$[[\fbox{6}]]=number$&
+            $[[\fbox{2}]] \leftarrow number \rightarrow number$ \\ 
+            &$number=number$& $[[\fbox{7}]] \leftarrow number$\\
+            step2&&$[[\fbox{1}]] \leftarrow number$ \\ 
+            &&$[[\fbox{3}]] \leftarrow number$ \\ 
+            \hline
+            &&$[[y]] \leftarrow number$ \\ 
+            &&$[[\fbox{4}]] \leftarrow number$ \\
+            &&$[[\fbox{5}]] \leftarrow number$ \\ 
+            \hline
+            &$number=number$&
+            $[[\fbox{2}]] \leftarrow number \rightarrow number$ \\ 
+            &&$[[\fbox{7}]] \leftarrow number$ \\ 
+            step2&&$[[\fbox{1}]] \leftarrow number$ \\ 
+            &&$[[\fbox{3}]] \leftarrow number$ \\
+            &&$[[y]] \leftarrow number$\\
+            &&$[[\fbox{4}]] \leftarrow number$\\
+            &&$[[\fbox{5}]] \leftarrow number$\\
+            &&$[[\fbox{6}]] \leftarrow number$\\
+            \hline
+            &&
+            $[[\fbox{2}]] \leftarrow number \rightarrow number$ \\ 
+            &&$[[\fbox{7}]] \leftarrow number$ \\ 
+            step1&empty&$[[\fbox{1}]] \leftarrow number$ \\ 
+            &&$[[\fbox{3}]] \leftarrow number$ \\
+            &&$[[y]] \leftarrow number$\\
+            &&$[[\fbox{4}]] \leftarrow number$\\
+            &&$[[\fbox{5}]] \leftarrow number$\\
+            &&$[[\fbox{6}]] \leftarrow number$\\
+            \hline
+        \end{longtable}
+    \end{center}
+
+    Por lo tanto, la función $\lambda$ es de tipo \texttt{number 
+    $\rightarrow$ number}.
 
     % Ejercicio 8.
     \item Da las sentencias de variables de tipo para las siguientes funciones 
