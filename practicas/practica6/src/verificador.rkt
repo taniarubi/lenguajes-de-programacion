@@ -25,7 +25,7 @@
     ;; Booleanos.
     [(boolS b) (booleanT)]
     ;; Condicionales.
-    [(iFS condition then else) 7]
+    [(iFS condition then else) (typeof-if condition then else context)]
     ;; Operadores.
     [(opS f args) (typeof-op f args context)]
     [(condS cases) 9]
@@ -40,11 +40,13 @@
 ;; Aplica la función typeof a una expresión op.
 (define (typeof-op f args context)
   (cond
-    [(member f (list + - * / modulo expt add1 sub1)) (check-args1 args context)]
+    [(member f (list + - * / modulo expt add1 sub1))
+     (check-args1 args context)]
     [(member f (list = < <= > >= zero?)) (check-args2 args context)]
     [(member f (list and-aux or-aux not)) (check-args3 args context)]))    
 
-;; Revisa los argumentos de un operador {+ - * / modulo expt add1 sub1} cuyos tipos son numberT.
+;; Revisa los argumentos de un operador {+ - * / modulo expt add1 sub1} cuyos
+;; tipos son numberT.
 (define (check-args1 args context)
   (cond
     [(empty? args) (numberT)]
@@ -53,7 +55,8 @@
          (error (~a "typeof: Error in parameter " (car args) "\nExpected type: "
                     "(numberT)\nGiven type: " (typeof (car args) context))))]))
 
-;; Revisa los argumentos de un operador {= < <= > >= zero?} cuyos tipos son booleanT.
+;; Revisa los argumentos de un operador {= < <= > >= zero?} cuyos tipos son
+;; booleanT.
 (define (check-args2 args context)
   (cond
     [(empty? args) (booleanT)]
@@ -70,3 +73,16 @@
          (check-args3 (cdr args) context)
          (error (~a "typeof: Error in parameter " (car args) "\nExpected type: "
                     "(booleanT)\nGiven type: " (typeof (car args) context))))]))
+
+;; Aplica la función typeof a una expresión if.
+(define (typeof-if condition then else context)
+  (let ([condition-type (typeof condition context)]
+        [then-type (typeof then context)]
+        [else-type (typeof else context)])
+    (cond
+      [(booleanT? condition-type)
+       (if (equal? then-type else-type)
+           then-type
+           (error "typeof: Type error\nconditionals must have same type in then-expr and else-expr"))]
+      [else
+       (error "if: Type error\nConditional's test-expr type must be a boolean\nGiven: " condition-type)])))
