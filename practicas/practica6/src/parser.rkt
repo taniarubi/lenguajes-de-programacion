@@ -32,12 +32,7 @@
     [(list 'with* bindings body) 
      (withS* (parse-bindings bindings) (parse body))]
     ;; Funciones.
-    [(list 'fun params rType body) (parse-fun params rType body)]
-    [(list (list 'fun params rType body) args) 
-     (appS (parse-fun params body) (map parse args))]
-    [(list 'f rType args)
-     (let ([hola (print rType)])
-       (appS (idS 'f) (map parse args)))]
+    [(list 'fun params ': rType body) (parse-fun params rType body)]
     ;; Aplicación de función.
     [(list 'app fun args) (appS (parse fun) (map parse args))]
     ;; Operaciones.
@@ -109,11 +104,21 @@
   (cond
     [(equal? sexp 'number) (numberT)]
     [(equal? sexp 'boolean) (booleanT)]
-    [else (error "Tipo incorrecto.")]))
+    [else (error (~a "parse: no es válido el tipo: " sexp))]))
 
 ;; Aplica la función parse a una expresión fun.
 (define (parse-fun params rType body)
-  5)
+  (funS (parse-params params) (parse-rType rType) (parse body)))
+
+;; Aplica la función parse a una lista de parámetros.
+(define (parse-params params)
+  (map (λ (p) (param (car p) (parse-type (third p)))) params))
+
+;; Regresa el tipo de una expresión rType, recordando que es de la forma
+;; (tipos(a) -> tipo(b)); por ejemplo (number boolean -> number).
+(define (parse-rType rType)
+  (funT (map parse-type (append (take rType (- (length rType) 2))
+                                 (list (last rType))))))
 
 ;; Toma una lista de parejas de condiciones y genera la sintáxis abstracta
 ;; de una condicional en CFWBAE
