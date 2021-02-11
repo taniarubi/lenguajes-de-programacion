@@ -24,21 +24,40 @@
     [(numS n) (numberT)]
     ;; Booleanos.
     [(boolS b) (booleanT)]
-    ;; Condicionales.
-    [(iFS condition then else) (typeof-if condition then else context)]
+    ;; Condicionales if.
+    [(iFS condition then else)
+     (typeof-iFS condition then else context)]
     ;; Operadores.
-    [(opS f args) (typeof-op f args context)]
-    [(condS cases) 9]
-    [(withS bindings body) 10]
-    [(withS* bindings body) 11]
-    [(funS params rType body) 12]
+    [(opS f args) (typeof-opS f args context)]
+    ;; Condicionales.
+    [(condS cases) (typeof-condS cases context)]
+    ;; With.
+    [(withS bindings body)
+     5]
+    ;; With*
+    [(withS* bindings body)
+     5]
+    [(funS params rType body)5]
     [(appS fun args) 13]))
   
 (define (prueba exp)
   (typeof (parse exp) (phi)))
 
+;; Aplica la función typeof a una expresión if.
+(define (typeof-iFS condition then else context)
+  (let ([condition-type (typeof condition context)]
+        [then-type (typeof then context)]
+        [else-type (typeof else context)])
+    (cond
+      [(booleanT? condition-type)
+       (if (equal? then-type else-type)
+           then-type
+           (error "typeof: Type error\nconditionals must have same type in then-expr and else-expr"))]
+      [else
+       (error "if: Type error\nConditional's test-expr type must be a boolean\nGiven: " condition-type)])))
+
 ;; Aplica la función typeof a una expresión op.
-(define (typeof-op f args context)
+(define (typeof-opS f args context)
   (cond
     [(member f (list + - * / modulo expt add1 sub1))
      (check-args1 args context)]
@@ -74,15 +93,24 @@
          (error (~a "typeof: Error in parameter " (car args) "\nExpected type: "
                     "(booleanT)\nGiven type: " (typeof (car args) context))))]))
 
-;; Aplica la función typeof a una expresión if.
-(define (typeof-if condition then else context)
-  (let ([condition-type (typeof condition context)]
-        [then-type (typeof then context)]
-        [else-type (typeof else context)])
-    (cond
-      [(booleanT? condition-type)
-       (if (equal? then-type else-type)
-           then-type
-           (error "typeof: Type error\nconditionals must have same type in then-expr and else-expr"))]
-      [else
-       (error "if: Type error\nConditional's test-expr type must be a boolean\nGiven: " condition-type)])))
+;; Aplica la función typeof a una expresión cond.
+(define (typeof-condS cases context)
+  (let ([tipo empty])
+    (if (andmap (λ (c) (type-case Condition c
+                         [condition (test-expr then-expr)
+                                    (let ([test-type (typeof test-expr context)]
+                                          [then-type (typeof then-expr context)])
+                                      (cond
+                                        [(booleanT? test-type)
+                                         (or (list (equal? tipo then-type)
+                                                   (equal? tipo empty)))
+                                         (set! tipo then-type)]
+                                        [else (error "cond: Type error\nConditional's test-expr type must be a boolean\nGiven: " test-type)]))]
+                         [else-cond (else-expr)
+                                    (let ([else-type (typeof else-expr context)])
+                                      (if (equal? tipo else-type)
+                                          #t
+                                          (error "typeof: Type error\nconditionals must have same type in then-expr and else-expr")))]))
+                cases)
+        tipo
+        (error "typeof: Type error\nconditionals"))))

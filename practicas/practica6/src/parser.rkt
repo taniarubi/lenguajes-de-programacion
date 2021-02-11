@@ -80,7 +80,7 @@
     [(sub1) sub1]
     [(not) not]
     [(and) and-aux]
-    [(or) or-aux]
+    [(or) 'or]
     [(zero?) zero?]))
 
 ;; Hacemos que un operador "and" pueda recibir argumentos.
@@ -90,6 +90,7 @@
 ;; Hacemos que un operador "or" pueda recibir argumentos.
 (define (or-aux . bools)
   (ormap (λ (x) x) bools))
+
 
 ;; Aplica la función parse a una expresión que inicia con un operador.
 (define (parse-op sexp)
