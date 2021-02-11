@@ -34,7 +34,11 @@
     ;; Funciones.
     [(list 'fun params ': rType body) (parse-fun params rType body)]
     ;; Aplicación de función.
-    [(list 'app fun args) (appS (parse fun) (map parse args))]
+    [(list (list 'fun params ': rType body) args) 
+     (appS (parse-fun params rType body) (map parse args))]
+    [(cons 'f args) (appS (idS 'f) (map parse args))]
+    [(list 'app fun args)
+     (appS (parse fun) (map parse args))]
     ;; Operaciones.
     [(cons x xs)
      (case x
@@ -136,3 +140,4 @@
      (parse-conditions-tail
       cs
       (append acc (list (condition (parse test-expr) (parse expr)))))]))
+
