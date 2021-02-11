@@ -119,5 +119,15 @@
 (define (typeof-with bindings body context)
   (typeof body (typeof-bindings bindings context)))
 
-;; Aplica la función typeof a los bindings de una expresión with.
-(define (typeof-bindings bindings context) 5)
+;; Define un contexto para una expresión with a partir de sus bindings.
+(define (typeof-bindings bindings context)
+  (cond
+    [(empty? bindings) context]
+    [else
+     (type-case Binding (car bindings)
+       [binding (id tipo value)
+                (let ([value-type (typeof value context)])
+                  (if (equal? tipo value-type)
+                      (typeof-bindings (cdr bindings)
+                                       (gamma id tipo context))
+                      (error "typeof: Type error\nBindings must have same type in tipo and value")))])]))
