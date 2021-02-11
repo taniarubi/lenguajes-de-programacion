@@ -32,10 +32,12 @@
     [(list 'with* bindings body) 
      (withS* (parse-bindings bindings) (parse body))]
     ;; Funciones.
-    [(list 'fun params body) (parse-fun params body)]
-    [(list (list 'fun params body) args) 
+    [(list 'fun params rType body) (parse-fun params rType body)]
+    [(list (list 'fun params rType body) args) 
      (appS (parse-fun params body) (map parse args))]
-    [(list 'f args) (appS (parse 'f) (map parse args))]
+    [(list 'f rType args)
+     (let ([hola (print rType)])
+       (appS (idS 'f) (map parse args)))]
     ;; Aplicación de función.
     [(list 'app fun args) (appS (parse fun) (map parse args))]
     ;; Operaciones.
@@ -61,6 +63,10 @@
 ;; Aplica la función parse a una expresión if.
 (define (parse-if condition then else)
   (iFS (parse condition) (parse then) (parse else)))
+
+;; Aplica la función parse a una expresión que inicia con un operador.
+(define (parse-op sexp)
+  (opS (elige-operador (car sexp)) (map parse (cdr sexp))))
 
 ;; Regresa el operador que le corresponde a la expresión.
 (define (elige-operador sexp)
@@ -91,36 +97,23 @@
 (define (or-aux . bools)
   (ormap (λ (x) x) bools))
 
-
-;; Aplica la función parse a una expresión que inicia con un operador.
-(define (parse-op sexp)
-  (opS (elige-operador (car sexp)) (map parse (cdr sexp))))
-
-;; Aplica la función parse a una lista de bindings.
+;; Aplica la función parse a una lista de bindings, recordando que ahora son de
+;; la forma (id : tipo i).
 (define (parse-bindings lb)
-  (if (hay-duplicados? (get-ids lb))
-      (error (~a "parser: parámetro definido dos veces: " (car get-ids)))
-      (map (λ (b) (binding (car b) (parse (cadr b)))) lb)))
+  (map (lambda (b) (binding (first b) (parse-type (third b))
+                            (parse (fourth b))))
+       lb))
 
-;; Nos dice si hay elementos duplicados en una lista.
-(define (hay-duplicados? l)
+;; Regresa el tipo de una expresión de la forma (tipo i), por ejemplo (number 2).
+(define (parse-type sexp)
   (cond
-    [(empty? l) #f]
-    [(member (car l) (cdr l)) #t]
-    [else (hay-duplicados? (cdr l))]))
-
-;; Regresa una lista con todos los binding-id's dentro de la lista de bindings
-;; de una expresión with.
-(define (get-ids lb)
-  (if (empty? lb)
-      '()
-      (cons (caar lb) (get-ids (cdr lb)))))
+    [(equal? sexp 'number) (numberT)]
+    [(equal? sexp 'boolean) (booleanT)]
+    [else (error "Tipo incorrecto.")]))
 
 ;; Aplica la función parse a una expresión fun.
-(define (parse-fun params body)
-  (if (hay-duplicados? params)
-      (error (~a "parser: parámetro definido dos veces: " (car params)))
-      (funS params (parse body))))
+(define (parse-fun params rType body)
+  5)
 
 ;; Toma una lista de parejas de condiciones y genera la sintáxis abstracta
 ;; de una condicional en CFWBAE

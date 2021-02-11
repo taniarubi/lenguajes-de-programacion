@@ -32,12 +32,12 @@
     ;; Condicionales.
     [(condS cases) (typeof-condS cases context)]
     ;; With.
-    [(withS bindings body)
-     5]
+    [(withS bindings body) (typeof-with bindings body context)]
     ;; With*
-    [(withS* bindings body)
-     5]
+    [(withS* bindings body) (typeof-with bindings body context)]
+    ;; Funciones.
     [(funS params rType body)5]
+    ;; Aplicación de funciones.
     [(appS fun args) 13]))
   
 (define (prueba exp)
@@ -114,3 +114,10 @@
                 cases)
         tipo
         (error "typeof: Type error\nconditionals"))))
+
+;; Aplica la función typeof a una expresión with.
+(define (typeof-with bindings body context)
+  (typeof body (typeof-bindings bindings context)))
+
+;; Aplica la función typeof a los bindings de una expresión with.
+(define (typeof-bindings bindings context) 5)
