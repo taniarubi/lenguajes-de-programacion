@@ -41,4 +41,3 @@
 
 (test/exn (prueba '{{fun {{x : number} {y : boolean}} : (number boolean -> number) {if y x 0}} {2 3}})
           "app: Type error:\nParameter's type doesn't match expected types\nGiven: (numberT)\nExpected: (booleanT)")
-

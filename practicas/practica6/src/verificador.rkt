@@ -36,7 +36,7 @@
     ;; With*
     [(withS* bindings body) (typeof-with bindings body context)]
     ;; Funciones.
-    [(funS params rType body)5]
+    [(funS params rType body) (typeof-fun params rType body context)]
     ;; Aplicación de funciones.
     [(appS fun args) 13]))
   
@@ -131,3 +131,30 @@
                       (typeof-bindings (cdr bindings)
                                        (gamma id tipo context))
                       (error "typeof: Type error\nBindings must have same type in tipo and value")))])]))
+
+;; Aplica la función typeof a una expresión fun.
+(define (typeof-fun params rType body context)
+  (let ([params-context (typeof-params params context)])
+    (let* ([body-type (typeof body params-context)]
+           [tipo (last-rType rType)])
+      (if (equal? tipo body-type)
+          (funT (append (map (λ (p) (param-tipo p)) params)
+                        (list tipo)))
+          (error "typeof: Type error\nfun must have same type in rType and body-type")))))
+
+;; Define un nuevo contexto a una expresión fun a partir de sus parámetros.
+(define (typeof-params params context)
+  (cond
+    [(empty? params) context]
+    [else
+     (type-case Param (car params)
+       [param (p tipo)
+              (typeof-params (cdr params)
+                             (gamma p tipo context))])]))
+
+;; Regresa el último tipo de un rType.
+(define (last-rType rType)
+  (type-case Type rType
+    [numberT () '()]
+    [booleanT () '()]
+    [funT (params) (last params)]))
