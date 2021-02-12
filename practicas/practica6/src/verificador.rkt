@@ -32,13 +32,13 @@
     ;; Condicionales.
     [(condS cases) (typeof-condS cases context)]
     ;; With.
-    [(withS bindings body) (typeof-with bindings body context)]
+    [(withS bindings body) (typeof-withS bindings body context)]
     ;; With*
-    [(withS* bindings body) (typeof-with bindings body context)]
+    [(withS* bindings body) (typeof-withS bindings body context)]
     ;; Funciones.
-    [(funS params rType body) (typeof-fun params rType body context)]
+    [(funS params rType body) (typeof-funS params rType body context)]
     ;; Aplicación de funciones.
-    [(appS fun args) 13]))
+    [(appS fun args) (typeof-appS fun args context)]))
   
 (define (prueba exp)
   (typeof (parse exp) (phi)))
@@ -116,7 +116,7 @@
         (error "typeof: Type error\nconditionals"))))
 
 ;; Aplica la función typeof a una expresión with.
-(define (typeof-with bindings body context)
+(define (typeof-withS bindings body context)
   (typeof body (typeof-bindings bindings context)))
 
 ;; Define un contexto para una expresión with a partir de sus bindings.
@@ -133,7 +133,7 @@
                       (error "typeof: Type error\nBindings must have same type in tipo and value")))])]))
 
 ;; Aplica la función typeof a una expresión fun.
-(define (typeof-fun params rType body context)
+(define (typeof-funS params rType body context)
   (let ([params-context (typeof-params params context)])
     (let* ([body-type (typeof body params-context)]
            [tipo (last-rType rType)])
@@ -158,3 +158,20 @@
     [numberT () '()]
     [booleanT () '()]
     [funT (params) (last params)]))
+
+;; Aplica la función typeof a una expresión app.
+(define (typeof-appS fun args context)
+  (let* ([fun-type (typeof fun context)]
+         [args-types (map (λ (a) (typeof a context)) args)]
+         [body-type (typeof (funS-body fun)
+                            (typeof-params (funS-params fun)
+                                           context))]
+         [tipo (last (funT-params fun-type))])
+    (cond
+      [(equal? (take (funT-params fun-type)
+                     (- (length (funT-params fun-type)) 1))
+               args-types)
+       (if (or (idS? fun) (equal? body-type tipo))
+           tipo
+           (error "typeof: Type error\nReturn values must have same type"))]
+      [(error "app: Type error:\nParameter's type doesn't match expected types")])))
